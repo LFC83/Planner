@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planner Março 2025</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root {
+    --bg:#0e0f11;--surface:#16181c;--border:#2a2d35;
+    --accent:#e8b84b;--a2:#5b8dee;--a3:#e85b5b;--a4:#5be87a;--a5:#9b5be8;
+    --text:#e8e9ec;--muted:#7a7f8e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:2rem;}
+  .noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;}
+  .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;}
+  header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+  h1{font-family:'DM Serif Display',serif;font-size:3.2rem;line-height:1;letter-spacing:-1px;}
+  h1 span{color:var(--accent);font-style:italic;}
+  .sub{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-top:.4rem;text-transform:uppercase;letter-spacing:.1em;}
+  .legend{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:flex-end;}
+  .li{display:flex;align-items:center;gap:.4rem;font-size:.68rem;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .ld{width:8px;height:8px;border-radius:50%;}
+  .objs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+  .obj{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;position:relative;overflow:hidden;}
+  .obj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+  .obj.c1::before{background:var(--a2);}.obj.c2::before{background:var(--accent);}.obj.c3::before{background:var(--a4);}
+  .obj .lbl{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.25rem;}
+  .obj .ttl{font-weight:600;font-size:.88rem;}
+  .obj.c1 .ttl{color:#8baaff;}.obj.c2 .ttl{color:var(--accent);}.obj.c3 .ttl{color:var(--a4);}
+  .obj .dl{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+  .tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .tab{font-family:'DM Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;padding:.45rem .9rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+  .tab:hover{border-color:var(--accent);color:var(--accent);}
+  .tab.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600;}
+  .view{display:none;}.view.on{display:block;}
+  .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+  .mh{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:center;padding:.45rem 0;}
+  .dc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem;min-height:108px;}
+  .dc.we{opacity:.45;}.dc.td{border-color:var(--accent);}.dc.gc{border-color:var(--a4);}.dc.emp{background:transparent;border-color:transparent;}
+  .dn{font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between;}
+  .dc.td .dn{color:var(--accent);}
+  .dc.we .dn::after{content:'WE';font-size:.52rem;background:var(--border);padding:1px 4px;border-radius:3px;color:var(--muted);}
+  .ch{font-size:.61rem;padding:2px 5px;border-radius:3px;margin-bottom:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
+  .cw{background:#5b8dee18;color:#8baaff;border-left:2px solid #5b8dee;}
+  .cp{background:#e8b84b18;color:#f0c96a;border-left:2px solid #e8b84b;}
+  .cc{background:#5be87a18;color:#7aef99;border-left:2px solid #5be87a;}
+  .cb{background:#e85b5b18;color:#f07a7a;border-left:2px solid #e85b5b;}
+  .cr{background:#9b5be818;color:#c09bf5;border-left:2px solid #9b5be8;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
+  .card h3{font-family:'DM Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;}
+  .tb{display:flex;gap:.8rem;margin-bottom:.45rem;align-items:flex-start;}
+  .tt{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--muted);min-width:82px;padding-top:4px;}
+  .tc{flex:1;font-size:.78rem;padding:4px 8px;border-radius:5px;line-height:1.4;}
+  .tw{background:#5b8dee18;color:#8baaff;}.tpp{background:#e8b84b18;color:#f0c96a;}
+  .tcc{background:#5be87a18;color:#7aef99;}.tbb{background:#e85b5b18;color:#f07a7a;}
+  .tn{background:#1a1c22;color:var(--muted);}.tr{background:#9b5be818;color:#c09bf5;}
+  .note{padding:.75rem;border-radius:8px;margin-top:.75rem;font-size:.74rem;line-height:1.5;}
+  .note .nl{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem;}
+  .nr{background:#2a1a4a22;border:1px solid #9b5be833;color:#c09bf5;}
+  .nw{background:#4a1a1a22;border:1px solid #e85b5b33;color:#f07a7a;}
+  .ni{background:#2a3f6e22;border:1px solid #5b8dee33;color:#8baaff;}
+  .ng{background:#1a4a2822;border:1px solid #2a5a3833;color:#7aef99;}
+  .sh{font-weight:600;font-size:.8rem;margin:1rem 0 .4rem;}
+  .sh.b{color:#8baaff;}.sh.y{color:var(--accent);}.sh.g{color:var(--a4);}.sh.r{color:#f07a7a;}.sh.v{color:#c09bf5;}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;}
+  .pc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
+  .pl{font-family:'DM Mono',monospace;font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.8rem;}
+  .pbo{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-bottom:.4rem;}
+  .pbi{height:100%;border-radius:4px;}
+  .pt{font-size:.73rem;color:var(--muted);font-family:'DM Mono',monospace;}
+  .ml{margin-top:.7rem;}
+  .ms{display:flex;align-items:center;gap:.5rem;font-size:.73rem;padding:.28rem 0;border-bottom:1px solid var(--border);color:var(--muted);}
+  .ms:last-child{border-bottom:none;}
+  .md{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .mx{font-family:'DM Mono',monospace;font-size:.63rem;min-width:48px;}
+  @media(max-width:768px){body{padding:1rem;}.objs,.grid2,.pgrid{grid-template-columns:1fr;}header{flex-direction:column;align-items:flex-start;gap:1rem;}h1{font-size:2.4rem;}}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Março <span>2025</span></h1>
+    <div class="sub">Planner Pessoal · Rotina Sustentável Anti-Burnout</div>
+  </div>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:#5b8dee"></div>Trabalho/POC</div>
+    <div class="li"><div class="ld" style="background:#e8b84b"></div>Pessoal</div>
+    <div class="li"><div class="ld" style="background:#5be87a"></div>Certificação</div>
+    <div class="li"><div class="ld" style="background:#e85b5b"></div>Bloqueado</div>
+    <div class="li"><div class="ld" style="background:#9b5be8"></div>Descanso</div>
+  </div>
+</header>
+
+<div class="objs">
+  <div class="obj c1"><div class="lbl">Objectivo 1</div><div class="ttl">POC Microsoft Copilot</div><div class="dl">⏱ Blocos 08–10h diários · todo o mês</div></div>
+  <div class="obj c2"><div class="lbl">Objectivo 2</div><div class="ttl">Formação + Mock Exam UiPath</div><div class="dl">📅 10/3 formação (4h) → mock até 12/3</div></div>
+  <div class="obj c3"><div class="lbl">Objectivo 3</div><div class="ttl">Certificação Agentic Automation Assoc.</div><div class="dl">🎯 Target 25 Mar · Deadline 31 Mar</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="sv('month',this)">Mês</button>
+  <button class="tab" onclick="sv('w1',this)">Semana 3–7</button>
+  <button class="tab" onclick="sv('w2',this)">Semana 10–14</button>
+  <button class="tab" onclick="sv('daily',this)">Rotina Diária</button>
+  <button class="tab" onclick="sv('cert',this)">Plano Cert.</button>
+</div>
+
+<!-- MONTH -->
+<div id="view-month" class="view on">
+  <div class="mgrid">
+    <div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div>
+    <div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>
+
+    <!-- Row 1: Dom 1 -->
+    <div class="dc emp"></div><div class="dc emp"></div><div class="dc emp"></div>
+    <div class="dc emp"></div><div class="dc emp"></div><div class="dc emp"></div>
+    <div class="dc we"><div class="dn">1</div><div class="ch cr">🌿 Descanso</div></div>
+
+    <!-- Row 2: Seg 2 – Dom 8 -->
+    <div class="dc we"><div class="dn">2</div><div class="ch cr">🌿 Descanso</div></div>
+    <div class="dc"><div class="dn">3</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Ter)</div></div>
+    <div class="dc td"><div class="dn">4 ★</div>
+      <div class="ch cb">🦷 Dentista 9–10:30</div>
+      <div class="ch cw">📞 Call #2 15:00–15:30</div>
+      <div class="ch cw">📞 Call #4 15:30–16:00</div>
+      <div class="ch cr">🌿 Noite descanso</div>
+    </div>
+    <div class="dc"><div class="dn">5</div>
+      <div class="ch cw">💻 POC Copilot</div>
+      <div class="ch cp">🏢 Escritório 11:30–12:30</div>
+      <div class="ch cw">📞 Call #1 14:30–15:00</div>
+      <div class="ch cw">📞 Call #3 15:00–15:30</div>
+      <div class="ch cb">🦷 Follow-up Dentista</div>
+      <div class="ch cr">🌿 Noite descanso</div>
+    </div>
+    <div class="dc"><div class="dn">6</div>
+      <div class="ch cw">💻 POC Copilot</div>
+      <div class="ch cw">📹 Zoom 15:30–16:10</div>
+      <div class="ch cc">📚 Estudo (Sex)</div>
+    </div>
+    <div class="dc we"><div class="dn">7</div>
+      <div class="ch cb">🚗 Deslocação 07:45</div>
+      <div class="ch cb">🏥 Consulta 8:15</div>
+      <div class="ch cp">✂️ Barbeiro 9h</div>
+      <div class="ch cp">🐾 Veterinário ~10h</div>
+    </div>
+    <div class="dc we"><div class="dn">8</div><div class="ch cr">🌿 Descanso total</div></div>
+
+    <!-- Row 3: Seg 9 – Dom 15 -->
+    <div class="dc"><div class="dn">9</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Seg)</div></div>
+    <div class="dc gc"><div class="dn">10 🎓</div>
+      <div class="ch cc">🎓 Formação UiPath 4h</div>
+      <div class="ch cw">💻 POC tarde</div>
+      <div class="ch cr">🌿 Noite descanso</div>
+    </div>
+    <div class="dc gc"><div class="dn">11</div>
+      <div class="ch cc">⚡ Mock Exam</div>
+      <div class="ch cc">📖 Revisão pós-exam</div>
+      <div class="ch cr">🌿 Noite descanso</div>
+    </div>
+    <div class="dc"><div class="dn">12</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Qui)</div></div>
+    <div class="dc"><div class="dn">13</div><div class="ch cw">💻 POC Copilot</div><div class="ch cr">🌿 Noite descanso</div></div>
+    <div class="dc we"><div class="dn">14</div>
+      <div class="ch cb">🔧 Instalação (manhã)</div>
+      <div class="ch cp">📱 3 Cartões (almoço)</div>
+    </div>
+    <div class="dc we"><div class="dn">15</div><div class="ch cr">🌿 Descanso</div></div>
+
+    <!-- Row 4: Seg 16 – Dom 22 -->
+    <div class="dc"><div class="dn">16</div><div class="ch cw">💻 POC Copilot</div><div class="ch cr">🌿 Noite descanso</div></div>
+    <div class="dc"><div class="dn">17</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Ter)</div></div>
+    <div class="dc"><div class="dn">18</div><div class="ch cw">💻 POC Copilot</div><div class="ch cr">🌿 Noite descanso</div></div>
+    <div class="dc"><div class="dn">19</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Qui)</div></div>
+    <div class="dc"><div class="dn">20</div><div class="ch cw">💻 POC Copilot</div><div class="ch cr">🌿 Noite descanso</div></div>
+    <div class="dc we"><div class="dn">21</div><div class="ch cr">🌿 Descanso</div></div>
+    <div class="dc we"><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
+
+    <!-- Row 5: Seg 23 – Dom 29 -->
+    <div class="dc"><div class="dn">23</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Seg)</div></div>
+    <div class="dc gc"><div class="dn">24 🟢</div><div class="ch cc">🟢 Exam window abre</div><div class="ch cw">💻 POC Copilot</div></div>
+    <div class="dc gc"><div class="dn">25 🏆</div><div class="ch cc">🎯 TARGET EXAME</div><div class="ch cw">💻 POC Copilot</div></div>
+    <div class="dc"><div class="dn">26</div><div class="ch cw">💻 POC Copilot</div><div class="ch cr">🌿 Noite descanso</div></div>
+    <div class="dc"><div class="dn">27</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Buffer revisão</div></div>
+    <div class="dc we"><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
+    <div class="dc we"><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
+
+    <!-- Row 6: Seg 30 – Ter 31 -->
+    <div class="dc"><div class="dn">30</div><div class="ch cw">💻 POC Copilot</div><div class="ch cr">🌿 Noite descanso</div></div>
+    <div class="dc gc"><div class="dn">31 🏁</div><div class="ch cc">🏁 Deadline Absoluta</div><div class="ch cw">💻 POC Copilot</div></div>
+    <div class="dc emp"></div><div class="dc emp"></div><div class="dc emp"></div>
+    <div class="dc emp"></div><div class="dc emp"></div>
+  </div>
+
+  <div class="pgrid">
+    <div class="pc">
+      <div class="pl">POC Copilot</div>
+      <div class="pbo"><div class="pbi" style="width:5%;background:var(--a2)"></div></div>
+      <div class="pt">~20 dias úteis · bloco 08–10h diário</div>
+      <div class="ml">
+        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">3–7</span>Setup & arquitectura</div>
+        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">9–13</span>Desenvolvimento core</div>
+        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">16–20</span>Testes & iteração</div>
+        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">23–31</span>Refinamento & entrega</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pl">Formação UiPath</div>
+      <div class="pbo"><div class="pbi" style="width:10%;background:var(--accent)"></div></div>
+      <div class="pt">3 noites/semana · máx. 1h por sessão</div>
+      <div class="ml">
+        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">3–9</span>Estudo Ter/Sex/Seg</div>
+        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">10</span>Formação 4h (Ter 10)</div>
+        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">11</span>Mock Exam (Qua 11)</div>
+        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">12</span>Revisão (Qui 12)</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pl">Certificação AA</div>
+      <div class="pbo"><div class="pbi" style="width:5%;background:var(--a4)"></div></div>
+      <div class="pt">Target 25 Mar · Buffer até 31</div>
+      <div class="ml">
+        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">12–20</span>Revisão por domínio</div>
+        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">24</span>Exam window abre</div>
+        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">25</span>🎯 Exame (target)</div>
+        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">31</span>⚠️ Deadline absoluta</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK 3–7 -->
+<div id="view-w1" class="view">
+  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
+    Semana 2–6 Março · Qua 4★ hoje · Qui 5 escritório + calls · Sex 6 Zoom call
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Qua 4 · Hoje</h3>
+      <div class="tb"><div class="tt">07:00–07:30</div><div class="tc tn">🐕 Passeio cadela</div></div>
+      <div class="tb"><div class="tt">07:30–08:00</div><div class="tc tn">🥐 Pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tw">💻 POC Copilot</div></div>
+      <div class="tb"><div class="tt">09:00–10:30</div><div class="tc tbb">🦷 Dentista (ausente)</div></div>
+      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tw">💻 Trabalho — retomar tarefas</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">15:00–15:30</div><div class="tc tw">📞 Call #2</div></div>
+      <div class="tb"><div class="tt">15:30–16:00</div><div class="tc tw">📞 Call #4</div></div>
+      <div class="tb"><div class="tt">16:00–17:00</div><div class="tc tw">✅ Wrap-up + notas do dia</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso total — sem estudo</div></div>
+      <div class="note nr"><div class="nl">💜 Nota</div>Dia com dentista + 2 calls. Trolhas adiados para data a definir. Noite de descanso.</div>
+
+      <div class="sh b" style="margin-top:1.2rem;">Qui 5 · Escritório + Calls remarcadas</div>
+      <div class="tb"><div class="tt">07:00–07:30</div><div class="tc tn">🐕 Passeio cadela</div></div>
+      <div class="tb"><div class="tt">07:30–08:00</div><div class="tc tn">🥐 Pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–11:30</div><div class="tc tw">💻 POC Copilot + trabalho (foco)</div></div>
+      <div class="tb"><div class="tt">11:00–11:15</div><div class="tc tbb">🦷 Follow-up dentista (chamada)</div></div>
+      <div class="tb"><div class="tt">11:30–12:00</div><div class="tc tpp">🚗 Deslocação → escritório</div></div>
+      <div class="tb"><div class="tt">12:00–12:30</div><div class="tc tpp">🏢 Entrega documento</div></div>
+      <div class="tb"><div class="tt">12:30–13:00</div><div class="tc tpp">🚗 Regresso</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–14:30</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">14:30–15:00</div><div class="tc tw">📞 Call #1</div></div>
+      <div class="tb"><div class="tt">15:00–15:30</div><div class="tc tw">📞 Call #3</div></div>
+      <div class="tb"><div class="tt">15:30–17:00</div><div class="tc tw">💻 Trabalho + wrap-up</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso total — sem estudo</div></div>
+    </div>
+
+    <div class="card">
+      <h3>Ter 3 · Estudo &nbsp;|&nbsp; Sex 6 · Zoom + Estudo</h3>
+      <div class="sh v">Ter 3</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 Bloco foco — POC Copilot</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho + POC</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
+      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso</div></div>
+
+      <div class="sh g" style="margin-top:1.2rem;">Sex 6</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 Bloco foco — POC Copilot</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–15:30</div><div class="tc tw">💻 Trabalho + POC</div></div>
+      <div class="tb"><div class="tt">15:30–16:10</div><div class="tc tw">📹 Zoom Call</div></div>
+      <div class="tb"><div class="tt">16:10–17:00</div><div class="tc tw">✅ Wrap-up semana</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
+      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso</div></div>
+      <div class="note nr"><div class="nl">💜 Semana 1 resumo</div>Estudo: Ter 3 + Sex 6 (2 × 1h = 2h). Qua 4 + Qui 5: descanso total à noite. Trolhas: data a definir.</div>
+
+      <div class="sh r" style="margin-top:1.2rem;">Sáb 7 · Manhã Preenchida</div>
+      <div class="tb"><div class="tt">07:45</div><div class="tc tpp">🚗 Deslocação (30 min)</div></div>
+      <div class="tb"><div class="tt">08:15</div><div class="tc tbb">🏥 Consulta médica</div></div>
+      <div class="tb"><div class="tt">09:00</div><div class="tc tpp">✂️ Barbeiro</div></div>
+      <div class="tb"><div class="tt">~10:00</div><div class="tc tpp">🐾 Veterinário</div></div>
+      <div class="tb"><div class="tt">Tarde</div><div class="tc tr">🌿 Descanso</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK 10–14 -->
+<div id="view-w2" class="view">
+  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
+    Semana 9–13 Março · Seg 9 prep · Ter 10 formação · Qua 11 mock · Sáb 14 instalação
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Seg 9 / Ter 10 🎓 / Qua 11 ⚡</h3>
+      <div class="sh b">Seg 9 · Preparação final</div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC Copilot</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">17:00–18:30</div><div class="tc tpp">🏋️ Ginásio + cadela</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Última revisão antes da formação</div></div>
+
+      <div class="sh y" style="margin-top:1rem;">Ter 10 · Formação UiPath 4h</div>
+      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tcc">📖 Revisão rápida pré-formação</div></div>
+      <div class="tb"><div class="tt">09:00–13:00</div><div class="tc tcc">🎓 Formação Agentic Automation (4h)</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 POC Copilot</div></div>
+      <div class="tb"><div class="tt">17:00–23:00</div><div class="tc tr">🌿 Descanso — 4h de formação já chega</div></div>
+
+      <div class="sh g" style="margin-top:1rem;">Qua 11 · Mock Exam</div>
+      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tw">💻 POC Copilot</div></div>
+      <div class="tb"><div class="tt">09:00–11:00</div><div class="tc tcc">⚡ Mock Exam UiPath</div></div>
+      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tcc">📖 Revisão erros do mock</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho + POC</div></div>
+      <div class="tb"><div class="tt">17:00–23:00</div><div class="tc tr">🌿 Descanso — mock feito, respira</div></div>
+      <div class="note ng"><div class="nl">⚡ Deadline Mock</div>Contador 48h começa ~13h dia 10. Deadline ~13h dia 12. Fazendo dia 11 tens margem confortável.</div>
+    </div>
+    <div class="card">
+      <h3>Qui 12 / Sex 13 / Sáb 14</h3>
+      <div class="sh b">Qui 12 · Estudo + POC</div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC Copilot</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho + POC</div></div>
+      <div class="tb"><div class="tt">17:00–21:00</div><div class="tc tr">🌿 Ginásio + cadela + descanso</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Revisão por domínio (1h)</div></div>
+      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso</div></div>
+
+      <div class="sh v" style="margin-top:1rem;">Sex 13 · Noite de Descanso</div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC Copilot</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho + POC</div></div>
+      <div class="tb"><div class="tt">17:00–23:00</div><div class="tc tr">🌿 Descanso — fim de semana começa</div></div>
+
+      <div class="sh r" style="margin-top:1rem;">Sáb 14 · Instalação + Cartões</div>
+      <div class="tb"><div class="tt">Manhã</div><div class="tc tbb">🔧 Instalação Operador</div></div>
+      <div class="tb"><div class="tt">Almoço</div><div class="tc tpp">📱 Adquirir 3 cartões móveis</div></div>
+      <div class="tb"><div class="tt">Tarde</div><div class="tc tr">🌿 Descanso</div></div>
+      <div class="note nw"><div class="nl">⚠️ Semana mais densa do mês</div>Formação + mock + revisão + instalação. Noites de descanso (Ter 10, Qua 11, Sex 13) são obrigatórias.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAILY -->
+<div id="view-daily" class="view">
+  <div class="grid2">
+    <div class="card">
+      <h3>Rotina Base — Dias Úteis</h3>
+      <div class="tb"><div class="tt">07:00–07:30</div><div class="tc tn">🐕 Passeio da cadela</div></div>
+      <div class="tb"><div class="tt">07:30–08:00</div><div class="tc tn">🥐 Pequeno-almoço + preparação</div></div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 Bloco foco — POC Copilot (máxima concentração)</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho — reuniões, emails, operacional</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço — inegociável, sem ecrã</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho — POC + tarefas + calls</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio — inegociável</div></div>
+      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Bloco pessoal — jantar, cadela, desligar</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo (apenas 3 noites/semana — 1h máx.)</div></div>
+      <div class="tb"><div class="tt">21:00–23:00</div><div class="tc tr">🌿 Descanso (noites sem estudo)</div></div>
+      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso — sem ecrãs exigentes</div></div>
+      <div class="note nr" style="margin-top:.5rem;"><div class="nl">🐕 Âncora mental</div>Os dois passeios (07h e 18–19h) são os teus resets cognitivos. Usa-os sem telemóvel.</div>
+    </div>
+    <div class="card">
+      <h3>Filosofia Anti-Burnout</h3>
+      <div class="note nr" style="margin-top:0;"><div class="nl">💜 Regra das 3 noites</div>Estudo apenas 3 noites por semana, 1h máximo. As restantes 4 noites e fim de semana são de recuperação. Zero excepções.</div>
+      <div class="note ni"><div class="nl">💙 Bloco 08–10h é sagrado</div>É o teu pico cognitivo. Sem emails, sem Slack, sem reuniões. O POC Copilot avança aqui ou não avança.</div>
+      <div class="note ng"><div class="nl">💚 1h de estudo é suficiente</div>3 sessões/semana × ~3 semanas = ~9h + 4h formação + mock. Preparação adequada para um Associate.</div>
+      <div class="note nw"><div class="nl">⚠️ Sinal de alerta</div>Se após 20 min não consegues concentrar — para. Descanso não planeado é melhor que estudo ineficaz.</div>
+      <div style="padding:.75rem;background:#1a1c22;border-radius:8px;border:1px solid var(--border);font-size:.75rem;color:var(--muted);margin-top:.75rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:.62rem;margin-bottom:.25rem;">📊 MATEMÁTICA DO BURNOUT</div>
+        Estudo diário neste mês → burnout semana 3 → produtividade zero em tudo.<br>
+        3 noites/semana → ritmo sustentável → chegas ao dia 25 em condições de exame.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CERT -->
+<div id="view-cert" class="view">
+  <div class="grid2">
+    <div class="card">
+      <h3>Plano de Estudo · Semana a Semana</h3>
+      <div class="sh b">Semana 1 · 3–6 Mar (2 sessões = 2h)</div>
+      <div class="tb"><div class="tt">Ter 3</div><div class="tc tcc">🏗️ Fundamentos Agentic AI — conceitos base</div></div>
+      <div class="tb"><div class="tt">Sex 6</div><div class="tc tcc">🔧 UiPath Studio & Orchestrator — overview</div></div>
+
+      <div class="sh y" style="margin-top:1rem;">Semana 2 · 9–13 Mar (formação + mock + revisão)</div>
+      <div class="tb"><div class="tt">Seg 9</div><div class="tc tcc">📖 Revisão pré-formação (1h)</div></div>
+      <div class="tb"><div class="tt">Ter 10</div><div class="tc tcc">🎓 FORMAÇÃO 4h — notas detalhadas</div></div>
+      <div class="tb"><div class="tt">Qua 11</div><div class="tc tcc">⚡ MOCK EXAM + revisão erros</div></div>
+      <div class="tb"><div class="tt">Qui 12</div><div class="tc tcc">📖 Revisão domínios fracos (1h)</div></div>
+
+      <div class="sh g" style="margin-top:1rem;">Semana 3 · 16–20 Mar (3 sessões = 3h)</div>
+      <div class="tb"><div class="tt">Ter 17</div><div class="tc tcc">🔍 Domínio: Testing & Validation</div></div>
+      <div class="tb"><div class="tt">Qui 19</div><div class="tc tcc">🚀 Domínio: Deployment & Monitoring</div></div>
+      <div class="tb"><div class="tt">Sex 20</div><div class="tc tcc">🧠 Revisão geral — simular exame</div></div>
+
+      <div class="sh r" style="margin-top:1rem;">Semana 4 · 23–31 Mar (exame + buffer)</div>
+      <div class="tb"><div class="tt">Seg 23</div><div class="tc tcc">📚 Revisão final pontos fracos</div></div>
+      <div class="tb"><div class="tt">Ter 24</div><div class="tc tcc">🟢 Exam window abre</div></div>
+      <div class="tb"><div class="tt">Qua 25</div><div class="tc tcc">🏆 TARGET: fazer o exame</div></div>
+      <div class="tb"><div class="tt">26–31</div><div class="tc tbb">⚠️ Buffer — re-take se necessário</div></div>
+    </div>
+    <div class="card">
+      <h3>Horas Totais &amp; Estratégia</h3>
+      <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Semana 1 (2 sessões × 1h)</span><span style="font-family:'DM Mono',monospace;color:#8baaff;">2h</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Formação UiPath (Ter 10)</span><span style="font-family:'DM Mono',monospace;color:var(--accent);">4h</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Mock Exam + revisão (Qua 11)</span><span style="font-family:'DM Mono',monospace;color:var(--accent);">2h</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Revisão pós-mock (Qui 12)</span><span style="font-family:'DM Mono',monospace;color:var(--a4);">1h</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Semana 3 (3 sessões × 1h)</span><span style="font-family:'DM Mono',monospace;color:var(--a4);">3h</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Revisão final (Seg 23)</span><span style="font-family:'DM Mono',monospace;color:var(--a4);">1h</span></div>
+        <div style="border-top:1px solid var(--border);padding-top:.5rem;display:flex;justify-content:space-between;font-size:.85rem;">
+          <span style="color:var(--text);font-weight:600;">Total</span>
+          <span style="font-family:'DM Mono',monospace;color:var(--accent);font-weight:600;">≈ 13h</span>
+        </div>
+      </div>
+      <div class="note ng" style="margin-top:0;"><div class="nl">📊 Contexto</div>Exame Associate = nível entrada. 13h focadas + formação oficial é preparação sólida.</div>
+      <div class="note nr"><div class="nl">💜 Consolidação</div>Com descanso entre sessões o cérebro processa melhor. Estudar todos os dias resultaria em fadiga antes do exame.</div>
+      <div class="note nw"><div class="nl">🏁 Buffer 26–31 Mar</div>Se não passares no dia 25, tens 4 dias úteis para re-take com revisão focalizada. Completamente gerível.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+function sv(name,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('view-'+name).classList.add('on');
+  if(btn)btn.classList.add('on');
+}
+</script>
+</body>
+</html>
