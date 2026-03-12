@@ -107,6 +107,7 @@
   <button class="tab on" onclick="sv('month',this)">Mês</button>
   <button class="tab" onclick="sv('w1',this)">Semana 3–7</button>
   <button class="tab" onclick="sv('w2',this)">Semana 10–14</button>
+  <button class="tab" onclick="sv('w3',this)">Semana 16–20</button>
   <button class="tab" onclick="sv('daily',this)">Rotina Diária</button>
   <button class="tab" onclick="sv('cert',this)">Plano Cert.</button>
 </div>
@@ -188,8 +189,8 @@
     <div class="dc"><div class="dn">13</div>
       <div class="ch cw">💻 POC Copilot 08–10:30h</div>
       <div class="ch cw">📞 Reunião PDS 10:30–11:00</div>
-      <div class="ch cp">🟡 RPA testes 11:00–13:00</div>
-      <div class="ch cp">🟡 RPA testes 14:00–17:00</div>
+      <div class="ch cb">🐛 Bug Fix 11:00–13:00</div>
+      <div class="ch cb">🐛 Bug Fix 14:00–17:00</div>
       <div class="ch cr">🌿 Noite descanso</div>
     </div>
     <div class="dc we"><div class="dn">14</div>
@@ -203,10 +204,11 @@
       <div class="ch cw">💻 POC Copilot 08–10h</div>
       <div class="ch cc">⚡ Mock Exam UiPath 10–13h</div>
       <div class="ch cc">📖 Revisão erros mock 14–15h</div>
-      <div class="ch cp">🟡 RPA simples testes 15–17h</div>
+      <div class="ch cb">🐛 Bug Fix 15–17h ✅ concluído</div>
     </div>
     <div class="dc"><div class="dn">17</div>
-      <div class="ch cw">💻 POC Copilot 08–11h</div>
+      <div class="ch cw">💻 POC 08–09h + 10–11h</div>
+      <div class="ch cp">🏦 Banco 09:15–09:45</div>
       <div class="ch cp">🟡 RPA simples testes 11–13h</div>
       <div class="ch cp">🟡 RPA simples testes 14–17h</div>
       <div class="ch cc">📚 Estudo (Ter)</div>
@@ -214,7 +216,7 @@
     <div class="dc gc"><div class="dn">18</div>
       <div class="ch cc">📬 Voucher window abre</div>
       <div class="ch cw">💻 POC Copilot 08–11h</div>
-      <div class="ch cp">🔵 RPA médio testes 11–13h</div>
+      <div class="ch cp">🟡 RPA simples testes 11–13h ✅</div>
       <div class="ch cp">🔵 RPA médio testes 14–17h</div>
       <div class="ch cr">🌿 Noite descanso</div>
     </div>
@@ -434,15 +436,15 @@
       <div class="note nw"><div class="nl">🔧 Trolhas</div>30min dentro da janela 08–10h — POC mantém-se no restante tempo.</div>
       <div class="note ni"><div class="nl">📊 Bug fix hoje</div>4h totais (10–15h). RPA testes: 2h hoje + 5h Sex = 7h ✅</div>
 
-      <div class="sh v" style="margin-top:1rem;">Sex 13 · POC + PDS + RPA testes (conclusão)</div>
+      <div class="sh v" style="margin-top:1rem;">Sex 13 · POC + PDS + Bug Fix #2 (novo)</div>
       <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
       <div class="tb"><div class="tt">08:00–10:30</div><div class="tc tw">💻 POC Copilot (2h30)</div></div>
       <div class="tb"><div class="tt">10:30–11:00</div><div class="tc tw">📞 Reunião PDS</div></div>
-      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tpp">🟡 RPA simples — testes (2h)</div></div>
+      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tbb">🐛 Bug Fix #2 — resolução (2h)</div></div>
       <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🟡 RPA simples — testes (3h) ✅ concluído</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tbb">🐛 Bug Fix #2 — resolução (3h)</div></div>
       <div class="tb"><div class="tt">17:00–23:00</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
-      <div class="note ng"><div class="nl">📊 RPA simples testes</div>Qui 2h + Sex 5h = 7h ✅ Concluído. Semana 16 arranca com RPA médio testes.</div>
+      <div class="note nw"><div class="nl">⚠️ Bug Fix #2 transborda 1h</div>6h estimadas, 5h disponíveis hoje. 1h restante → Seg 16 tarde (após mock + revisão). RPA simples testes derrapam para semana 16.</div>
 
       <div class="sh r" style="margin-top:1rem;">Sáb 14 · Instalação 08:00–13:00</div>
       <div class="tb"><div class="tt">08:00–13:00</div><div class="tc tbb">🔧 Instalação Operador</div></div>
@@ -450,6 +452,85 @@
       <div class="tb"><div class="tt">Tarde</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
       <div class="note nw"><div class="nl">⚠️ Semana densa</div>Formação Agentic (Ter 10) + trolhas possível (Qua 11). Noites de descanso protegidas.</div>
     </div>
+  </div>
+</div>
+
+<!-- WEEK 16–20 -->
+<div id="view-w3" class="view">
+  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
+    Semana 16–20 Março · Mock Exam Seg 16 · RPA simples → RPA médio → PDD · POC 40% · Voucher 18 Mar
+  </div>
+  <div class="grid2">
+
+    <div class="card">
+      <h3>Seg 16 · Mock Exam &nbsp;|&nbsp; Ter 17 · Banco + RPA simples</h3>
+
+      <div class="sh b">Seg 16 · Mock Exam UiPath + Bug Fix #2 (conclusão)</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC Copilot (2h)</div></div>
+      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tcc">⚡ Mock Exam UiPath Agentic (3h)</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tcc">📖 Revisão de erros do mock (1h)</div></div>
+      <div class="tb"><div class="tt">15:00–16:00</div><div class="tc tbb">🐛 Bug Fix #2 — conclusão (1h) ✅</div></div>
+      <div class="tb"><div class="tt">16:00–17:00</div><div class="tc tr">🌿 Buffer / wrap-up</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso total — sem estudo após mock</div></div>
+      <div class="note nw"><div class="nl">⚠️ Após mock: descanso obrigatório</div>Não estudar à noite após o mock. Bug fix concluído à tarde. RPA simples testes arrancam Ter 17.</div>
+
+      <div class="sh y" style="margin-top:1.2rem;">Ter 17 · Banco 09:15 + POC + RPA simples testes</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tw">💻 POC Copilot (1h)</div></div>
+      <div class="tb"><div class="tt">09:00–09:15</div><div class="tc tpp">🚗 Deslocação banco</div></div>
+      <div class="tb"><div class="tt">09:15–09:45</div><div class="tc tpp">🏦 Banco (30min)</div></div>
+      <div class="tb"><div class="tt">09:45–10:00</div><div class="tc tpp">🚗 Regresso</div></div>
+      <div class="tb"><div class="tt">10:00–11:00</div><div class="tc tw">💻 POC Copilot — retoma (1h)</div></div>
+      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tpp">🟡 RPA simples — testes (2h)</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🟡 RPA simples — testes (3h)</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
+      <div class="note ni"><div class="nl">💻 POC Ter 17</div>Banco fragmenta o bloco mas não reduz o total — 2h POC efectivas (08–09h + 10–11h).</div>
+      <div class="note ng"><div class="nl">📊 RPA simples testes</div>Ter 5h feitas. Faltam 2h → Qua 18 manhã ✅. RPA médio testes arrancam Qua 18 tarde.</div>
+    </div>
+
+    <div class="card">
+      <h3>Qua 18 · Voucher &nbsp;|&nbsp; Qui 19 &nbsp;|&nbsp; Sex 20</h3>
+
+      <div class="sh g">Qua 18 · 📬 Voucher window abre + RPA simples (conclusão) + RPA médio testes</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–11:00</div><div class="tc tw">💻 POC Copilot (3h)</div></div>
+      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tpp">🟡 RPA simples — testes (2h) ✅ concluído</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 RPA médio — testes (3h) dia 1</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso — verificar email voucher</div></div>
+      <div class="tb"><div class="tt">21:00–23:00</div><div class="tc tr">🌿 Descanso</div></div>
+      <div class="note ni"><div class="nl">📬 Voucher window 18–23 Mar</div>Se mock aprovado, voucher disponível a partir de hoje. Verificar email. Agenda exame assim que possível.</div>
+      <div class="note ng"><div class="nl">📊 RPA simples testes ✅</div>Ter 5h + Qua 2h = 7h concluído. RPA médio testes: 3h hoje (dia 1 de 3).</div>
+
+      <div class="sh v" style="margin-top:1.2rem;">Qui 19 · RPA médio testes — continuação</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–11:00</div><div class="tc tw">💻 POC Copilot (3h)</div></div>
+      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tpp">🔵 RPA médio — testes (2h)</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 RPA médio — testes (3h)</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso — cadela + jantar</div></div>
+      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
+      <div class="note ng"><div class="nl">📊 RPA médio testes</div>Qua 3h + Qui 5h = 8h (dias 1+2). Sex 20 conclui (2h). PDD arranca Sex tarde.</div>
+
+      <div class="sh r" style="margin-top:1.2rem;">Sex 20 · RPA médio testes (conclusão) + PDD</div>
+      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
+      <div class="tb"><div class="tt">08:00–11:00</div><div class="tc tw">💻 POC Copilot (3h)</div></div>
+      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tpp">🔵 RPA médio — testes (2h) ✅ concluído</div></div>
+      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc cn" style="background:#1a4a2822;color:#7aef99;border-radius:5px;padding:4px 8px;">🟢 PDD — arranque (3h)</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
+      <div class="note ng"><div class="nl">📊 Semana 16–20 resumo</div>Bug Fix #2 ✅ · Mock ✅ · RPA simples testes ✅ · RPA médio testes ✅ · PDD iniciado · POC ~13h (40%) · Estudo Ter+Qui (2×1h)</div>
+    </div>
+
   </div>
 </div>
 
