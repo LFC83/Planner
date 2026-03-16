@@ -76,7 +76,18 @@
   .ms:last-child{border-bottom:none;}
   .md{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
   .mx{font-family:'DM Mono',monospace;font-size:.63rem;min-width:48px;}
-  @media(max-width:768px){body{padding:1rem;}.objs,.grid2,.pgrid{grid-template-columns:1fr;}header{flex-direction:column;align-items:flex-start;gap:1rem;}h1{font-size:2.4rem;}}
+  .itrack{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;margin-bottom:1.5rem;}
+  .icard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;position:relative;overflow:hidden;}
+  .icard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+  .icard.done{opacity:.7;}.icard.done::after{content:'✓';position:absolute;top:.5rem;right:.6rem;font-size:.9rem;color:var(--a4);}
+  .icard.ic-bug::before{background:var(--a3);}.icard.ic-imp::before{background:var(--accent);}.icard.ic-tst::before{background:var(--a2);}.icard.ic-pdd::before{background:var(--a5);}
+  .iid{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.2rem;}
+  .itype{font-size:.64rem;font-weight:600;margin-bottom:.25rem;}
+  .ic-bug .itype{color:#f07a7a;}.ic-imp .itype{color:var(--accent);}.ic-tst .itype{color:#8baaff;}.ic-pdd .itype{color:#c09bf5;}
+  .iest{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);margin-bottom:.2rem;}
+  .idate{font-family:'DM Mono',monospace;font-size:.62rem;margin-top:.3rem;}
+  .idate.done{color:var(--a4);}.idate.plan{color:var(--muted);}
+  @media(max-width:768px){body{padding:1rem;}.objs,.grid2,.pgrid,.itrack{grid-template-columns:1fr;}header{flex-direction:column;align-items:flex-start;gap:1rem;}h1{font-size:2.4rem;}}
 </style>
 </head>
 <body>
@@ -98,9 +109,50 @@
 </header>
 
 <div class="objs">
-  <div class="obj c2"><div class="lbl">🥇 Prioridade 1</div><div class="ttl">Certificação Agentic Automation</div><div class="dl">🎯 Mock 11–18 Mar · Exame 23 Mar–6 Abr</div></div>
-  <div class="obj c3"><div class="lbl">🥈 Prioridade 2</div><div class="ttl">Desenvolvimento RPA Simples</div><div class="dl">📅 Slots de trabalho · esta semana</div></div>
-  <div class="obj c1"><div class="lbl">🥉 Prioridade 3 + Best Effort</div><div class="ttl">PDD · POC Microsoft Copilot</div><div class="dl">⏱ PDD slots trabalho · POC 08–10h diários</div></div>
+  <div class="obj c2"><div class="lbl">🥇 Prioridade 1</div><div class="ttl">Certificação Agentic Automation</div><div class="dl">🎯 Mock ×3 feito · Exame 24 Mar–6 Abr</div></div>
+  <div class="obj c3"><div class="lbl">🥈 Prioridade 2</div><div class="ttl">Sprint: Testes 860 → Testes 644 → PDD 875</div><div class="dl">📅 16–27 Mar · 60% slot trabalho</div></div>
+  <div class="obj c1"><div class="lbl">🥉 Best Effort</div><div class="ttl">POC Microsoft Copilot</div><div class="dl">⏱ 2h/dia · recuperar POC em falta</div></div>
+</div>
+
+<!-- SPRINT ISSUE TRACKER -->
+<div style="font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.5rem;">Sprint 16–27 Mar · Issues</div>
+<div class="itrack">
+  <div class="icard ic-bug done">
+    <div class="iid">Bug 496</div>
+    <div class="itype">🐛 Bug Fix</div>
+    <div class="iest">Est: 8h</div>
+    <div class="idate done">✅ Concluído 16 Mar</div>
+  </div>
+  <div class="icard ic-imp done">
+    <div class="iid">Improv 641</div>
+    <div class="itype">⚡ Improvement</div>
+    <div class="iest">Est: 1h</div>
+    <div class="idate plan">📅 Prev: 17 Mar</div>
+  </div>
+  <div class="icard ic-imp done">
+    <div class="iid">Improv 496</div>
+    <div class="itype">⚡ Improvement</div>
+    <div class="iest">Est: 2h</div>
+    <div class="idate done">✅ Concluído 16 Mar</div>
+  </div>
+  <div class="icard ic-tst">
+    <div class="iid">Testes 860</div>
+    <div class="itype">🔵 Testes</div>
+    <div class="iest">Est: 4d / 20h</div>
+    <div class="idate plan">📅 Prev: 23 Mar</div>
+  </div>
+  <div class="icard ic-tst">
+    <div class="iid">Testes 644</div>
+    <div class="itype">🔵 Testes</div>
+    <div class="iest">Est: 2d / 10h</div>
+    <div class="idate plan">📅 Prev: 26 Mar</div>
+  </div>
+  <div class="icard ic-pdd">
+    <div class="iid">PDD 875</div>
+    <div class="itype">🟢 PDD</div>
+    <div class="iest">Est: 6h</div>
+    <div class="idate plan">📅 Prev: 27 Mar</div>
+  </div>
 </div>
 
 <div class="tabs">
@@ -203,17 +255,17 @@
     <!-- Row 4: Seg 16 – Dom 22 -->
     <div class="dc td"><div class="dn">16 ★</div>
       <div class="ch cc">⚡ Mock #1 08–09h ✅</div>
-      <div class="ch cb">🐛 Bug 496 09–09:30h</div>
       <div class="ch cw">📞 Sprint Planning 09:30–10:30h</div>
-      <div class="ch cb">🐛 Bug 496 10:30–17h</div>
-      <div class="ch cc">⚡ Mock #2 17–18h</div>
+      <div class="ch cb">🐛 Bug 496 ✅ · Improv 496 ✅ até 15h</div>
+      <div class="ch cc">⚡ Mock #2 15–16h</div>
+      <div class="ch cr">🌿 Descanso 16–17h</div>
       <div class="ch cc">⚡ Mock #3 19–20h</div>
     </div>
     <div class="dc"><div class="dn">17</div>
       <div class="ch cw">💻 POC 08–09h + 10–11h</div>
       <div class="ch cp">🏦 Banco 09:15–09:45</div>
-      <div class="ch cb">🐛 Bug 496 11–13h ✅ 8h</div>
-      <div class="ch cb">Improv 641 + 496 14–17h ✅</div>
+      <div class="ch cb">⚡ Improv 641 11–12h ✅</div>
+      <div class="ch cp">🔵 Testes 860 12–13h + 14–17h</div>
       <div class="ch cc">📚 Estudo (Ter)</div>
     </div>
     <div class="dc gc"><div class="dn">18</div>
@@ -470,37 +522,39 @@
     <div class="card">
       <h3>Seg 16 ★ · Mock ×3 + Bug 496 &nbsp;|&nbsp; Ter 17 · Banco + Bug 496 ✅</h3>
 
-      <div class="sh b">Seg 16 ★ Hoje · Mock ×3 + Sprint Planning + Bug 496</div>
+      <div class="sh b">Seg 16 ★ Hoje · Mock ×3 + Sprint Planning + Bug 496 ✅ + Improv 496 ✅</div>
       <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
       <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tcc">⚡ Mock Exam #1 (1h) ✅</div></div>
       <div class="tb"><div class="tt">09:00–09:30</div><div class="tc tbb">🐛 Bug 496 (30min)</div></div>
       <div class="tb"><div class="tt">09:30–10:30</div><div class="tc tw">📞 Sprint Planning (1h)</div></div>
-      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tbb">🐛 Bug 496 (2h30)</div></div>
+      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tbb">🐛 Bug 496 + Improv 496 — manhã ✅</div></div>
       <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tbb">🐛 Bug 496 (3h) — 6h feitas</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tcc">⚡ Mock Exam #2 (1h)</div></div>
-      <div class="tb"><div class="tt">18:00–19:00</div><div class="tc tr">🌿 Intervalo — jantar + descanso</div></div>
+      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tbb">🐛 Bug 496 — conclusão ✅ 8h</div></div>
+      <div class="tb"><div class="tt">15:00–16:00</div><div class="tc tcc">⚡ Mock Exam #2 (1h)</div></div>
+      <div class="tb"><div class="tt">16:00–17:00</div><div class="tc tr">🌿 Descanso</div></div>
+      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
+      <div class="tb"><div class="tt">18:00–19:00</div><div class="tc tr">🌿 Jantar + descanso</div></div>
       <div class="tb"><div class="tt">19:00–20:00</div><div class="tc tcc">⚡ Mock Exam #3 (1h)</div></div>
       <div class="tb"><div class="tt">20:00–23:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="note nw"><div class="nl">💻 POC cancelado hoje</div>Sem POC — recuperar ao longo da semana. Bug 496: 6h feitas, faltam 2h → Ter 17 manhã.</div>
-      <div class="note ni"><div class="nl">⚡ Mock ×3</div>#1 feito às 08h. #2 após trabalho 17h. #3 às 19h com intervalo entre eles. Fora do horário de trabalho — excepção única.</div>
+      <div class="note ng"><div class="nl">✅ Bug 496 · Improv 496</div>Ambos fechados hoje. Mock ×3 concluídos. POC cancelado — recuperar Ter–Sex.</div>
+      <div class="note ni"><div class="nl">⚡ Mock ×3 — excepção única</div>#1 às 08h ✅ · #2 às 15h · #3 às 19h. Intervalo obrigatório entre tentativas.</div>
 
-      <div class="sh y" style="margin-top:1.2rem;">Ter 17 · Banco 09:15 + POC + Bug 496 ✅ + Improv</div>
+      <div class="sh y" style="margin-top:1.2rem;">Ter 17 · Banco 09:15 + POC + Improv 641 + Testes 860</div>
       <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
       <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tw">💻 POC (1h)</div></div>
       <div class="tb"><div class="tt">09:00–09:15</div><div class="tc tpp">🚗 Deslocação banco</div></div>
       <div class="tb"><div class="tt">09:15–09:45</div><div class="tc tpp">🏦 Banco (30min)</div></div>
       <div class="tb"><div class="tt">09:45–10:00</div><div class="tc tpp">🚗 Regresso</div></div>
       <div class="tb"><div class="tt">10:00–11:00</div><div class="tc tw">💻 POC — retoma (1h)</div></div>
-      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tbb">🐛 Bug 496 (2h) ✅ 8h concluído</div></div>
+      <div class="tb"><div class="tt">11:00–12:00</div><div class="tc tbb">⚡ Improv 641 (1h) ✅</div></div>
+      <div class="tb"><div class="tt">12:00–13:00</div><div class="tc tpp">🔵 Testes 860 (1h)</div></div>
       <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tbb">⚡ Improv 641 (1h) ✅</div></div>
-      <div class="tb"><div class="tt">15:00–17:00</div><div class="tc tbb">⚡ Improv 496 (2h) ✅</div></div>
+      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 Testes 860 (3h) — 4h feitas</div></div>
       <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
       <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
       <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
-      <div class="note ni"><div class="nl">💻 POC Ter 17</div>2h efectivas (08–09h + 10–11h). Banco não reduz total.</div>
-      <div class="note ng"><div class="nl">📊 Bug 496 ✅ · Improv 641+496 ✅</div>Tudo fechado. Qua 18 arranca Testes 860 dia 1 — dia inteiro disponível.</div>
+      <div class="note ni"><div class="nl">💻 POC Ter 17</div>2h efectivas (08–09h + 10–11h) — banco não reduz total.</div>
+      <div class="note ng"><div class="nl">📊 Improv 641 ✅ · Testes 860</div>Improv 641 fechado. Testes 860: 4h hoje. Qua 18: dia inteiro (6h) → total 10h a meio do sprint.</div>
     </div>
 
     <div class="card">
