@@ -3,768 +3,746 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planner Março 2025</title>
+<title>Planner Março 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root {
-    --bg:#0e0f11;--surface:#16181c;--border:#2a2d35;
-    --accent:#e8b84b;--a2:#5b8dee;--a3:#e85b5b;--a4:#5be87a;--a5:#9b5be8;
-    --text:#e8e9ec;--muted:#7a7f8e;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:2rem;}
-  .noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;}
-  .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;}
-  header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
-  h1{font-family:'DM Serif Display',serif;font-size:3.2rem;line-height:1;letter-spacing:-1px;}
-  h1 span{color:var(--accent);font-style:italic;}
-  .sub{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-top:.4rem;text-transform:uppercase;letter-spacing:.1em;}
-  .legend{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:flex-end;}
-  .li{display:flex;align-items:center;gap:.4rem;font-size:.68rem;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-  .ld{width:8px;height:8px;border-radius:50%;}
-  .objs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
-  .obj{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;position:relative;overflow:hidden;}
-  .obj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-  .obj.c1::before{background:var(--a2);}.obj.c2::before{background:var(--accent);}.obj.c3::before{background:var(--a4);}
-  .obj .lbl{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.25rem;}
-  .obj .ttl{font-weight:600;font-size:.88rem;}
-  .obj.c1 .ttl{color:#8baaff;}.obj.c2 .ttl{color:var(--accent);}.obj.c3 .ttl{color:var(--a4);}
-  .obj .dl{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);margin-top:.2rem;}
-  .tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem;}
-  .tab{font-family:'DM Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;padding:.45rem .9rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
-  .tab:hover{border-color:var(--accent);color:var(--accent);}
-  .tab.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600;}
-  .view{display:none;}.view.on{display:block;}
-  .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
-  .mh{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:center;padding:.45rem 0;}
-  .dc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem;min-height:108px;}
-  .dc.we{opacity:.45;}.dc.td{border-color:var(--accent);}.dc.gc{border-color:var(--a4);}.dc.emp{background:transparent;border-color:transparent;}
-  .dn{font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between;}
-  .dc.td .dn{color:var(--accent);}
-  .dc.we .dn::after{content:'WE';font-size:.52rem;background:var(--border);padding:1px 4px;border-radius:3px;color:var(--muted);}
-  .ch{font-size:.61rem;padding:2px 5px;border-radius:3px;margin-bottom:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
-  .cw{background:#5b8dee18;color:#8baaff;border-left:2px solid #5b8dee;}
-  .cp{background:#e8b84b18;color:#f0c96a;border-left:2px solid #e8b84b;}
-  .cc{background:#5be87a18;color:#7aef99;border-left:2px solid #5be87a;}
-  .cb{background:#e85b5b18;color:#f07a7a;border-left:2px solid #e85b5b;}
-  .cr{background:#9b5be818;color:#c09bf5;border-left:2px solid #9b5be8;}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
-  .card h3{font-family:'DM Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;}
-  .tb{display:flex;gap:.8rem;margin-bottom:.45rem;align-items:flex-start;}
-  .tt{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--muted);min-width:82px;padding-top:4px;}
-  .tc{flex:1;font-size:.78rem;padding:4px 8px;border-radius:5px;line-height:1.4;}
-  .tw{background:#5b8dee18;color:#8baaff;}.tpp{background:#e8b84b18;color:#f0c96a;}
-  .tcc{background:#5be87a18;color:#7aef99;}.tbb{background:#e85b5b18;color:#f07a7a;}
-  .tn{background:#1a1c22;color:var(--muted);}.tr{background:#9b5be818;color:#c09bf5;}
-  .note{padding:.75rem;border-radius:8px;margin-top:.75rem;font-size:.74rem;line-height:1.5;}
-  .note .nl{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem;}
-  .nr{background:#2a1a4a22;border:1px solid #9b5be833;color:#c09bf5;}
-  .nw{background:#4a1a1a22;border:1px solid #e85b5b33;color:#f07a7a;}
-  .ni{background:#2a3f6e22;border:1px solid #5b8dee33;color:#8baaff;}
-  .ng{background:#1a4a2822;border:1px solid #2a5a3833;color:#7aef99;}
-  .sh{font-weight:600;font-size:.8rem;margin:1rem 0 .4rem;}
-  .sh.b{color:#8baaff;}.sh.y{color:var(--accent);}.sh.g{color:var(--a4);}.sh.r{color:#f07a7a;}.sh.v{color:#c09bf5;}
-  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;}
-  .pc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
-  .pl{font-family:'DM Mono',monospace;font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.8rem;}
-  .pbo{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-bottom:.4rem;}
-  .pbi{height:100%;border-radius:4px;}
-  .pt{font-size:.73rem;color:var(--muted);font-family:'DM Mono',monospace;}
-  .ml{margin-top:.7rem;}
-  .ms{display:flex;align-items:center;gap:.5rem;font-size:.73rem;padding:.28rem 0;border-bottom:1px solid var(--border);color:var(--muted);}
-  .ms:last-child{border-bottom:none;}
-  .md{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-  .mx{font-family:'DM Mono',monospace;font-size:.63rem;min-width:48px;}
-  .itrack{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;margin-bottom:1.5rem;}
-  .icard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;position:relative;overflow:hidden;}
-  .icard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-  .icard.done{opacity:.7;}.icard.done::after{content:'✓';position:absolute;top:.5rem;right:.6rem;font-size:.9rem;color:var(--a4);}
-  .icard.ic-bug::before{background:var(--a3);}.icard.ic-imp::before{background:var(--accent);}.icard.ic-tst::before{background:var(--a2);}.icard.ic-pdd::before{background:var(--a5);}
-  .iid{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.2rem;}
-  .itype{font-size:.64rem;font-weight:600;margin-bottom:.25rem;}
-  .ic-bug .itype{color:#f07a7a;}.ic-imp .itype{color:var(--accent);}.ic-tst .itype{color:#8baaff;}.ic-pdd .itype{color:#c09bf5;}
-  .iest{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);margin-bottom:.2rem;}
-  .idate{font-family:'DM Mono',monospace;font-size:.62rem;margin-top:.3rem;}
-  .idate.done{color:var(--a4);}.idate.plan{color:var(--muted);}
-  @media(max-width:768px){body{padding:1rem;}.objs,.grid2,.pgrid,.itrack{grid-template-columns:1fr;}header{flex-direction:column;align-items:flex-start;gap:1rem;}h1{font-size:2.4rem;}}
+:root{
+  --bg:#0a0b0d;--s1:#111318;--s2:#181b21;--border:#232730;--border2:#2e3340;
+  --text:#e2e4ea;--muted:#606878;--muted2:#8892a4;
+  --accent:#f0c040;--blue:#6b9fff;--green:#4dd98a;--red:#ff6b6b;--purple:#b07fff;--orange:#ff9f5a;
+  --r:10px;--r-sm:6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+.app{display:flex;flex-direction:column;min-height:100vh}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;border-bottom:1px solid var(--border);background:var(--s1);position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap}
+.topbar-left{display:flex;align-items:center;gap:.75rem}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;color:var(--accent);white-space:nowrap}
+.logo span{color:var(--muted2);font-weight:400;font-size:.75rem;margin-left:.4rem}
+.today-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;background:var(--accent);color:#000;padding:.2rem .55rem;border-radius:20px;font-weight:500;letter-spacing:.03em;white-space:nowrap}
+.legend{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.li{display:flex;align-items:center;gap:.3rem;font-size:.62rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ld{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* MAIN */
+.main{display:flex;flex:1}
+/* SIDENAV */
+.sidenav{width:200px;flex-shrink:0;border-right:1px solid var(--border);padding:1rem .75rem;background:var(--s1);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;display:flex;flex-direction:column;gap:.25rem}
+.nav-section{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:.6rem .5rem .3rem}
+.nav-btn{display:flex;align-items:center;gap:.5rem;padding:.45rem .6rem;border-radius:var(--r-sm);border:none;background:transparent;color:var(--muted2);font-family:'Instrument Sans',sans-serif;font-size:.8rem;cursor:pointer;width:100%;text-align:left;transition:all .15s}
+.nav-btn:hover{background:var(--s2);color:var(--text)}
+.nav-btn.active{background:#f0c04018;color:var(--accent);font-weight:600}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;opacity:.6}
+/* CONTENT */
+.content{flex:1;padding:1.25rem;overflow-x:hidden;min-width:0}
+/* VIEWS - all hidden by default, JS shows active one */
+.view{display:none}
+/* PRIORITIES */
+.top-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
+.obj{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;position:relative;overflow:hidden}
+.obj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.obj.c1::before{background:var(--blue)}.obj.c2::before{background:var(--accent)}.obj.c3::before{background:var(--green)}
+.obj .lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.3rem}
+.obj .ttl{font-weight:600;font-size:.82rem;margin-bottom:.2rem}
+.obj.c1 .ttl{color:var(--blue)}.obj.c2 .ttl{color:var(--accent)}.obj.c3 .ttl{color:var(--green)}
+.obj .dl{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted)}
+/* SPRINT BOARD */
+.sprint-header{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.sprint-header::after{content:'';flex:1;height:1px;background:var(--border)}
+.itrack{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin-bottom:1.5rem}
+.icard{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);padding:.65rem .75rem;border-left:3px solid transparent}
+.icard.ic-bug{border-left-color:var(--red)}.icard.ic-imp{border-left-color:var(--orange)}.icard.ic-tst{border-left-color:var(--blue)}.icard.ic-pdd{border-left-color:var(--green)}
+.icard.done{opacity:.5}
+.iid{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem}
+.icard.done .iid{text-decoration:line-through}
+.itype{font-size:.7rem;color:var(--muted2);margin:.15rem 0}
+.iest{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted)}
+.idate{font-family:'JetBrains Mono',monospace;font-size:.62rem;margin-top:.3rem}
+.idate.done{color:var(--green)}.idate.plan{color:var(--accent)}
+.prog-wrap{margin:.4rem 0 .2rem}
+.prog-label{display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);margin-bottom:.2rem;font-family:'JetBrains Mono',monospace}
+.prog-bar{background:var(--border);border-radius:4px;height:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px}
+.p-blue{background:var(--blue)}.p-green{background:var(--green)}.p-accent{background:var(--accent)}
+/* MONTH GRID */
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;background:var(--border);border-radius:var(--r);overflow:hidden}
+.mh{background:var(--s2);font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center;padding:.5rem 0}
+.dc{background:var(--s1);padding:.45rem .4rem;min-height:90px}
+.dc.we{opacity:.4}.dc.td{background:#f0c04008;outline:1px solid var(--accent);outline-offset:-1px}
+.dc.gc{background:#4dd98a06}
+.dn{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;color:var(--muted);margin-bottom:.3rem}
+.dc.td .dn{color:var(--accent)}
+.ch{font-size:.56rem;padding:1px 4px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;line-height:1.5}
+.cw{background:#6b9fff15;color:#8baaff;border-left:2px solid #6b9fff}
+.cp{background:#f0c04015;color:#f0c040;border-left:2px solid #f0c040}
+.cc{background:#4dd98a15;color:#4dd98a;border-left:2px solid #4dd98a}
+.cb{background:#ff6b6b15;color:#ff8888;border-left:2px solid #ff6b6b}
+.cr{background:#b07fff15;color:#c09fff;border-left:2px solid #b07fff}
+.cn{background:#4dd98a10;color:#4dd98a;border-left:2px solid #4dd98a88}
+/* DAY VIEW */
+.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-.02em;margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.week-selector{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.week-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:.3rem .65rem;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.05em}
+.week-btn:hover{border-color:var(--border2);color:var(--text)}
+.week-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.day-layout{display:grid;grid-template-columns:1fr;gap:.75rem}
+.day-nav{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.day-nav-arrow{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:.9rem;padding:.25rem .6rem;cursor:pointer;transition:all .15s;line-height:1}
+.day-nav-arrow:hover{background:var(--border2)}
+.day-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.03em;color:var(--text);flex:1}
+.day-title span{color:var(--muted);font-weight:400;font-size:.9rem}
+.day-nav-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.3rem .6rem;cursor:pointer;transition:all .15s}
+.day-nav-btn:hover,.day-nav-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.day-nav-btn.today-mark{border-color:var(--accent);color:var(--accent)}
+.timeline{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.tl-header{padding:.6rem 1rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.tl-row{display:flex;align-items:flex-start;gap:.75rem;padding:.55rem 1rem;border-bottom:1px solid var(--border)}
+.tl-row:last-child{border-bottom:none}
+.tl-time{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);min-width:90px;padding-top:2px;flex-shrink:0}
+.tl-content{flex:1;font-size:.8rem;padding:3px 8px 3px 10px;border-radius:5px;border-left:3px solid transparent;line-height:1.4}
+.tc-work{background:#6b9fff12;color:#8baaff;border-left-color:var(--blue)}
+.tc-pers{background:#f0c04012;color:#f0c060;border-left-color:var(--accent)}
+.tc-cert{background:#4dd98a12;color:#5de898;border-left-color:var(--green)}
+.tc-block{background:#ff6b6b12;color:#ff8888;border-left-color:var(--red)}
+.tc-rest{background:#b07fff10;color:#c09fff;border-left-color:var(--purple)}
+.tc-meal{background:#ffffff08;color:var(--muted2);border-left-color:var(--border2)}
+.tc-pdd{background:#4dd98a0c;color:#4dd98a;border-left-color:#4dd98a88}
+.day-notes{display:flex;flex-direction:column;gap:.5rem}
+.note{padding:.7rem .85rem;border-radius:var(--r-sm);font-size:.76rem;line-height:1.5;border:1px solid transparent}
+.note .nl{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;opacity:.8}
+.ng{background:#4dd98a0e;border-color:#4dd98a25;color:#5de898}
+.nw{background:#ff6b6b0e;border-color:#ff6b6b25;color:#ff8888}
+.ni{background:#6b9fff0e;border-color:#6b9fff25;color:#8baaff}
+.nr{background:#b07fff0e;border-color:#b07fff25;color:#c09fff}
+.ny{background:#f0c0400e;border-color:#f0c04025;color:#f0d060}
+/* CERT */
+.cert-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem}
+.card h3{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.9rem}
+.sh{font-weight:600;font-size:.8rem;margin:.9rem 0 .4rem;font-family:'Syne',sans-serif}
+.sh:first-of-type{margin-top:0}
+.sh.b{color:var(--blue)}.sh.y{color:var(--accent)}.sh.g{color:var(--green)}.sh.r{color:var(--red)}.sh.v{color:var(--purple)}
+.tb{display:flex;gap:.75rem;margin-bottom:.4rem;align-items:flex-start}
+.tt{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);min-width:86px;padding-top:3px}
+.tc{flex:1;font-size:.76rem;padding:3px 8px;border-radius:4px;line-height:1.4}
+.tw{background:#6b9fff12;color:#8baaff}.tpp{background:#f0c04012;color:#f0c060}
+.tcc{background:#4dd98a12;color:#5de898}.tbb{background:#ff6b6b12;color:#ff8888}
+.tn{background:#ffffff08;color:var(--muted2)}.tr{background:#b07fff10;color:#c09fff}
+.divider{height:1px;background:var(--border);margin:1rem 0}
+/* BOTTOM NAV */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);z-index:100}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.6rem .25rem;background:none;border:none;color:var(--muted);font-size:.58rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;gap:.2rem;transition:color .15s}
+.bnav-btn .bicon{font-size:1.1rem;line-height:1}
+.bnav-btn.active{color:var(--accent)}
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidenav{display:none}
+  .content{padding:1rem;padding-bottom:80px}
+  .top-grid{grid-template-columns:1fr}
+  .month-grid{font-size:.5rem}
+  .bottom-nav{display:flex}
+}
+@media(min-width:900px){
+  .day-layout{grid-template-columns:1fr 320px}
+  .cert-grid{grid-template-columns:1fr 1fr}
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 </style>
 </head>
 <body>
-<div class="noise"></div>
-<div class="wrap">
+<div class="app">
 
-<header>
-  <div>
-    <h1>Março <span>2026</span></h1>
-    <div class="sub">Planner Pessoal · Rotina Sustentável Anti-Burnout</div>
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo">Março <span>2026</span></div>
+    <div class="today-badge" id="today-badge">— Mar</div>
   </div>
   <div class="legend">
-    <div class="li"><div class="ld" style="background:#5b8dee"></div>Trabalho/POC</div>
-    <div class="li"><div class="ld" style="background:#e8b84b"></div>Pessoal</div>
-    <div class="li"><div class="ld" style="background:#5be87a"></div>Certificação</div>
-    <div class="li"><div class="ld" style="background:#e85b5b"></div>Bloqueado</div>
-    <div class="li"><div class="ld" style="background:#9b5be8"></div>Descanso</div>
+    <div class="li"><div class="ld" style="background:#6b9fff"></div>Trabalho</div>
+    <div class="li"><div class="ld" style="background:#f0c040"></div>Pessoal</div>
+    <div class="li"><div class="ld" style="background:#4dd98a"></div>Cert.</div>
+    <div class="li"><div class="ld" style="background:#ff6b6b"></div>Bloqueado</div>
+    <div class="li"><div class="ld" style="background:#b07fff"></div>Descanso</div>
   </div>
 </header>
 
-<div class="objs">
-  <div class="obj c2"><div class="lbl">🥇 Prioridade 1</div><div class="ttl">Certificação Agentic Automation</div><div class="dl">🎯 Mock ×3 feito · Exame 24 Mar–6 Abr</div></div>
-  <div class="obj c3"><div class="lbl">🥈 Prioridade 2</div><div class="ttl">Sprint: Testes 860 → Testes 644 → PDD 875</div><div class="dl">📅 16–27 Mar · 60% slot trabalho</div></div>
-  <div class="obj c1"><div class="lbl">🥉 Best Effort</div><div class="ttl">POC Microsoft Copilot</div><div class="dl">⏱ 2h/dia · recuperar POC em falta</div></div>
-</div>
+<div class="main">
+<nav class="sidenav">
+  <div class="nav-section">Vistas</div>
+  <button class="nav-btn" onclick="showView('dash')"><span class="nav-dot"></span>Dashboard</button>
+  <button class="nav-btn" onclick="showView('month')"><span class="nav-dot"></span>Calendário</button>
+  <div class="nav-section">Semanas</div>
+  <button class="nav-btn" onclick="showView('week');setWeek('w1')"><span class="nav-dot"></span>3–7 Mar</button>
+  <button class="nav-btn" onclick="showView('week');setWeek('w2')"><span class="nav-dot"></span>10–14 Mar</button>
+  <button class="nav-btn" onclick="showView('week');setWeek('w3')"><span class="nav-dot"></span>16–20 Mar ★</button>
+  <button class="nav-btn" onclick="showView('week');setWeek('w4')"><span class="nav-dot"></span>23–27 Mar</button>
+  <div class="nav-section">Mais</div>
+  <button class="nav-btn" onclick="showView('daily')"><span class="nav-dot"></span>Rotina Diária</button>
+  <button class="nav-btn" onclick="showView('cert')"><span class="nav-dot"></span>Plano Cert.</button>
+</nav>
 
-<!-- SPRINT ISSUE TRACKER -->
-<div style="font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.5rem;">Sprint 16–27 Mar · Issues</div>
-<div class="itrack">
-  <div class="icard ic-bug done">
-    <div class="iid">Bug 496</div>
-    <div class="itype">🐛 Bug Fix</div>
-    <div class="iest">Est: 8h</div>
-    <div class="idate done">✅ Concluído 16 Mar</div>
-  </div>
-  <div class="icard ic-imp done">
-    <div class="iid">Improv 641</div>
-    <div class="itype">⚡ Improvement</div>
-    <div class="iest">Est: 1h</div>
-    <div class="idate done">✅ Concluído 17 Mar</div>
-  </div>
-  <div class="icard ic-imp done">
-    <div class="iid">Improv 496 #2</div>
-    <div class="itype">⚡ Improvement</div>
-    <div class="iest">Est: 2h</div>
-    <div class="idate done">✅ Concluído 18 Mar</div>
-  </div>
-  <div class="icard ic-imp done">
-    <div class="iid">Improv 496</div>
-    <div class="itype">⚡ Improvement</div>
-    <div class="iest">Est: 2h</div>
-    <div class="idate done">✅ Concluído 16 Mar</div>
-  </div>
-  <div class="icard ic-tst">
-    <div class="iid">Testes 860</div>
-    <div class="itype">🔵 Testes</div>
-    <div class="iest">Est: 4d / 20h</div>
-    <div class="idate plan">📅 Prev: 24 Mar</div>
-  </div>
-  <div class="icard ic-tst">
-    <div class="iid">Testes 644</div>
-    <div class="itype">🔵 Testes</div>
-    <div class="iest">Est: 2d / 10h</div>
-    <div class="idate plan">📅 Prev: 20 Mar</div>
-  </div>
-  <div class="icard ic-pdd">
-    <div class="iid">PDD 875</div>
-    <div class="itype">🟢 PDD</div>
-    <div class="iest">Est: 6h</div>
-    <div class="idate plan">📅 Prev: 25 Mar</div>
-  </div>
-</div>
+<div class="content">
 
-<div class="tabs">
-  <button class="tab on" onclick="sv('month',this)">Mês</button>
-  <button class="tab" onclick="sv('w1',this)">Semana 3–7</button>
-  <button class="tab" onclick="sv('w2',this)">Semana 10–14</button>
-  <button class="tab" onclick="sv('w3',this)">Semana 16–20</button>
-  <button class="tab" onclick="sv('w4',this)">Semana 23–27</button>
-  <button class="tab" onclick="sv('daily',this)">Rotina Diária</button>
-  <button class="tab" onclick="sv('cert',this)">Plano Cert.</button>
+<!-- DASH -->
+<div id="view-dash" class="view">
+  <div class="top-grid">
+    <div class="obj c2"><div class="lbl">🥇 Prioridade 1</div><div class="ttl">Certificação Agentic Automation</div><div class="dl">🎯 Mock ×3 feito · Exame 24 Mar–6 Abr</div></div>
+    <div class="obj c3"><div class="lbl">🥈 Prioridade 2</div><div class="ttl">Sprint: Testes 860 → PDD 875</div><div class="dl">📅 16–27 Mar · 60% slot trabalho</div></div>
+    <div class="obj c1"><div class="lbl">🥉 Best Effort</div><div class="ttl">POC Copilot / PAS</div><div class="dl">⏱ 2h/dia · PAS arranca 30 Mar</div></div>
+  </div>
+  <div class="sprint-header">Sprint 16–27 Mar · Issues</div>
+  <div class="itrack">
+    <div class="icard ic-bug done"><div class="iid">Bug 496</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: 8h</div><div class="idate done">✅ Concluído 16 Mar</div></div>
+    <div class="icard ic-imp done"><div class="iid">Improv 496</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 2h</div><div class="idate done">✅ Concluído 16 Mar</div></div>
+    <div class="icard ic-imp done"><div class="iid">Improv 641</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 1h</div><div class="idate done">✅ Concluído 17 Mar</div></div>
+    <div class="icard ic-imp done"><div class="iid">Improv 496 #2</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 2h</div><div class="idate done">✅ Concluído 18 Mar</div></div>
+    <div class="icard ic-tst"><div class="iid">Testes 644</div><div class="itype">🔵 Testes</div><div class="iest">Est: 2d / 10h</div><div class="prog-wrap"><div class="prog-label"><span>7h/10h</span><span>70%</span></div><div class="prog-bar"><div class="prog-fill p-blue" style="width:70%"></div></div></div><div class="idate plan">📅 Prev: 20 Mar</div></div>
+    <div class="icard ic-tst"><div class="iid">Testes 860</div><div class="itype">🔵 Testes</div><div class="iest">Est: 4d / 20h</div><div class="prog-wrap"><div class="prog-label"><span>8h30/20h</span><span>43%</span></div><div class="prog-bar"><div class="prog-fill p-blue" style="width:43%"></div></div></div><div class="idate plan">📅 Prev: 24 Mar</div></div>
+    <div class="icard ic-pdd"><div class="iid">PDD 875</div><div class="itype">🟢 PDD</div><div class="iest">Est: 6h</div><div class="prog-wrap"><div class="prog-label"><span>0h/6h</span><span>0%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:0%"></div></div></div><div class="idate plan">📅 Prev: 25 Mar</div></div>
+  </div>
+  <div class="section-title" id="dash-today-title">Hoje</div>
+  <div class="day-layout">
+    <div class="timeline" id="dash-timeline"></div>
+    <div class="day-notes">
+      <div class="note ng"><div class="nl">📊 Testes 860</div>5h30 hoje. Acumulado: 5h30/20h.</div>
+      <div class="note ni"><div class="nl">💻 POC</div>2h efectivas — Scrum Daily fragmenta mas não reduz total.</div>
+      <div class="note ny"><div class="nl">📬 Voucher cert.</div>Window 18–23 Mar activa. Verificar email.</div>
+    </div>
+  </div>
 </div>
 
 <!-- MONTH -->
-<div id="view-month" class="view on">
-  <div class="mgrid">
-    <div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div>
-    <div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>
-
-    <!-- Row 1: Dom 1 -->
-    <div class="dc emp"></div><div class="dc emp"></div><div class="dc emp"></div>
-    <div class="dc emp"></div><div class="dc emp"></div><div class="dc emp"></div>
-    <div class="dc we"><div class="dn">1</div><div class="ch cr">🌿 Descanso</div></div>
-
-    <!-- Row 2: Seg 2 – Dom 8 -->
-    <div class="dc we"><div class="dn">2</div><div class="ch cr">🌿 Descanso</div></div>
-    <div class="dc"><div class="dn">3</div><div class="ch cw">💻 POC Copilot</div><div class="ch cc">📚 Estudo (Ter)</div></div>
-    <div class="dc"><div class="dn">4</div>
-      <div class="ch cb">🦷 Dentista 9–10:30</div>
-      <div class="ch cw">📞 Call #2 15:00–15:30</div>
-      <div class="ch cw">📞 Call #4 15:30–16:00</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc"><div class="dn">5</div>
-      <div class="ch cw">💻 POC Copilot</div>
-      <div class="ch cp">🏢 Escritório 11:30–12:30</div>
-      <div class="ch cw">📞 Call #1 14:30–15:00</div>
-      <div class="ch cw">📞 Call #3 15:00–15:30</div>
-      <div class="ch cb">🦷 Follow-up Dentista</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc"><div class="dn">6</div>
-      <div class="ch cw">💻 POC Copilot</div>
-      <div class="ch cw">📹 Zoom 15:30–16:10</div>
-      <div class="ch cc">📚 Estudo (Sex)</div>
-    </div>
-    <div class="dc we"><div class="dn">7</div>
-      <div class="ch cb">🚗 Deslocação 07:45</div>
-      <div class="ch cb">🏥 Consulta 8:15</div>
-      <div class="ch cp">✂️ Barbeiro 9h</div>
-      <div class="ch cp">🐾 Veterinário ~10h</div>
-    </div>
-    <div class="dc we"><div class="dn">8</div><div class="ch cr">🌿 Descanso total</div></div>
-
-    <!-- Row 3: Seg 9 – Dom 15 -->
-    <div class="dc"><div class="dn">9</div>
-      <div class="ch cw">📞 Reunião 08:30–09:00</div>
-      <div class="ch cw">💻 POC Copilot 09:00–13:00</div>
-      <div class="ch cw">📞 Call 14:00–15:00</div>
-      <div class="ch cw">📞 Call #2 15:00–15:30</div>
-      <div class="ch cw">📞 Call #1 15:30–16:00</div>
-      <div class="ch cb">⚡ Velocity JIRA 16:00–17:00</div>
-      <div class="ch cc">📚 Estudo (Seg)</div>
-    </div>
-    <div class="dc"><div class="dn">10 🎓</div>
-      <div class="ch cc">🎓 Formação UiPath 08–12h</div>
-      <div class="ch cp">🟡 RPA simples 12:00–13:00</div>
-      <div class="ch cw">📞 Reunião JIRA 14:00–14:45</div>
-      <div class="ch cp">🦷 Dentista 14:45–16:30</div>
-      <div class="ch cp">🟡 RPA simples 16:30–17:00</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc td"><div class="dn">11 ★</div>
-      <div class="ch cw">💻 POC Copilot 08:00–09:30</div>
-      <div class="ch cw">📞 JIRA Planning 09:30–11:00</div>
-      <div class="ch cp">🟡 RPA simples 11:00–13:00</div>
-      <div class="ch cp">🟡 RPA simples 14:00–17:00</div>
-      <div class="ch cb">🔧 Mecânico 16:30–19:30</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc"><div class="dn">12</div>
-      <div class="ch cw">💻 POC + 🔧 Trolhas 30min 08–10h</div>
-      <div class="ch cb">🐛 Bug Fix 10:00–13:00</div>
-      <div class="ch cb">🐛 Bug Fix 14:00–15:00</div>
-      <div class="ch cp">🟡 RPA testes 15:00–17:00</div>
-      <div class="ch cc">📚 Estudo (Qui)</div>
-    </div>
-    <div class="dc"><div class="dn">13</div>
-      <div class="ch cw">💻 POC Copilot 08–10:30h</div>
-      <div class="ch cw">📞 Reunião PDS 10:30–11:00</div>
-      <div class="ch cb">🐛 Bug Fix 11:00–13:00</div>
-      <div class="ch cb">🐛 Bug Fix 14:00–17:00</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc we"><div class="dn">14</div>
-      <div class="ch cb">🔧 Instalação 08:00–13:00</div>
-      <div class="ch cr">🌿 Tarde descanso</div>
-    </div>
-    <div class="dc we"><div class="dn">15</div><div class="ch cr">🌿 Descanso</div></div>
-
-    <!-- Row 4: Seg 16 – Dom 22 -->
-    <div class="dc"><div class="dn">16 ✓</div>
-      <div class="ch cc">⚡ Mock #1 08–09h ✅</div>
-      <div class="ch cw">📞 Sprint Planning 09:30–10:30h</div>
-      <div class="ch cb">🐛 Bug 496 ✅ · Improv 496 ✅ até 15h</div>
-      <div class="ch cc">⚡ Mock #2 15–16h</div>
-      <div class="ch cr">🌿 Descanso 16–17h</div>
-      <div class="ch cc">⚡ Mock #3 19–20h</div>
-    </div>
-    <div class="dc"><div class="dn">17</div>
-      <div class="ch cw">🗒️ Tarefas gerais 08–09h</div>
-      <div class="ch cp">🏦 Banco 09:00–10:00</div>
-      <div class="ch cc">⚡ Mock Exam 10–11h ✅</div>
-      <div class="ch cb">⚡ Improv 641 11–12h ✅</div>
-      <div class="ch cp">🔵 Testes 644 14–17h</div>
-      <div class="ch cc">📚 Estudo (Ter)</div>
-    </div>
-    <div class="dc gc"><div class="dn">18</div>
-      <div class="ch cc">📬 Voucher window abre</div>
-      <div class="ch cw">💻 POC 08–10h</div>
-      <div class="ch cb">⚡ Improv 496 #2 10–12h ✅</div>
-      <div class="ch cp">🔵 Testes 644 12–13h + 14–17h</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc td"><div class="dn">19 ★</div>
-      <div class="ch cw">💻 POC 08–09:30h</div>
-      <div class="ch cw">📞 Scrum Daily 09:30–10:00h</div>
-      <div class="ch cw">💻 POC 10:00–10:30h</div>
-      <div class="ch cp">🔵 Testes 860 10:30–13h + 14–17h</div>
-      <div class="ch cc">📚 Estudo (Qui)</div>
-    </div>
-    <div class="dc"><div class="dn">20</div>
-      <div class="ch cw">💻 POC 08–10h</div>
-      <div class="ch cp">🔵 Testes 644 10–13h (conclusão) ✅</div>
-      <div class="ch cp">🔵 Testes 860 14–17h</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc we"><div class="dn">21</div><div class="ch cr">🌿 Descanso</div></div>
-    <div class="dc we"><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
-
-    <!-- Row 5: Seg 23 – Dom 29 -->
-    <div class="dc gc"><div class="dn">23</div>
-      <div class="ch cp">🔵 Testes 860 08–12:30h</div>
-      <div class="ch cw">📞 Sync 10:30 · PAS 12:00</div>
-      <div class="ch cp">🔵 Testes 860 14–17h</div>
-    </div>
-    <div class="dc gc"><div class="dn">24</div>
-      <div class="ch cp">🔵 Testes 860 08–12:30h ✅</div>
-      <div class="ch cn">🟢 PDD 875 12:30–13h + 14–17h</div>
-    </div>
-    <div class="dc gc"><div class="dn">25</div>
-      <div class="ch cn">🟢 PDD 875 08–10:30h ✅</div>
-      <div class="ch cc">📚 Revisão cert. 10:30–17h</div>
-    </div>
-    <div class="dc"><div class="dn">26</div>
-      <div class="ch cc">📚 Revisão cert. + prep. PAS</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc"><div class="dn">27</div>
-      <div class="ch cc">📚 Revisão cert. + wrap-up</div>
-      <div class="ch cr">🌿 Noite descanso</div>
-    </div>
-    <div class="dc we"><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
-    <div class="dc we"><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
-
-    <!-- Row 6: Seg 30 – Ter 31 -->
-    <div class="dc"><div class="dn">30</div>
-      <div class="ch cw">💻 POC best effort</div>
-      <div class="ch cc">🏁 Deadline cert. (se não feito)</div>
-    </div>
-    <div class="dc gc"><div class="dn">31 🏁</div>
-      <div class="ch cc">🏁 Deadline absoluta cert.</div>
-      <div class="ch cw">💻 POC best effort</div>
-    </div>
-    <div class="dc emp"></div><div class="dc emp"></div><div class="dc emp"></div>
-    <div class="dc emp"></div><div class="dc emp"></div>
-  </div>
-
-  <div class="pgrid">
-    <div class="pc">
-      <div class="pl">💻 POC Copilot — Best Effort</div>
-      <div class="pbo"><div class="pbi" style="width:5%;background:var(--a2)"></div></div>
-      <div class="pt">Sem deadline fixa · subordinado à certificação · bloco 08–10h diário</div>
-      <div class="ml">
-        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">3–7</span>Setup & arquitectura</div>
-        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">9–13</span>Desenvolvimento core</div>
-        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">16–20</span>Testes & iteração</div>
-        <div class="ms"><div class="md" style="background:var(--a2)"></div><span class="mx">23–31</span>Refinamento (se tempo)</div>
-      </div>
-    </div>
-    <div class="pc">
-      <div class="pl">🎓 Formação UiPath</div>
-      <div class="pbo"><div class="pbi" style="width:10%;background:var(--accent)"></div></div>
-      <div class="pt">3 noites/semana · máx. 1h por sessão · estudo suporta certificação</div>
-      <div class="ml">
-        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">3–9</span>Estudo Ter/Sex/Seg</div>
-        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">10</span>Formação 4h</div>
-        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">11–18</span>Mock Exam (janela 7 dias)</div>
-        <div class="ms"><div class="md" style="background:var(--accent)"></div><span class="mx">16–22</span>Revisão por domínio</div>
-      </div>
-    </div>
-    <div class="pc">
-      <div class="pl">🥇 Certificação UiPath AA — Prioridade #1</div>
-      <div class="pbo"><div class="pbi" style="width:10%;background:var(--a4)"></div></div>
-      <div class="pt">Datas fixas — inegociável · Exam window: 23 Mar – 6 Abr</div>
-      <div class="ml">
-        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">10</span>Formação 4h</div>
-        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">11–18</span>Mock Exam (janela)</div>
-        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">18–23</span>Aguardar voucher</div>
-        <div class="ms"><div class="md" style="background:var(--a4)"></div><span class="mx">23 Mar–6 Abr</span>🎯 Exame final</div>
-      </div>
-    </div>
+<div id="view-month" class="view">
+  <div class="month-grid">
+    <div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div><div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>
+    <div id="mday-1" class="dc we" ><div class="dn">1</div></div>
+    <div id="mday-2" class="dc we" ><div class="dn">2</div></div>
+    <div id="mday-3" class="dc we" ><div class="dn">3</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-4" class="dc we" ><div class="dn">4</div><div class="ch cw">💻 POC</div></div>
+    <div id="mday-5" class="dc we" ><div class="dn">5</div><div class="ch cw">💻 Trabalho</div></div>
+    <div id="mday-6" class="dc we" ><div class="dn">6</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-7" class="dc we" ><div class="dn">7</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-8" class="dc we" ><div class="dn">8</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-9" class="dc" ><div class="dn">9</div><div class="ch cw">💻 POC 09–13h</div><div class="ch cw">📞 Calls</div></div>
+    <div id="mday-10" class="dc" ><div class="dn">10 🎓</div><div class="ch cc">🎓 Formação UiPath</div><div class="ch cw">📞 JIRA</div><div class="ch cp">🦷 Dentista</div></div>
+    <div id="mday-11" class="dc" ><div class="dn">11</div><div class="ch cw">💻 POC + JIRA Planning</div><div class="ch cp">🟡 RPA testes</div><div class="ch cp">🔧 Mecânico</div></div>
+    <div id="mday-12" class="dc" ><div class="dn">12</div><div class="ch cb">🐛 Bug Fix (4h)</div><div class="ch cp">🟡 RPA testes</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-13" class="dc" ><div class="dn">13</div><div class="ch cw">💻 POC + PDS</div><div class="ch cb">🐛 Bug Fix #2</div></div>
+    <div id="mday-14" class="dc we" ><div class="dn">14</div><div class="ch cb">🔧 Instalação</div></div>
+    <div id="mday-15" class="dc we" ><div class="dn">15</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-16" class="dc" ><div class="dn">16</div><div class="ch cc">⚡ Mock #1 ✅</div><div class="ch cw">📞 Sprint Planning</div><div class="ch cb">🐛 Bug 496 ✅</div><div class="ch cc">⚡ Mock #2+#3</div></div>
+    <div id="mday-17" class="dc" ><div class="dn">17</div><div class="ch cw">🗒️ Tarefas gerais</div><div class="ch cp">🏦 Banco</div><div class="ch cc">⚡ Mock ✅ · Improv 641 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
+    <div class="dc" id="mday-18"><div class="dn">18</div><div class="ch cw">💻 POC</div><div class="ch cb">⚡ Improv 496 #2 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
+    <div class="dc" id="mday-19"><div class="dn" id="mday-19-dn">19</div><div class="ch cw">💻 POC + Scrum Daily</div><div class="ch cp">🔵 Testes 860</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-20" class="dc" ><div class="dn">20</div><div class="ch cw">💻 POC</div><div class="ch cp">🔵 Testes 644 ✅</div><div class="ch cp">🔵 Testes 860</div></div>
+    <div id="mday-21" class="dc we" ><div class="dn">21</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-22" class="dc we" ><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-23" class="dc" ><div class="dn">23</div><div class="ch cp">🔵 Testes 860</div><div class="ch cw">📞 Sync + PAS</div></div>
+    <div id="mday-24" class="dc" ><div class="dn">24</div><div class="ch cp">🔵 Testes 860 ✅</div><div class="ch cn">🟢 PDD 875</div></div>
+    <div id="mday-25" class="dc" ><div class="dn">25</div><div class="ch cn">🟢 PDD 875 ✅</div><div class="ch cc">📚 Revisão cert.</div></div>
+    <div id="mday-26" class="dc" ><div class="dn">26</div><div class="ch cc">📚 Revisão cert.</div></div>
+    <div id="mday-27" class="dc" ><div class="dn">27</div><div class="ch cc">📚 Wrap-up sprint</div></div>
+    <div id="mday-28" class="dc we" ><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-29" class="dc we" ><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-30" class="dc" ><div class="dn">30</div><div class="ch cb">🆕 PAS arranca</div><div class="ch cp">🔵 Sprint 60%</div></div>
+    <div id="mday-31" class="dc" ><div class="dn">31</div><div class="ch cp">🔵 Sprint 60%</div><div class="ch cb">🆕 PAS 40%</div></div>
+    <div class="dc we"><div class="dn"></div></div><div class="dc we"><div class="dn"></div></div><div class="dc we"><div class="dn"></div></div><div class="dc we"><div class="dn"></div></div>
   </div>
 </div>
 
-<!-- WEEK 3–7 -->
-<div id="view-w1" class="view">
-  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
-    Semana 2–6 Março · Qua 4★ hoje · Qui 5 escritório + calls · Sex 6 Zoom call
-  </div>
-  <div class="grid2">
-    <div class="card">
-      <h3>Qua 4 · Hoje</h3>
-      <div class="tb"><div class="tt">07:00–07:30</div><div class="tc tn">🐕 Passeio cadela</div></div>
-      <div class="tb"><div class="tt">07:30–08:00</div><div class="tc tn">🥐 Pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tw">💻 POC Copilot</div></div>
-      <div class="tb"><div class="tt">09:00–10:30</div><div class="tc tbb">🦷 Dentista (ausente)</div></div>
-      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tw">💻 Trabalho — retomar tarefas</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tw">💻 Trabalho</div></div>
-      <div class="tb"><div class="tt">15:00–15:30</div><div class="tc tw">📞 Call #2</div></div>
-      <div class="tb"><div class="tt">15:30–16:00</div><div class="tc tw">📞 Call #4</div></div>
-      <div class="tb"><div class="tt">16:00–17:00</div><div class="tc tw">✅ Wrap-up + notas do dia</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso total — sem estudo</div></div>
-      <div class="note nr"><div class="nl">💜 Nota</div>Dia com dentista + 2 calls. Trolhas adiados para data a definir. Noite de descanso.</div>
-
-      <div class="sh b" style="margin-top:1.2rem;">Qui 5 · Escritório + Calls remarcadas</div>
-      <div class="tb"><div class="tt">07:00–07:30</div><div class="tc tn">🐕 Passeio cadela</div></div>
-      <div class="tb"><div class="tt">07:30–08:00</div><div class="tc tn">🥐 Pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–11:30</div><div class="tc tw">💻 POC Copilot + trabalho (foco)</div></div>
-      <div class="tb"><div class="tt">11:00–11:15</div><div class="tc tbb">🦷 Follow-up dentista (chamada)</div></div>
-      <div class="tb"><div class="tt">11:30–12:00</div><div class="tc tpp">🚗 Deslocação → escritório</div></div>
-      <div class="tb"><div class="tt">12:00–12:30</div><div class="tc tpp">🏢 Entrega documento</div></div>
-      <div class="tb"><div class="tt">12:30–13:00</div><div class="tc tpp">🚗 Regresso</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–14:30</div><div class="tc tw">💻 Trabalho</div></div>
-      <div class="tb"><div class="tt">14:30–15:00</div><div class="tc tw">📞 Call #1</div></div>
-      <div class="tb"><div class="tt">15:00–15:30</div><div class="tc tw">📞 Call #3</div></div>
-      <div class="tb"><div class="tt">15:30–17:00</div><div class="tc tw">💻 Trabalho + wrap-up</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso total — sem estudo</div></div>
-    </div>
-
-    <div class="card">
-      <h3>Ter 3 · Estudo &nbsp;|&nbsp; Sex 6 · Zoom + Estudo</h3>
-      <div class="sh v">Ter 3</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 Bloco foco — POC Copilot</div></div>
-      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho + POC</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
-      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso</div></div>
-
-      <div class="sh g" style="margin-top:1.2rem;">Sex 6</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 Bloco foco — POC Copilot</div></div>
-      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–15:30</div><div class="tc tw">💻 Trabalho + POC</div></div>
-      <div class="tb"><div class="tt">15:30–16:10</div><div class="tc tw">📹 Zoom Call</div></div>
-      <div class="tb"><div class="tt">16:10–17:00</div><div class="tc tw">✅ Wrap-up semana</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
-      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso</div></div>
-      <div class="note nr"><div class="nl">💜 Semana 1 resumo</div>Estudo: Ter 3 + Sex 6 (2 × 1h = 2h). Qua 4 + Qui 5: descanso total à noite. Trolhas: data a definir.</div>
-
-      <div class="sh r" style="margin-top:1.2rem;">Sáb 7 · Manhã Preenchida</div>
-      <div class="tb"><div class="tt">07:45</div><div class="tc tpp">🚗 Deslocação (30 min)</div></div>
-      <div class="tb"><div class="tt">08:15</div><div class="tc tbb">🏥 Consulta médica</div></div>
-      <div class="tb"><div class="tt">09:00</div><div class="tc tpp">✂️ Barbeiro</div></div>
-      <div class="tb"><div class="tt">~10:00</div><div class="tc tpp">🐾 Veterinário</div></div>
-      <div class="tb"><div class="tt">Tarde</div><div class="tc tr">🌿 Descanso</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- WEEK 10–14 -->
-<div id="view-w2" class="view">
-  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
-    Semana 9–13 Março · Qua 11 ★ hoje · RPA simples · Trolhas · Qui/Sex continuação
-  </div>
-  <div class="grid2">
-    <div class="card">
-      <h3>Seg 9 / Ter 10 🎓 / Qua 11 ★ Hoje</h3>
-      <div class="sh b">Seg 9 — concluído</div>
-      <div class="tb"><div class="tt">08:30–09:00</div><div class="tc tw">📞 Reunião</div></div>
-      <div class="tb"><div class="tt">09:00–13:00</div><div class="tc tw">💻 POC Copilot</div></div>
-      <div class="tb"><div class="tt">14:00–16:00</div><div class="tc tw">📞 3× Calls</div></div>
-      <div class="tb"><div class="tt">16:00–17:00</div><div class="tc tbb">⚡ Velocity JIRA</div></div>
-
-      <div class="sh y" style="margin-top:1rem;">Ter 10 🎓 — concluído</div>
-      <div class="tb"><div class="tt">08:00–12:00</div><div class="tc tcc">🎓 Formação Agentic Automation (4h)</div></div>
-      <div class="tb"><div class="tt">12:00–13:00</div><div class="tc tpp">🟡 RPA simples (1h)</div></div>
-      <div class="tb"><div class="tt">14:00–14:45</div><div class="tc tw">📞 Reunião JIRA</div></div>
-      <div class="tb"><div class="tt">14:45–16:30</div><div class="tc tpp">🦷 Dentista (deslocação + consulta + regresso)</div></div>
-      <div class="tb"><div class="tt">16:30–17:00</div><div class="tc tpp">🟡 RPA simples (30min)</div></div>
-
-      <div class="sh g" style="margin-top:1rem;">Qua 11 ★ Hoje · JIRA Planning + RPA simples + Mecânico</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–09:30</div><div class="tc tw">💻 POC Copilot (1h30)</div></div>
-      <div class="tb"><div class="tt">09:30–11:00</div><div class="tc tw">📞 JIRA Planning (1h30)</div></div>
-      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tpp">🟡 RPA simples — desenvolvimento (2h)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🟡 RPA simples — desenvolvimento (3h)</div></div>
-      <div class="tb"><div class="tt">16:30–17:30</div><div class="tc tbb">🚗 Deslocação mecânico</div></div>
-      <div class="tb"><div class="tt">17:30–18:30</div><div class="tc tbb">🔧 Mecânico</div></div>
-      <div class="tb"><div class="tt">18:30–19:30</div><div class="tc tbb">🚗 Regresso mecânico</div></div>
-      <div class="tb"><div class="tt">19:30–23:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="note nw"><div class="nl">⚠️ Ginásio cancelado · Trolhas → Qui 12</div>Mecânico 16:30–19:30. Trolhas remarcados para amanhã 08–10h.</div>
-      <div class="note ni"><div class="nl">📊 RPA simples</div>Ter 1h30 + Qua 5h = ~6.5h. Continua Qui 12.</div>
-    </div>
-    <div class="card">
-      <h3>Qui 12 / Sex 13 / Sáb 14</h3>
-      <div class="sh b">Qui 12 · Bug Fix (prioridade) + RPA testes</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC Copilot ⚠️ trolhas 30min algures aqui</div></div>
-      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tbb">🐛 Bug Fix — resolução (3h)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tbb">🐛 Bug Fix — resolução (1h) ✅ concluído</div></div>
-      <div class="tb"><div class="tt">15:00–17:00</div><div class="tc tpp">🟡 RPA simples — testes (2h)</div></div>
-      <div class="tb"><div class="tt">17:00–21:00</div><div class="tc tr">🌿 Cadela + descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo — revisão (1h)</div></div>
-      <div class="note nw"><div class="nl">🔧 Trolhas</div>30min dentro da janela 08–10h — POC mantém-se no restante tempo.</div>
-      <div class="note ni"><div class="nl">📊 Bug fix hoje</div>4h totais (10–15h). RPA testes: 2h hoje + 5h Sex = 7h ✅</div>
-
-      <div class="sh v" style="margin-top:1rem;">Sex 13 · POC + PDS + Bug Fix #2 (novo)</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:30</div><div class="tc tw">💻 POC Copilot (2h30)</div></div>
-      <div class="tb"><div class="tt">10:30–11:00</div><div class="tc tw">📞 Reunião PDS</div></div>
-      <div class="tb"><div class="tt">11:00–13:00</div><div class="tc tbb">🐛 Bug Fix #2 — resolução (2h)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tbb">🐛 Bug Fix #2 — resolução (3h)</div></div>
-      <div class="tb"><div class="tt">17:00–23:00</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
-      <div class="note nw"><div class="nl">⚠️ Bug Fix #2 transborda 1h</div>6h estimadas, 5h disponíveis hoje. 1h restante → Seg 16 tarde (após mock + revisão). RPA simples testes derrapam para semana 16.</div>
-
-      <div class="sh r" style="margin-top:1rem;">Sáb 14 · Instalação 08:00–13:00</div>
-      <div class="tb"><div class="tt">08:00–13:00</div><div class="tc tbb">🔧 Instalação Operador</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">Tarde</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
-      <div class="note nw"><div class="nl">⚠️ Semana densa</div>Formação Agentic (Ter 10) + trolhas possível (Qua 11). Noites de descanso protegidas.</div>
-    </div>
-  </div>
-</div>
-
-<!-- WEEK 16–20 -->
-<div id="view-w3" class="view">
-  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
-    Semana 16–20 Março · Seg 16 ★ hoje · Sprint: Bug 496 → Improv 641/496 → Testes 860 · POC 2h/dia · Voucher 18 Mar
-  </div>
-  <div class="grid2">
-
-    <div class="card">
-      <h3>Seg 16 ★ · Mock ×3 + Bug 496 &nbsp;|&nbsp; Ter 17 · Banco + Bug 496 ✅</h3>
-
-      <div class="sh b">Seg 16 ★ Hoje · Mock ×3 + Sprint Planning + Bug 496 ✅ + Improv 496 ✅</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tcc">⚡ Mock Exam #1 (1h) ✅</div></div>
-      <div class="tb"><div class="tt">09:00–09:30</div><div class="tc tbb">🐛 Bug 496 (30min)</div></div>
-      <div class="tb"><div class="tt">09:30–10:30</div><div class="tc tw">📞 Sprint Planning (1h)</div></div>
-      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tbb">🐛 Bug 496 + Improv 496 — manhã ✅</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–15:00</div><div class="tc tbb">🐛 Bug 496 — conclusão ✅ 8h</div></div>
-      <div class="tb"><div class="tt">15:00–16:00</div><div class="tc tcc">⚡ Mock Exam #2 (1h)</div></div>
-      <div class="tb"><div class="tt">16:00–17:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–19:00</div><div class="tc tr">🌿 Jantar + descanso</div></div>
-      <div class="tb"><div class="tt">19:00–20:00</div><div class="tc tcc">⚡ Mock Exam #3 (1h)</div></div>
-      <div class="tb"><div class="tt">20:00–23:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="note ng"><div class="nl">✅ Bug 496 · Improv 496</div>Ambos fechados hoje. Mock ×3 concluídos. POC cancelado — recuperar Ter–Sex.</div>
-      <div class="note ni"><div class="nl">⚡ Mock ×3 — excepção única</div>#1 às 08h ✅ · #2 às 15h · #3 às 19h. Intervalo obrigatório entre tentativas.</div>
-
-      <div class="sh y" style="margin-top:1.2rem;">Ter 17 — concluído · Banco + Mock ✅ + Improv 641 ✅ + Testes 644</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–09:00</div><div class="tc tw">🗒️ Tarefas gerais</div></div>
-      <div class="tb"><div class="tt">09:00–10:00</div><div class="tc tpp">🏦 Banco</div></div>
-      <div class="tb"><div class="tt">10:00–11:00</div><div class="tc tcc">⚡ Mock Exam ✅</div></div>
-      <div class="tb"><div class="tt">11:00–12:00</div><div class="tc tbb">⚡ Improv 641 (1h) ✅</div></div>
-      <div class="tb"><div class="tt">12:00–13:00</div><div class="tc tr">🌿 Buffer</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 Testes 644 (3h)</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
-      <div class="note ng"><div class="nl">✅ Mock · Improv 641 · Testes 644 3h</div>POC não aconteceu — sem recuperação prevista. Testes 860 substituídos por Testes 644.</div>
-    </div>
-
-    <div class="card">
-      <h3>Qua 18 ★ · Voucher &nbsp;|&nbsp; Qui 19 &nbsp;|&nbsp; Sex 20</h3>
-
-      <div class="sh g">Qua 18 ★ Hoje · 📬 Voucher + Improv 496 #2 ✅ + Testes 644</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC (2h)</div></div>
-      <div class="tb"><div class="tt">10:00–12:00</div><div class="tc tbb">⚡ Improv 496 #2 (2h) ✅</div></div>
-      <div class="tb"><div class="tt">12:00–13:00</div><div class="tc tpp">🔵 Testes 644 (1h)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 Testes 644 (3h) — 7h feitas</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso — verificar email voucher</div></div>
-      <div class="tb"><div class="tt">21:00–23:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="note ni"><div class="nl">📬 Voucher window 18–23 Mar</div>Se mock aprovado, voucher disponível a partir de hoje. Verificar email. Agendar exame.</div>
-      <div class="note ng"><div class="nl">📊 Testes 644: Ter 3h + Qua 4h = 7h/10h</div>Faltam 3h → Qui 19 manhã ✅. Só depois avança Testes 860.</div>
-
-      <div class="sh v" style="margin-top:1.2rem;">Qui 19 ★ Hoje · POC + Scrum Daily + Testes 860</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–09:30</div><div class="tc tw">💻 POC (1h30)</div></div>
-      <div class="tb"><div class="tt">09:30–10:00</div><div class="tc tw">📞 Scrum Daily (30min)</div></div>
-      <div class="tb"><div class="tt">10:00–10:30</div><div class="tc tw">💻 POC — retoma (30min)</div></div>
-      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tpp">🔵 Testes 860 (2h30)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 Testes 860 (3h) — 5h30 feitas</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo UiPath (1h)</div></div>
-      <div class="note ng"><div class="nl">📊 Testes 860: 5h30 hoje · POC: 2h efectivas</div>Acumulado 860: 5h30/20h. Sex 20: Testes 644 manhã ✅ → 860 tarde (3h) → total 8h30/20h.</div>
-
-      <div class="sh r" style="margin-top:1.2rem;">Sex 20 · Testes 644 ✅ (manhã) → Testes 860 (tarde)</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 POC (2h)</div></div>
-      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tpp">🔵 Testes 644 (3h) ✅ 10h concluído</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 Testes 860 (3h) — 8h30 feitas</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
-      <div class="note ng"><div class="nl">📊 Testes 644 ✅ · Testes 860: 8h30/20h</div>Faltam 11h30 → S2: Seg 23 3h + Ter 24 3h + Qui 26 3h + Sex 27 2h30 = ✅ ~28 Mar.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- WEEK 23–27 -->
-<div id="view-w4" class="view">
-  <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1rem;">
-    Semana 23–27 Março · Sprint S2 conclusão · Testes 860 → PDD 875 · Sem POC fixo · Cert. standby (voucher pendente) · PAS reúne Seg 23
-  </div>
-  <div class="grid2">
-
-    <div class="card">
-      <h3>Seg 23 · Testes 860 &nbsp;|&nbsp; Ter 24 · Testes 860 ✅</h3>
-
-      <div class="sh b">Seg 23 · Testes 860 + Sync + PAS</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:30</div><div class="tc tpp">🔵 Testes 860 (2h30)</div></div>
-      <div class="tb"><div class="tt">10:30–11:00</div><div class="tc tw">📞 Sync (30min)</div></div>
-      <div class="tb"><div class="tt">11:00–12:00</div><div class="tc tpp">🔵 Testes 860 (1h)</div></div>
-      <div class="tb"><div class="tt">12:00–12:30</div><div class="tc tw">📞 PAS (30min)</div></div>
-      <div class="tb"><div class="tt">12:30–13:00</div><div class="tc tpp">🔵 Testes 860 (30min)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tpp">🔵 Testes 860 (3h) — 15h30 feitas</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo cert. (1h)</div></div>
-      <div class="note ng"><div class="nl">📊 Testes 860: 8h30 + 7h = 15h30/20h</div>Faltam 4h30 → Ter 24 manhã ✅. Tarde livre para PDD 875.</div>
-      <div class="note ni"><div class="nl">📬 Voucher</div>Verificar email — window 18–23 Mar. Agendar exame assim que recebido.</div>
-
-      <div class="sh y" style="margin-top:1.2rem;">Ter 24 · Testes 860 ✅ (manhã) → PDD 875 (tarde)</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–12:30</div><div class="tc tpp">🔵 Testes 860 (4h30) ✅ 20h concluído</div></div>
-      <div class="tb"><div class="tt">12:30–13:00</div><div class="tc cn" style="background:#1a4a2822;color:#7aef99;border-radius:5px;padding:4px 8px;">🟢 PDD 875 (30min)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc cn" style="background:#1a4a2822;color:#7aef99;border-radius:5px;padding:4px 8px;">🟢 PDD 875 (3h) — 3h30 feitas</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo cert. (1h)</div></div>
-      <div class="note ng"><div class="nl">📊 Testes 860 ✅ · PDD 875: 3h30/6h</div>860 fechado. PDD faltam 2h30 → Qua 25 ✅ fechado a meio do dia.</div>
-    </div>
-
-    <div class="card">
-      <h3>Qua 25 · PDD 875 ✅ &nbsp;|&nbsp; Qui 26 · Buffer &nbsp;|&nbsp; Sex 27 · Cert. + Wrap-up</h3>
-
-      <div class="sh g">Qua 25 · PDD 875 ✅ (conclusão) + Buffer sprint + Cert. standby</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–10:30</div><div class="tc cn" style="background:#1a4a2822;color:#7aef99;border-radius:5px;padding:4px 8px;">🟢 PDD 875 (2h30) ✅ 6h concluído</div></div>
-      <div class="tb"><div class="tt">10:30–13:00</div><div class="tc tcc">📚 Revisão certificação (2h30)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tcc">📚 Revisão certificação / buffer sprint (3h)</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–23:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="note ng"><div class="nl">✅ Sprint S2 fechado Qua 25</div>Testes 860 ✅ · PDD 875 ✅ · Todos os issues concluídos. Tarde para cert. ou buffer.</div>
-      <div class="note nw"><div class="nl">⚠️ Exame sem data</div>Voucher não recebido. Se chegar esta semana, agendar imediatamente. Cert. pode estender para semana 30.</div>
-
-      <div class="sh v" style="margin-top:1.2rem;">Qui 26 · Buffer sprint + Preparação semana 30 (PAS)</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–13:00</div><div class="tc tcc">📚 Revisão cert. + prep. semana 30 (5h)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tcc">📚 Revisão cert. / buffer (3h)</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Descanso</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo cert. (1h)</div></div>
-      <div class="note ni"><div class="nl">🔄 Prep. semana 30</div>Novo projecto PAS arranca 30 Mar com alocação 40%. Sprint 60% retoma. Usa Qui para alinhar contexto.</div>
-
-      <div class="sh r" style="margin-top:1.2rem;">Sex 27 · Revisão cert. + Wrap-up sprint</div>
-      <div class="tb"><div class="tt">07:00–08:00</div><div class="tc tn">🐕 Passeio + pequeno-almoço</div></div>
-      <div class="tb"><div class="tt">08:00–13:00</div><div class="tc tcc">📚 Revisão cert. + wrap-up sprint (5h)</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tcc">📚 Buffer / cert. (3h)</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio</div></div>
-      <div class="tb"><div class="tt">18:00–23:00</div><div class="tc tr">🌿 Descanso — fim de semana</div></div>
-      <div class="note ng"><div class="nl">📊 Semana 23–27 resumo</div>Testes 860 ✅ Ter 24 · PDD 875 ✅ Qua 25 · Sprint S2 fechado ✅ · Cert. standby · Prep. PAS semana 30</div>
-    </div>
-
-  </div>
+<!-- WEEK -->
+<div id="view-week" class="view">
+  <div id="week-selector" class="week-selector"></div>
+  <div id="week-content"></div>
 </div>
 
 <!-- DAILY -->
 <div id="view-daily" class="view">
-  <div class="grid2">
-    <div class="card">
-      <h3>Rotina Base — Dias Úteis</h3>
-      <div class="tb"><div class="tt">07:00–07:30</div><div class="tc tn">🐕 Passeio da cadela</div></div>
-      <div class="tb"><div class="tt">07:30–08:00</div><div class="tc tn">🥐 Pequeno-almoço + preparação</div></div>
-      <div class="tb"><div class="tt">08:00–10:00</div><div class="tc tw">💻 Bloco foco — POC Copilot (máxima concentração)</div></div>
-      <div class="tb"><div class="tt">10:00–13:00</div><div class="tc tw">💻 Trabalho — reuniões, emails, operacional</div></div>
-      <div class="tb"><div class="tt">13:00–14:00</div><div class="tc tn">🍽️ Almoço — inegociável, sem ecrã</div></div>
-      <div class="tb"><div class="tt">14:00–17:00</div><div class="tc tw">💻 Trabalho — POC + tarefas + calls</div></div>
-      <div class="tb"><div class="tt">17:00–18:00</div><div class="tc tpp">🏋️ Ginásio — inegociável</div></div>
-      <div class="tb"><div class="tt">18:00–21:00</div><div class="tc tr">🌿 Bloco pessoal — jantar, cadela, desligar</div></div>
-      <div class="tb"><div class="tt">21:00–22:00</div><div class="tc tcc">📚 Estudo (apenas 3 noites/semana — 1h máx.)</div></div>
-      <div class="tb"><div class="tt">21:00–23:00</div><div class="tc tr">🌿 Descanso (noites sem estudo)</div></div>
-      <div class="tb"><div class="tt">22:00–23:00</div><div class="tc tr">🌙 Descanso — sem ecrãs exigentes</div></div>
-      <div class="note nr" style="margin-top:.5rem;"><div class="nl">🐕 Âncora mental</div>Os dois passeios (07h e 18–19h) são os teus resets cognitivos. Usa-os sem telemóvel.</div>
+  <div class="section-title">Rotina Diária Base</div>
+  <div class="day-layout">
+    <div class="timeline">
+      <div class="tl-header">Dias úteis — estrutura padrão</div>
+      <div class="tl-row"><div class="tl-time">07:00–07:30</div><div class="tl-content tc-pers">🐕 Passeio da cadela</div></div>
+      <div class="tl-row"><div class="tl-time">07:30–08:00</div><div class="tl-content tc-meal">🥐 Pequeno-almoço</div></div>
+      <div class="tl-row"><div class="tl-time">08:00–10:00</div><div class="tl-content tc-work">💻 Bloco foco — POC / trabalho prioritário</div></div>
+      <div class="tl-row"><div class="tl-time">10:00–13:00</div><div class="tl-content tc-work">💻 Trabalho — reuniões, desenvolvimento, testes</div></div>
+      <div class="tl-row"><div class="tl-time">13:00–14:00</div><div class="tl-content tc-meal">🍽️ Almoço — inegociável, sem ecrã</div></div>
+      <div class="tl-row"><div class="tl-time">14:00–17:00</div><div class="tl-content tc-work">💻 Trabalho — continuação</div></div>
+      <div class="tl-row"><div class="tl-time">17:00–18:00</div><div class="tl-content tc-pers">🏋️ Ginásio</div></div>
+      <div class="tl-row"><div class="tl-time">18:00–21:00</div><div class="tl-content tc-rest">🌿 Descanso pessoal</div></div>
+      <div class="tl-row"><div class="tl-time">21:00–22:00</div><div class="tl-content tc-cert">📚 Estudo (máx 3×/semana)</div></div>
+      <div class="tl-row"><div class="tl-time">22:00–23:00</div><div class="tl-content tc-rest">🌙 Descanso</div></div>
     </div>
-    <div class="card">
-      <h3>Filosofia Anti-Burnout</h3>
-      <div class="note nr" style="margin-top:0;"><div class="nl">💜 Regra das 3 noites</div>Estudo apenas 3 noites por semana, 1h máximo. As restantes 4 noites e fim de semana são de recuperação. Zero excepções.</div>
-      <div class="note ni"><div class="nl">💙 Bloco 08–10h é sagrado</div>É o teu pico cognitivo. Sem emails, sem Slack, sem reuniões. O POC Copilot avança aqui ou não avança.</div>
-      <div class="note ng"><div class="nl">💚 1h de estudo é suficiente</div>3 sessões/semana × ~3 semanas = ~9h + 4h formação + mock. Preparação adequada para um Associate.</div>
+    <div class="day-notes">
+      <div class="note nr"><div class="nl">💜 Regra das 3 noites</div>Estudo apenas 3 noites/semana, 1h máximo. Restantes noites e fins de semana: recuperação total.</div>
+      <div class="note ni"><div class="nl">🍽️ Almoço inegociável</div>13:00–14:00 todos os dias. Sem excepções, sem ecrãs.</div>
       <div class="note nw"><div class="nl">⚠️ Sinal de alerta</div>Se após 20 min não consegues concentrar — para. Descanso não planeado é melhor que estudo ineficaz.</div>
-      <div style="padding:.75rem;background:#1a1c22;border-radius:8px;border:1px solid var(--border);font-size:.75rem;color:var(--muted);margin-top:.75rem;">
-        <div style="font-family:'DM Mono',monospace;font-size:.62rem;margin-bottom:.25rem;">📊 MATEMÁTICA DO BURNOUT</div>
-        Estudo diário neste mês → burnout semana 3 → produtividade zero em tudo.<br>
-        3 noites/semana → ritmo sustentável → chegas ao dia 25 em condições de exame.
-      </div>
+      <div class="note ng"><div class="nl">🐕 Âncora mental</div>Os dois passeios (07h e 18–19h) são os resets cognitivos do dia.</div>
     </div>
   </div>
 </div>
 
 <!-- CERT -->
 <div id="view-cert" class="view">
-  <div class="grid2">
+  <div class="section-title">Plano Certificação UiPath Agentic</div>
+  <div class="cert-grid">
     <div class="card">
-      <h3>Plano de Estudo · Semana a Semana</h3>
-      <div class="sh b">Semana 1 · 3–6 Mar (2 sessões = 2h)</div>
-      <div class="tb"><div class="tt">Ter 3</div><div class="tc tcc">🏗️ Fundamentos Agentic AI — conceitos base</div></div>
-      <div class="tb"><div class="tt">Sex 6</div><div class="tc tcc">🔧 UiPath Studio & Orchestrator — overview</div></div>
-
-      <div class="sh y" style="margin-top:1rem;">Semana 2 · 9–13 Mar (formação + mock + revisão)</div>
-      <div class="tb"><div class="tt">Seg 9</div><div class="tc tcc">📖 Revisão pré-formação (1h)</div></div>
-      <div class="tb"><div class="tt">Ter 10</div><div class="tc tcc">🎓 FORMAÇÃO 4h — notas detalhadas</div></div>
-      <div class="tb"><div class="tt">Qua 11</div><div class="tc tcc">⚡ MOCK EXAM + revisão erros</div></div>
-      <div class="tb"><div class="tt">Qui 12</div><div class="tc tcc">📖 Revisão domínios fracos (1h)</div></div>
-
-      <div class="sh g" style="margin-top:1rem;">Semana 3 · 16–20 Mar (3 sessões = 3h)</div>
-      <div class="tb"><div class="tt">Ter 17</div><div class="tc tcc">🔍 Domínio: Testing & Validation</div></div>
-      <div class="tb"><div class="tt">Qui 19</div><div class="tc tcc">🚀 Domínio: Deployment & Monitoring</div></div>
-      <div class="tb"><div class="tt">Sex 20</div><div class="tc tcc">🧠 Revisão geral — simular exame</div></div>
-
-      <div class="sh r" style="margin-top:1rem;">Semana 4 · 23–31 Mar (exame + buffer)</div>
-      <div class="tb"><div class="tt">Seg 23</div><div class="tc tcc">📚 Revisão final pontos fracos</div></div>
-      <div class="tb"><div class="tt">Ter 24</div><div class="tc tcc">🟢 Exam window abre</div></div>
-      <div class="tb"><div class="tt">Qua 25</div><div class="tc tcc">🏆 TARGET: fazer o exame</div></div>
-      <div class="tb"><div class="tt">26–31</div><div class="tc tbb">⚠️ Buffer — re-take se necessário</div></div>
+      <h3>Timeline</h3>
+      <div class="sh b">Semana 1 · 3–6 Mar</div>
+      <div class="tb"><div class="tt">Ter 3 + Sex 6</div><div class="tc tcc">📚 2 sessões × 1h = 2h</div></div>
+      <div class="sh y">Semana 2 · 9–13 Mar</div>
+      <div class="tb"><div class="tt">Ter 10</div><div class="tc tcc">🎓 Formação UiPath (4h)</div></div>
+      <div class="tb"><div class="tt">Qui 12 + Sex 13</div><div class="tc tcc">📚 2 sessões × 1h = 2h</div></div>
+      <div class="sh g">Semana 3 · 16–20 Mar</div>
+      <div class="tb"><div class="tt">Seg 16</div><div class="tc tcc">⚡ Mock Exam ×3 ✅</div></div>
+      <div class="tb"><div class="tt">Ter 17 + Qui 19</div><div class="tc tcc">📚 2 sessões × 1h = 2h</div></div>
+      <div class="sh v">Semana 4 · 23–27 Mar</div>
+      <div class="tb"><div class="tt">Seg 23 + Ter 24</div><div class="tc tcc">📚 Revisão + estudo (2h)</div></div>
+      <div class="tb"><div class="tt">Qua 25+</div><div class="tc tcc">🏆 Exame (data a confirmar)</div></div>
     </div>
     <div class="card">
-      <h3>Horas Totais &amp; Estratégia</h3>
-      <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;">
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Semana 1 (2 sessões × 1h)</span><span style="font-family:'DM Mono',monospace;color:#8baaff;">2h</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Formação UiPath (Ter 10)</span><span style="font-family:'DM Mono',monospace;color:var(--accent);">4h</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Mock Exam + revisão (Qua 11)</span><span style="font-family:'DM Mono',monospace;color:var(--accent);">2h</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Revisão pós-mock (Qui 12)</span><span style="font-family:'DM Mono',monospace;color:var(--a4);">1h</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Semana 3 (3 sessões × 1h)</span><span style="font-family:'DM Mono',monospace;color:var(--a4);">3h</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;"><span style="color:var(--muted);">Revisão final (Seg 23)</span><span style="font-family:'DM Mono',monospace;color:var(--a4);">1h</span></div>
-        <div style="border-top:1px solid var(--border);padding-top:.5rem;display:flex;justify-content:space-between;font-size:.85rem;">
-          <span style="color:var(--text);font-weight:600;">Total</span>
-          <span style="font-family:'DM Mono',monospace;color:var(--accent);font-weight:600;">≈ 13h</span>
-        </div>
+      <h3>Horas totais</h3>
+      <div class="prog-wrap" style="margin-top:.5rem">
+        <div class="prog-label"><span>Semana 1</span><span>2h</span></div>
+        <div class="prog-bar"><div class="prog-fill p-blue" style="width:15%"></div></div>
       </div>
-      <div class="note ng" style="margin-top:0;"><div class="nl">📊 Contexto</div>Exame Associate = nível entrada. 13h focadas + formação oficial é preparação sólida.</div>
-      <div class="note nr"><div class="nl">💜 Consolidação</div>Com descanso entre sessões o cérebro processa melhor. Estudar todos os dias resultaria em fadiga antes do exame.</div>
-      <div class="note nw"><div class="nl">🏁 Buffer 26–31 Mar</div>Se não passares no dia 25, tens 4 dias úteis para re-take com revisão focalizada. Completamente gerível.</div>
+      <div class="prog-wrap">
+        <div class="prog-label"><span>Formação (Ter 10)</span><span>4h</span></div>
+        <div class="prog-bar"><div class="prog-fill p-accent" style="width:31%"></div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-label"><span>Mock ×3 (Seg 16) ✅</span><span>3h</span></div>
+        <div class="prog-bar"><div class="prog-fill p-green" style="width:23%"></div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-label"><span>Estudo semanas 2–4</span><span>~4h</span></div>
+        <div class="prog-bar"><div class="prog-fill p-blue" style="width:31%"></div></div>
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:600;padding:.2rem 0">
+        <span style="color:var(--muted2)">Total previsto</span>
+        <span style="color:var(--accent);font-family:'JetBrains Mono',monospace">≈ 13h</span>
+      </div>
+      <div class="note ni" style="margin-top:.75rem"><div class="nl">⚠️ Voucher pendente</div>Window 18–23 Mar. Exame entre 24 Mar–6 Abr assim que confirmado.</div>
     </div>
   </div>
 </div>
 
-</div>
+</div><!-- /content -->
+</div><!-- /main -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn" onclick="showView('dash')"><span class="bicon">⊞</span>Hoje</button>
+  <button class="bnav-btn" onclick="showView('month')"><span class="bicon">📅</span>Mês</button>
+  <button class="bnav-btn" onclick="showView('week');setWeek('w3')"><span class="bicon">📋</span>Semana</button>
+  <button class="bnav-btn" onclick="showView('cert')"><span class="bicon">🎓</span>Cert.</button>
+</nav>
+
+</div><!-- /app -->
+
 <script>
-function sv(name,btn){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.getElementById('view-'+name).classList.add('on');
-  if(btn)btn.classList.add('on');
+const weeks = {
+  w1: {
+    label: '3–7 Mar',
+    days: [
+      { name: 'Seg 2', sub: 'Fim de semana', we: true, rows: [], notes: [] },
+      { name: 'Ter 3', sub: 'Trabalho + Estudo', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–10:00','tc-work','💻 POC Copilot (2h)'],
+        ['10:00–13:00','tc-work','💻 Trabalho'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-work','💻 Trabalho + POC'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–21:00','tc-rest','🌿 Descanso'],
+        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
+      ], notes: [] },
+      { name: 'Qua 4', sub: 'Trabalho', rows: [
+        ['08:00–10:00','tc-work','💻 POC Copilot'],
+        ['10:00–13:00','tc-work','💻 Trabalho'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-work','💻 Trabalho'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [] },
+      { name: 'Qui 5', sub: 'Escritório + Calls', rows: [
+        ['08:00–10:00','tc-work','💻 POC Copilot'],
+        ['10:00–13:00','tc-work','💻 Calls + trabalho'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-work','💻 Trabalho'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [] },
+      { name: 'Sex 6', sub: 'Trabalho + Zoom + Estudo', rows: [
+        ['08:00–10:00','tc-work','💻 POC Copilot'],
+        ['10:00–13:00','tc-work','💻 Trabalho'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–15:30','tc-work','💻 Trabalho'],
+        ['15:30–16:10','tc-work','📹 Zoom Call'],
+        ['16:10–17:00','tc-work','✅ Wrap-up semana'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
+      ], notes: [['ng','Semana 1','Estudo: Ter 3 + Sex 6 = 2h.']] },
+      { name: 'Sáb 7', sub: 'Manhã preenchida', we: true, rows: [
+        ['07:45','tc-pers','🚗 Deslocação (30min)'],
+        ['08:15','tc-block','🏥 Consulta médica'],
+        ['09:00','tc-pers','✂️ Barbeiro'],
+        ['~10:00','tc-pers','🐾 Veterinário'],
+        ['Tarde','tc-rest','🌿 Descanso'],
+      ], notes: [] },
+    ]
+  },
+  w2: {
+    label: '10–14 Mar',
+    days: [
+      { name: 'Seg 9', sub: 'Concluído', rows: [
+        ['08:30–09:00','tc-work','📞 Reunião'],
+        ['09:00–13:00','tc-work','💻 POC Copilot'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–16:00','tc-work','📞 3× Calls'],
+        ['16:00–17:00','tc-block','⚡ Velocity JIRA'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Ter 10 🎓', sub: 'Formação + Dentista — concluído', rows: [
+        ['08:00–12:00','tc-cert','🎓 Formação Agentic Automation (4h)'],
+        ['12:00–13:00','tc-pers','🟡 RPA simples (1h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–14:45','tc-work','📞 Reunião JIRA'],
+        ['14:45–16:30','tc-pers','🦷 Dentista (deslocação + consulta + regresso)'],
+        ['16:30–17:00','tc-pers','🟡 RPA simples (30min)'],
+      ], notes: [] },
+      { name: 'Qua 11', sub: 'JIRA Planning + RPA + Mecânico', rows: [
+        ['08:00–09:30','tc-work','💻 POC (1h30)'],
+        ['09:30–11:00','tc-work','📞 JIRA Planning'],
+        ['11:00–13:00','tc-pers','🟡 RPA simples (2h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pers','🟡 RPA simples (3h)'],
+        ['16:30–17:30','tc-block','🚗 Deslocação mecânico'],
+        ['17:30–18:30','tc-block','🔧 Mecânico'],
+        ['18:30–19:30','tc-block','🚗 Regresso mecânico'],
+        ['19:30–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [['nw','⚠️ Ginásio cancelado','Mecânico 16:30–19:30.']] },
+      { name: 'Qui 12', sub: 'Bug Fix + RPA testes', rows: [
+        ['08:00–10:00','tc-work','💻 POC ⚠️ trolhas 30min aqui'],
+        ['10:00–13:00','tc-block','🐛 Bug Fix (3h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–15:00','tc-block','🐛 Bug Fix (1h) ✅'],
+        ['15:00–17:00','tc-pers','🟡 RPA testes (2h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo (1h)'],
+      ], notes: [['ng','📊 Bug Fix','4h concluído. RPA testes: 2h hoje + 5h Sex = 7h.']] },
+      { name: 'Sex 13', sub: 'POC + PDS + Bug Fix #2', rows: [
+        ['08:00–10:30','tc-work','💻 POC (2h30)'],
+        ['10:30–11:00','tc-work','📞 Reunião PDS'],
+        ['11:00–13:00','tc-block','🐛 Bug Fix #2 (2h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🐛 Bug Fix #2 (3h) — 5h · transborda 1h → Seg 16'],
+        ['17:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
+      ], notes: [['nw','⚠️ Bug Fix #2 transborda','6h estimadas, 5h hoje. 1h → Seg 16 tarde.']] },
+    ]
+  },
+  w3: {
+    label: '16–20 Mar ★',
+    days: [
+      { name: 'Seg 16', sub: 'Mock ×3 + Sprint Planning + Bug 496 ✅', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–09:00','tc-cert','⚡ Mock Exam #1 (1h) ✅'],
+        ['09:00–09:30','tc-block','🐛 Bug 496 (30min)'],
+        ['09:30–10:30','tc-work','📞 Sprint Planning'],
+        ['10:30–13:00','tc-block','🐛 Bug 496 + Improv 496 ✅'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–15:00','tc-block','🐛 Bug 496 conclusão ✅ 8h'],
+        ['15:00–16:00','tc-cert','⚡ Mock Exam #2'],
+        ['16:00–17:00','tc-rest','🌿 Descanso'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–19:00','tc-rest','🌿 Jantar'],
+        ['19:00–20:00','tc-cert','⚡ Mock Exam #3'],
+        ['20:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [['ng','✅ Bug 496 · Improv 496','Ambos fechados. Mock ×3 concluídos.'],['nw','💻 POC','Cancelado — recuperar ao longo da semana.']] },
+      { name: 'Ter 17', sub: 'Banco + Mock ✅ + Improv 641 ✅ + Testes 644', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–09:00','tc-work','🗒️ Tarefas gerais'],
+        ['09:00–10:00','tc-pers','🏦 Banco'],
+        ['10:00–11:00','tc-cert','⚡ Mock Exam ✅'],
+        ['11:00–12:00','tc-block','⚡ Improv 641 (1h) ✅'],
+        ['12:00–13:00','tc-rest','🌿 Buffer'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pers','🔵 Testes 644 (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
+      ], notes: [['ng','✅ Mock · Improv 641','Testes 644: 3h feitas.']] },
+      { name: 'Qua 18', sub: 'Voucher abre + Improv 496 #2 ✅ + Testes 644', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–10:00','tc-work','💻 POC (2h)'],
+        ['10:00–12:00','tc-block','⚡ Improv 496 #2 (2h) ✅'],
+        ['12:00–13:00','tc-pers','🔵 Testes 644 (1h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pers','🔵 Testes 644 (3h) — 7h feitas'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–21:00','tc-rest','🌿 Descanso — verificar voucher'],
+      ], notes: [['ni','📬 Voucher window 18–23 Mar','Verificar email. Agendar exame.'],['ng','📊 Testes 644: 7h/10h','Faltam 3h → Sex 20 manhã ✅.']] },
+      { name: 'Qui 19 ★', sub: 'Hoje · POC + Scrum + Testes 860', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–09:30','tc-work','💻 POC (1h30)'],
+        ['09:30–10:00','tc-work','📞 Scrum Daily'],
+        ['10:00–10:30','tc-work','💻 POC retoma (30min)'],
+        ['10:30–13:00','tc-pers','🔵 Testes 860 (2h30)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pers','🔵 Testes 860 (3h) — 5h30 feitas'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
+      ], notes: [['ng','📊 Testes 860: 5h30 hoje','Acumulado: 5h30/20h. Sex 20: +3h → 8h30.'],['ni','💻 POC: 2h efectivas','Scrum fragmenta mas não reduz total.']] },
+      { name: 'Sex 20', sub: 'Testes 644 ✅ + Testes 860', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–10:00','tc-work','💻 POC (2h)'],
+        ['10:00–13:00','tc-pers','🔵 Testes 644 (3h) ✅ 10h concluído'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pers','🔵 Testes 860 (3h) — 8h30 feitas'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
+      ], notes: [['ng','📊 Testes 644 ✅ · Testes 860: 8h30/20h','Faltam 11h30 → semana 23–27.']] },
+    ]
+  },
+  w4: {
+    label: '23–27 Mar',
+    days: [
+      { name: 'Seg 23', sub: 'Testes 860 + Sync + PAS', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–10:30','tc-pers','🔵 Testes 860 (2h30)'],
+        ['10:30–11:00','tc-work','📞 Sync'],
+        ['11:00–12:00','tc-pers','🔵 Testes 860 (1h)'],
+        ['12:00–12:30','tc-work','📞 PAS'],
+        ['12:30–13:00','tc-pers','🔵 Testes 860 (30min)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pers','🔵 Testes 860 (3h) — 15h30 feitas'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo cert. (1h)'],
+      ], notes: [['ng','📊 Testes 860: +7h hoje = 15h30/20h','Faltam 4h30 → Ter 24 manhã ✅.'],['ni','📬 Voucher','Verificar email — window fecha hoje.']] },
+      { name: 'Ter 24', sub: 'Testes 860 ✅ + PDD 875 arranque', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:30','tc-pers','🔵 Testes 860 (4h30) ✅ 20h concluído'],
+        ['12:30–13:00','tc-pdd','🟢 PDD 875 (30min)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-pdd','🟢 PDD 875 (3h) — 3h30 feitas'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo cert. (1h)'],
+      ], notes: [['ng','✅ Testes 860 · PDD 875: 3h30/6h','PDD faltam 2h30 → Qua 25 ✅.']] },
+      { name: 'Qua 25', sub: 'PDD 875 ✅ + Revisão cert.', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–10:30','tc-pdd','🟢 PDD 875 (2h30) ✅ 6h concluído'],
+        ['10:30–13:00','tc-cert','📚 Revisão certificação (2h30)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-cert','📚 Revisão cert. / buffer sprint (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [['ng','✅ Sprint S2 fechado Qua 25','Testes 860 ✅ · PDD 875 ✅ · Todos os issues concluídos.'],['nw','⚠️ Exame sem data','Voucher pendente. Agendar assim que recebido.']] },
+      { name: 'Qui 26', sub: 'Buffer sprint + Prep. PAS semana 30', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-cert','📚 Revisão cert. + prep. semana 30 (5h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-cert','📚 Revisão cert. / buffer (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Estudo cert. (1h)'],
+      ], notes: [['ni','🔄 Prep. semana 30','PAS arranca 30 Mar (40%). Sprint 60% retoma. Usa Qui para alinhar contexto.']] },
+      { name: 'Sex 27', sub: 'Revisão cert. + Wrap-up sprint', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-cert','📚 Revisão cert. + wrap-up sprint (5h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-cert','📚 Buffer / cert. (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
+      ], notes: [['ng','📊 Semana 23–27 resumo','Testes 860 ✅ Ter 24 · PDD 875 ✅ Qua 25 · Sprint S2 ✅ · Cert. standby · Prep. PAS 30 Mar.']] },
+    ]
+  }
+};
+// ── State ──
+var CW = 'w3';
+var CDI = 3;
+
+// ── Day map ──
+var DAY_MAP = {
+  '2026-03-02':{w:'w1',i:0},'2026-03-03':{w:'w1',i:1},'2026-03-04':{w:'w1',i:2},
+  '2026-03-05':{w:'w1',i:3},'2026-03-06':{w:'w1',i:4},'2026-03-07':{w:'w1',i:5},
+  '2026-03-09':{w:'w2',i:0},'2026-03-10':{w:'w2',i:1},'2026-03-11':{w:'w2',i:2},
+  '2026-03-12':{w:'w2',i:3},'2026-03-13':{w:'w2',i:4},
+  '2026-03-16':{w:'w3',i:0},'2026-03-17':{w:'w3',i:1},'2026-03-18':{w:'w3',i:2},
+  '2026-03-19':{w:'w3',i:3},'2026-03-20':{w:'w3',i:4},
+  '2026-03-23':{w:'w4',i:0},'2026-03-24':{w:'w4',i:1},'2026-03-25':{w:'w4',i:2},
+  '2026-03-26':{w:'w4',i:3},'2026-03-27':{w:'w4',i:4}
+};
+var PT_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+var PT_MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+var ALL_VIEWS = ['dash','month','week','daily','cert'];
+
+function getKey() {
+  var d = new Date();
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
+function pad(n){ return n<10?'0'+n:''+n; }
+
+// ── Show view ──
+function showView(name) {
+  for (var i=0; i<ALL_VIEWS.length; i++) {
+    var el = document.getElementById('view-'+ALL_VIEWS[i]);
+    if (el) el.style.display = 'none';
+  }
+  var t = document.getElementById('view-'+name);
+  if (t) t.style.display = 'block';
+
+  var btns = document.querySelectorAll('.nav-btn,.bnav-btn');
+  for (var b=0; b<btns.length; b++) {
+    var oc = btns[b].getAttribute('onclick')||'';
+    if (oc.indexOf("'"+name+"'") >= 0) {
+      btns[b].className = btns[b].className.replace(/\bactive\b/,'').trim()+' active';
+    } else {
+      btns[b].className = btns[b].className.replace(/\bactive\b/,'').trim();
+    }
+  }
+  if (name === 'week') renderWeek();
+}
+
+// ── Week ──
+function setWeek(wk) {
+  if (!weeks[wk]) return;
+  CW = wk;
+  var td = DAY_MAP[getKey()];
+  CDI = (td && td.w===wk) ? td.i : 0;
+  renderWeek();
+}
+
+function navDay(dir) {
+  var wk = weeks[CW];
+  if (!wk) return;
+  CDI = Math.max(0, Math.min(wk.days.length-1, CDI+dir));
+  renderWeek();
+}
+
+function gotoDay(i) {
+  CDI = i;
+  renderWeek();
+}
+
+function renderWeek() {
+  var wk = weeks[CW];
+  if (!wk) return;
+  var td = DAY_MAP[getKey()];
+
+  // Week selector
+  var sel = document.getElementById('week-selector');
+  if (sel) {
+    var sh = '';
+    var wks = Object.keys(weeks);
+    for (var k=0; k<wks.length; k++) {
+      var key = wks[k];
+      var active = (key===CW) ? ' active' : '';
+      var star = (td && td.w===key) ? ' ★' : '';
+      var tdIdx = (td && td.w===key) ? td.i : 0;
+      sh += '<button class="week-btn'+active+'" onclick="CW=\''+key+'\';CDI='+tdIdx+';renderWeek()">'+weeks[key].label+star+'</button>';
+    }
+    sel.innerHTML = sh;
+  }
+
+  if (CDI >= wk.days.length) CDI = 0;
+  var day = wk.days[CDI];
+  if (!day) return;
+
+  var isToday = (td && td.w===CW && td.i===CDI);
+  var notes = day.notes || [];
+  var rows = day.rows || [];
+
+  // Day picker buttons
+  var db = '';
+  for (var di=0; di<wk.days.length; di++) {
+    var d = wk.days[di];
+    var ac = (di===CDI) ? ' active' : '';
+    var tm = (td && td.w===CW && td.i===di) ? ' today-mark' : '';
+    var pts = d.name.split(' ');
+    db += '<button class="day-nav-btn'+ac+tm+'" onclick="gotoDay('+di+')">'+pts[0]+' '+(pts[1]||'')+'</button>';
+  }
+
+  // Timeline
+  var tr = '';
+  for (var ri=0; ri<rows.length; ri++) {
+    tr += '<div class="tl-row"><div class="tl-time">'+rows[ri][0]+'</div><div class="tl-content '+rows[ri][1]+'">'+rows[ri][2]+'</div></div>';
+  }
+  if (!tr) tr = '<div class="tl-row"><div class="tl-time">—</div><div class="tl-content tc-rest">Sem eventos</div></div>';
+
+  // Notes
+  var nh = '';
+  for (var ni=0; ni<notes.length; ni++) {
+    nh += '<div class="note '+notes[ni][0]+'"><div class="nl">'+notes[ni][1]+'</div>'+notes[ni][2]+'</div>';
+  }
+  if (!nh) nh = '<div class="note ni"><div class="nl">💡 Tip</div>Usa ◀ ▶ para navegar entre dias.</div>';
+
+  var star = isToday ? ' ★' : '';
+  var out = '<div class="day-nav">'
+    +'<button class="day-nav-arrow" onclick="navDay(-1)">◀</button>'
+    +'<div class="day-title">'+day.name+star+' <span>'+(day.sub||'')+'</span></div>'
+    +'<button class="day-nav-arrow" onclick="navDay(1)">▶</button>'
+    +'</div>'
+    +'<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;">'+db+'</div>'
+    +'<div class="day-layout">'
+    +'<div class="timeline"><div class="tl-header">'+day.name+(isToday?' ★':'')+' · '+(day.sub||'')+'</div>'+tr+'</div>'
+    +'<div class="day-notes">'+nh+'</div>'
+    +'</div>';
+
+  var wc = document.getElementById('week-content');
+  if (wc) wc.innerHTML = out;
+}
+
+// ── Init ──
+(function init() {
+  var d = new Date();
+  var key = getKey();
+  var dow = PT_DAYS[d.getDay()];
+  var dayN = d.getDate();
+  var mon = PT_MONTHS[d.getMonth()];
+
+  // Badge
+  var badge = document.getElementById('today-badge');
+  if (badge) badge.textContent = '★ '+dayN+' '+mon+' · '+dow;
+
+  // Dashboard title
+  var dt = document.getElementById('dash-today-title');
+  if (dt) dt.textContent = 'Hoje · '+dow+' '+dayN+' '+mon;
+
+  // Dashboard timeline
+  var match = DAY_MAP[key];
+  var tl = document.getElementById('dash-timeline');
+  if (tl) {
+    var dayData = match ? (weeks[match.w] ? weeks[match.w].days[match.i] : null) : null;
+    if (dayData) {
+      var h = '<div class="tl-header">'+dayData.name+' · '+(dayData.sub||'')+'</div>';
+      var dr = dayData.rows || [];
+      for (var i=0; i<dr.length; i++) {
+        h += '<div class="tl-row"><div class="tl-time">'+dr[i][0]+'</div><div class="tl-content '+dr[i][1]+'">'+dr[i][2]+'</div></div>';
+      }
+      tl.innerHTML = h;
+    } else {
+      tl.innerHTML = '<div class="tl-row"><div class="tl-time">—</div><div class="tl-content tc-rest">Fora do período planeado</div></div>';
+    }
+  }
+
+  // Set default week state
+  if (match) { CW = match.w; CDI = match.i; }
+  else { CW = 'w3'; CDI = 3; }
+
+  // Mark today in month calendar (only for March 2026)
+  if (d.getFullYear() === 2026 && d.getMonth() === 2) {
+    var mday = document.getElementById('mday-'+dayN);
+    if (mday) {
+      mday.className = mday.className + ' td';
+      var dn = mday.querySelector('.dn');
+      if (dn) dn.textContent = dayN + ' ★';
+    }
+  }
+
+  // Show dashboard
+  showView('dash');
+})();
 </script>
 </body>
 </html>
