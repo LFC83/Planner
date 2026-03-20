@@ -65,6 +65,10 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
 .prog-fill{height:100%;border-radius:4px}
 .p-blue{background:var(--blue)}.p-green{background:var(--green)}.p-accent{background:var(--accent)}
 /* MONTH GRID */
+.month-tabs{display:flex;gap:.4rem;margin-bottom:.9rem}
+.month-tab{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;padding:.35rem .8rem;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;transition:all .15s}
+.month-tab:hover{border-color:var(--border2);color:var(--text)}
+.month-tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
 .month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;background:var(--border);border-radius:var(--r);overflow:hidden}
 .mh{background:var(--s2);font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center;padding:.5rem 0}
 .dc{background:var(--s1);padding:.45rem .4rem;min-height:90px}
@@ -79,6 +83,15 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
 .cb{background:#ff6b6b15;color:#ff8888;border-left:2px solid #ff6b6b}
 .cr{background:#b07fff15;color:#c09fff;border-left:2px solid #b07fff}
 .cn{background:#4dd98a10;color:#4dd98a;border-left:2px solid #4dd98a88}
+.cf{background:#ff9f5a18;color:#ffb87a;border-left:2px solid #ff9f5a}
+/* Mobile 2-col calendar */
+.month-grid-mobile{display:none;flex-direction:column;gap:8px}
+.mgm-week{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
+.mgm-week-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.35rem .6rem;background:var(--s2);border-bottom:1px solid var(--border)}
+.mgm-days{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);padding:2px}
+.mgm-day{background:var(--s1);padding:.5rem .5rem;min-height:80px}
+.mgm-day.we{opacity:.4}
+.mgm-day.td{background:#f0c04008;outline:1px solid var(--accent);outline-offset:-1px}
 /* DAY VIEW */
 .section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-.02em;margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -140,7 +153,8 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
   .sidenav{display:none}
   .content{padding:1rem;padding-bottom:80px}
   .top-grid{grid-template-columns:1fr}
-  .month-grid{font-size:.5rem}
+  .month-grid{display:none}
+  .month-grid-mobile{display:flex}
   .bottom-nav{display:flex}
 }
 @media(min-width:900px){
@@ -157,7 +171,7 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
 
 <header class="topbar">
   <div class="topbar-left">
-    <div class="logo">Março <span>2026</span></div>
+    <div class="logo">Daily Planner <span id="logo-month">Mar 2026</span></div>
     <div class="today-badge" id="today-badge">— Mar</div>
   </div>
   <div class="legend">
@@ -175,10 +189,12 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
   <button class="nav-btn" onclick="showView('dash')"><span class="nav-dot"></span>Dashboard</button>
   <button class="nav-btn" onclick="showView('month')"><span class="nav-dot"></span>Calendário</button>
   <div class="nav-section">Semanas</div>
-  <button class="nav-btn" onclick="showView('week');setWeek('w1')"><span class="nav-dot"></span>3–7 Mar</button>
-  <button class="nav-btn" onclick="showView('week');setWeek('w2')"><span class="nav-dot"></span>10–14 Mar</button>
-  <button class="nav-btn" onclick="showView('week');setWeek('w3')"><span class="nav-dot"></span>16–20 Mar ★</button>
-  <button class="nav-btn" onclick="showView('week');setWeek('w4')"><span class="nav-dot"></span>23–27 Mar</button>
+  <div id="week-nav-items">
+    <button class="nav-btn" onclick="showView('week');setWeek('w1')"><span class="nav-dot"></span>3–7 Mar</button>
+    <button class="nav-btn" onclick="showView('week');setWeek('w2')"><span class="nav-dot"></span>10–14 Mar</button>
+    <button class="nav-btn" onclick="showView('week');setWeek('w3')"><span class="nav-dot"></span>16–20 Mar ★</button>
+    <button class="nav-btn" onclick="showView('week');setWeek('w4')"><span class="nav-dot"></span>23–27 Mar</button>
+  </div>
   <div class="nav-section">Mais</div>
   <button class="nav-btn" onclick="showView('daily')"><span class="nav-dot"></span>Rotina Diária</button>
   <button class="nav-btn" onclick="showView('cert')"><span class="nav-dot"></span>Plano Cert.</button>
@@ -216,40 +232,66 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
 
 <!-- MONTH -->
 <div id="view-month" class="view">
-  <div class="month-grid">
+  <div class="month-tabs">
+    <button class="month-tab active" onclick="showMonth('mar',this)">Março 2026</button>
+    <button class="month-tab" onclick="showMonth('apr',this)">Abril 2026</button>
+  </div>
+
+  <!-- MARÇO desktop -->
+  <div id="cal-mar">
+  <div class="month-grid" id="cal-mar-desktop-ref">
     <div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div><div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>
-    <div id="mday-1" class="dc we" ><div class="dn">1</div></div>
-    <div id="mday-2" class="dc we" ><div class="dn">2</div></div>
-    <div id="mday-3" class="dc we" ><div class="dn">3</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-4" class="dc we" ><div class="dn">4</div><div class="ch cw">💻 POC</div></div>
-    <div id="mday-5" class="dc we" ><div class="dn">5</div><div class="ch cw">💻 Trabalho</div></div>
-    <div id="mday-6" class="dc we" ><div class="dn">6</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-7" class="dc we" ><div class="dn">7</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-8" class="dc we" ><div class="dn">8</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-9" class="dc" ><div class="dn">9</div><div class="ch cw">💻 POC 09–13h</div><div class="ch cw">📞 Calls</div></div>
-    <div id="mday-10" class="dc" ><div class="dn">10 🎓</div><div class="ch cc">🎓 Formação UiPath</div><div class="ch cw">📞 JIRA</div><div class="ch cp">🦷 Dentista</div></div>
-    <div id="mday-11" class="dc" ><div class="dn">11</div><div class="ch cw">💻 POC + JIRA Planning</div><div class="ch cp">🟡 RPA testes</div><div class="ch cp">🔧 Mecânico</div></div>
-    <div id="mday-12" class="dc" ><div class="dn">12</div><div class="ch cb">🐛 Bug Fix (4h)</div><div class="ch cp">🟡 RPA testes</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-13" class="dc" ><div class="dn">13</div><div class="ch cw">💻 POC + PDS</div><div class="ch cb">🐛 Bug Fix #2</div></div>
-    <div id="mday-14" class="dc we" ><div class="dn">14</div><div class="ch cb">🔧 Instalação</div></div>
-    <div id="mday-15" class="dc we" ><div class="dn">15</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-16" class="dc" ><div class="dn">16</div><div class="ch cc">⚡ Mock #1 ✅</div><div class="ch cw">📞 Sprint Planning</div><div class="ch cb">🐛 Bug 496 ✅</div><div class="ch cc">⚡ Mock #2+#3</div></div>
-    <div id="mday-17" class="dc" ><div class="dn">17</div><div class="ch cw">🗒️ Tarefas gerais</div><div class="ch cp">🏦 Banco</div><div class="ch cc">⚡ Mock ✅ · Improv 641 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div id="mday-1" class="dc we"><div class="dn">1</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-2" class="dc"><div class="dn">2</div><div class="ch cw">💻 Trabalho</div></div>
+    <div id="mday-3" class="dc we"><div class="dn">3</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-4" class="dc we"><div class="dn">4</div><div class="ch cw">💻 POC</div></div>
+    <div id="mday-5" class="dc we"><div class="dn">5</div><div class="ch cw">💻 Trabalho</div></div>
+    <div id="mday-6" class="dc we"><div class="dn">6</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-7" class="dc we"><div class="dn">7</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-8" class="dc we"><div class="dn">8</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-9" class="dc"><div class="dn">9</div><div class="ch cw">💻 POC 09–13h</div><div class="ch cw">📞 Calls</div></div>
+    <div id="mday-10" class="dc"><div class="dn">10 🎓</div><div class="ch cc">🎓 Formação UiPath</div><div class="ch cw">📞 JIRA</div><div class="ch cp">🦷 Dentista</div></div>
+    <div id="mday-11" class="dc"><div class="dn">11</div><div class="ch cw">💻 POC + JIRA Planning</div><div class="ch cp">🟡 RPA testes</div><div class="ch cp">🔧 Mecânico</div></div>
+    <div id="mday-12" class="dc"><div class="dn">12</div><div class="ch cb">🐛 Bug Fix (4h)</div><div class="ch cp">🟡 RPA testes</div><div class="ch cc">📚 Estudo</div></div>
+    <div id="mday-13" class="dc"><div class="dn">13</div><div class="ch cw">💻 POC + PDS</div><div class="ch cb">🐛 Bug Fix #2</div></div>
+    <div id="mday-14" class="dc we"><div class="dn">14</div><div class="ch cb">🔧 Instalação</div></div>
+    <div id="mday-15" class="dc we"><div class="dn">15</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-16" class="dc"><div class="dn">16</div><div class="ch cc">⚡ Mock #1 ✅</div><div class="ch cw">📞 Sprint Planning</div><div class="ch cb">🐛 Bug 496 ✅</div><div class="ch cc">⚡ Mock #2+#3</div></div>
+    <div id="mday-17" class="dc"><div class="dn">17</div><div class="ch cw">🗒️ Tarefas gerais</div><div class="ch cp">🏦 Banco</div><div class="ch cc">⚡ Mock ✅ · Improv 641 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
     <div class="dc" id="mday-18"><div class="dn">18</div><div class="ch cw">💻 POC</div><div class="ch cb">⚡ Improv 496 #2 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
     <div class="dc" id="mday-19"><div class="dn" id="mday-19-dn">19</div><div class="ch cw">💻 POC + Scrum Daily</div><div class="ch cp">🔵 Testes 860</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-20" class="dc" ><div class="dn">20</div><div class="ch cw">💻 POC</div><div class="ch cp">🔵 Testes 644 ✅</div><div class="ch cp">🔵 Testes 860</div></div>
-    <div id="mday-21" class="dc we" ><div class="dn">21</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-22" class="dc we" ><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-23" class="dc" ><div class="dn">23</div><div class="ch cp">🔵 Testes 860</div><div class="ch cw">📞 Sync + PAS</div></div>
-    <div id="mday-24" class="dc" ><div class="dn">24</div><div class="ch cp">🔵 Testes 860 ✅</div><div class="ch cn">🟢 PDD 875</div></div>
-    <div id="mday-25" class="dc" ><div class="dn">25</div><div class="ch cn">🟢 PDD 875 ✅</div><div class="ch cc">📚 Revisão cert.</div></div>
-    <div id="mday-26" class="dc" ><div class="dn">26</div><div class="ch cc">📚 Revisão cert.</div></div>
-    <div id="mday-27" class="dc" ><div class="dn">27</div><div class="ch cc">📚 Wrap-up sprint</div></div>
-    <div id="mday-28" class="dc we" ><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-29" class="dc we" ><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-30" class="dc" ><div class="dn">30</div><div class="ch cb">🆕 PAS arranca</div><div class="ch cp">🔵 Sprint 60%</div></div>
-    <div id="mday-31" class="dc" ><div class="dn">31</div><div class="ch cp">🔵 Sprint 60%</div><div class="ch cb">🆕 PAS 40%</div></div>
-    <div class="dc we"><div class="dn"></div></div><div class="dc we"><div class="dn"></div></div><div class="dc we"><div class="dn"></div></div><div class="dc we"><div class="dn"></div></div>
+    <div id="mday-20" class="dc"><div class="dn">20</div><div class="ch cw">💻 POC</div><div class="ch cp">🔵 Testes 644 ✅</div><div class="ch cp">🔵 Testes 860</div></div>
+    <div id="mday-21" class="dc we"><div class="dn">21</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-22" class="dc we"><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-23" class="dc"><div class="dn">23</div><div class="ch cp">🔵 Testes 860</div><div class="ch cw">📞 Sync + PAS</div></div>
+    <div id="mday-24" class="dc"><div class="dn">24</div><div class="ch cp">🔵 Testes 860 ✅</div><div class="ch cn">🟢 PDD 875</div></div>
+    <div id="mday-25" class="dc"><div class="dn">25</div><div class="ch cn">🟢 PDD 875 ✅</div><div class="ch cc">📚 Revisão cert.</div></div>
+    <div id="mday-26" class="dc"><div class="dn">26</div><div class="ch cc">📚 Revisão cert.</div></div>
+    <div id="mday-27" class="dc"><div class="dn">27</div><div class="ch cc">📚 Wrap-up sprint</div></div>
+    <div id="mday-28" class="dc we"><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-29" class="dc we"><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
+    <div id="mday-30" class="dc"><div class="dn">30</div><div class="ch cb">🆕 PAS 50% arranca</div><div class="ch cp">🔵 Sprint 50%</div></div>
+    <div id="mday-31" class="dc"><div class="dn">31</div><div class="ch cp">🔵 Sprint 50%</div><div class="ch cb">🆕 PAS 50%</div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+    <div class="dc we"><div class="dn"></div></div>
+  </div>
+  <!-- MARÇO mobile (2-col) -->
+  <div class="month-grid-mobile" id="cal-mar-mobile"></div>
+  </div>
+
+  <!-- ABRIL (gerado via JS) -->
+  <div id="cal-apr" style="display:none">
+    <div class="month-grid" id="apr-desktop"></div>
+    <div class="month-grid-mobile" id="apr-mobile"></div>
   </div>
 </div>
 
@@ -556,6 +598,175 @@ const weeks = {
         ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
       ], notes: [['ng','📊 Semana 23–27 resumo','Testes 860 ✅ Ter 24 · PDD 875 ✅ Qua 25 · Sprint S2 ✅ · Cert. standby · Prep. PAS 30 Mar.']] },
     ]
+  },
+  aw1: {
+    label: '30Mar–3Abr',
+    days: [
+      { name: 'Seg 30 Mar', sub: 'PAS 50% arranca · Sprint 50%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:30','tc-work','💻 Sprint 50% (4h30)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50% (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [['ng','🔄 Nova alocação','Sprint 50% · PAS 50%. Manter até semana de 20 Abr.']] },
+      { name: 'Ter 31 Mar', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qua 1 Abr', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qui 2 Abr', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Sex 3 Abr', sub: '🇵🇹 Sexta-Feira Santa — Feriado Nacional', rows: [
+        ['Dia','tc-block','🇵🇹 Sexta-Feira Santa — Feriado Nacional'],
+        ['Dia','tc-rest','🌿 Descanso'],
+      ], notes: [['nw','🇵🇹 Feriado nacional','Sexta-Feira Santa. Fim de semana longo: Sex 3 + Sáb 4 + Dom 5 (Páscoa) + Seg 6 (feriado Porto).']] },
+    ]
+  },
+  aw2: {
+    label: '6–10 Abr',
+    days: [
+      { name: 'Seg 6', sub: '📍 2ª Feira Páscoa — Feriado Regional Porto', rows: [
+        ['Dia','tc-block','📍 2ª Feira Páscoa — Feriado Regional Porto'],
+        ['Dia','tc-rest','🌿 Descanso'],
+      ], notes: [['nw','📍 Feriado regional Porto','2ª Feira de Páscoa. Fim de semana longo de 4 dias (Sex 3 a Seg 6).']] },
+      { name: 'Ter 7', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qua 8', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qui 9', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Sex 10', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [] },
+    ]
+  },
+  aw3: {
+    label: '13–17 Abr',
+    days: [
+      { name: 'Seg 13', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Ter 14', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qua 15', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qui 16', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Sex 17', sub: 'Sprint 50% · PAS 50%', rows: [
+        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['17:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [] },
+    ]
+  },
+  aw4: {
+    label: '20–24 Abr',
+    days: [
+      { name: 'Seg 20', sub: 'Sprint 60% · PAS 40% — nova alocação', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [['ng','🔄 Nova alocação 60/40','Sprint 60% · PAS 40% a partir de hoje.']] },
+      { name: 'Ter 21', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qua 22', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qui 23', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Sex 24', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–23:00','tc-rest','🌿 Descanso'],
+      ], notes: [['nw','🇵🇹 Dia da Liberdade amanhã','25 Abr é feriado nacional.']] },
+    ]
+  },
+  aw5: {
+    label: '27–30 Abr',
+    days: [
+      { name: 'Seg 27', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Ter 28', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qua 29', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [] },
+      { name: 'Qui 30', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['08:00–13:00','tc-work','💻 Sprint 60%'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40%'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [['ng','📊 Fim de Abril','Sprint 60/40 mantém-se em Maio.']] },
+    ]
   }
 };
 // ── State ──
@@ -571,7 +782,17 @@ var DAY_MAP = {
   '2026-03-16':{w:'w3',i:0},'2026-03-17':{w:'w3',i:1},'2026-03-18':{w:'w3',i:2},
   '2026-03-19':{w:'w3',i:3},'2026-03-20':{w:'w3',i:4},
   '2026-03-23':{w:'w4',i:0},'2026-03-24':{w:'w4',i:1},'2026-03-25':{w:'w4',i:2},
-  '2026-03-26':{w:'w4',i:3},'2026-03-27':{w:'w4',i:4}
+  '2026-03-26':{w:'w4',i:3},'2026-03-27':{w:'w4',i:4},
+  '2026-03-30':{w:'aw1',i:0},'2026-03-31':{w:'aw1',i:1},
+  '2026-04-01':{w:'aw1',i:2},'2026-04-02':{w:'aw1',i:3},'2026-04-03':{w:'aw1',i:4},
+  '2026-04-06':{w:'aw2',i:0},'2026-04-07':{w:'aw2',i:1},'2026-04-08':{w:'aw2',i:2},
+  '2026-04-09':{w:'aw2',i:3},'2026-04-10':{w:'aw2',i:4},
+  '2026-04-13':{w:'aw3',i:0},'2026-04-14':{w:'aw3',i:1},'2026-04-15':{w:'aw3',i:2},
+  '2026-04-16':{w:'aw3',i:3},'2026-04-17':{w:'aw3',i:4},
+  '2026-04-20':{w:'aw4',i:0},'2026-04-21':{w:'aw4',i:1},'2026-04-22':{w:'aw4',i:2},
+  '2026-04-23':{w:'aw4',i:3},'2026-04-24':{w:'aw4',i:4},
+  '2026-04-27':{w:'aw5',i:0},'2026-04-28':{w:'aw5',i:1},'2026-04-29':{w:'aw5',i:2},
+  '2026-04-30':{w:'aw5',i:3}
 };
 var PT_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 var PT_MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -693,6 +914,197 @@ function renderWeek() {
   if (wc) wc.innerHTML = out;
 }
 
+// ── Month tab switching ──
+var MAR_WEEKS = [
+  {label:'3–7 Mar', wk:'w1'},
+  {label:'10–14 Mar', wk:'w2'},
+  {label:'16–20 Mar ★', wk:'w3'},
+  {label:'23–27 Mar', wk:'w4'}
+];
+var APR_WEEKS = [
+  {label:'30Mar–3Abr', wk:'aw1'},
+  {label:'6–10 Abr', wk:'aw2'},
+  {label:'13–17 Abr', wk:'aw3'},
+  {label:'20–24 Abr', wk:'aw4'},
+  {label:'27–30 Abr', wk:'aw5'}
+];
+
+function updateWeekNav(weekList) {
+  var nav = document.getElementById('week-nav-items');
+  if (!nav) return;
+  var html = '';
+  for (var i=0; i<weekList.length; i++) {
+    var w = weekList[i];
+    var isToday = (w.wk === CW);
+    html += '<button class="nav-btn'+(isToday?' active':'')+'" onclick="showView(\'week\');setWeek(\''+w.wk+'\')">'
+      +'<span class="nav-dot"></span>'+w.label+'</button>';
+  }
+  nav.innerHTML = html;
+}
+
+function showMonth(m, btn) {
+  var calMar = document.getElementById('cal-mar');
+  var calApr = document.getElementById('cal-apr');
+  if (calMar) calMar.style.display = m === 'mar' ? '' : 'none';
+  if (calApr) calApr.style.display = m === 'apr' ? '' : 'none';
+  var tabs = document.querySelectorAll('.month-tab');
+  for (var i=0; i<tabs.length; i++) {
+    tabs[i].className = tabs[i].className.replace(/\bactive\b/,'').trim();
+  }
+  if (btn) btn.className += ' active';
+  // Update week nav
+  updateWeekNav(m === 'apr' ? APR_WEEKS : MAR_WEEKS);
+}
+
+// ── Build mobile 2-col calendar from desktop grid ──
+function buildMobileGrid(sourceGridId, targetId) {
+  var src = document.getElementById(sourceGridId);
+  var tgt = document.getElementById(targetId);
+  if (!src || !tgt) return;
+  var cells = src.querySelectorAll('.dc');
+  var weeks = [];
+  var curWeek = [];
+  for (var i=0; i<cells.length; i++) {
+    curWeek.push(cells[i]);
+    if (curWeek.length === 7) { weeks.push(curWeek); curWeek = []; }
+  }
+  if (curWeek.length) weeks.push(curWeek);
+  var html = '';
+  for (var w=0; w<weeks.length; w++) {
+    var wk = weeks[w];
+    var firstDay = '', lastDay = '';
+    for (var d=0; d<wk.length; d++) {
+      var dn = wk[d].querySelector('.dn');
+      var num = dn ? dn.textContent.replace(/[^\d]/g,'') : '';
+      if (num && !firstDay) firstDay = num;
+      if (num) lastDay = num;
+    }
+    if (!firstDay) continue;
+    html += '<div class="mgm-week">';
+    html += '<div class="mgm-week-label">Semana ' + firstDay + '–' + lastDay + ' Mar</div>';
+    html += '<div class="mgm-days">';
+    for (var d2=0; d2<wk.length; d2++) {
+      var cell = wk[d2];
+      var isWe = cell.className.indexOf('we') >= 0;
+      var isTd = cell.className.indexOf('td') >= 0;
+      html += '<div class="mgm-day'+(isWe?' we':'')+(isTd?' td':'')+'">'+cell.innerHTML+'</div>';
+    }
+    html += '</div></div>';
+  }
+  tgt.innerHTML = html;
+}
+
+// ── April 2026 calendar data ──
+// April 1 = Wednesday (day of week index 3, Mon=0)
+var APR_DAYS = {
+  // week 30Mar-5Apr (starts in month view from Mon)
+  // Actually April starts Wed 1st
+  // Feriados: 3 (Sex Santa national), 6 (2ª Páscoa regional Porto), 25 (Liberdade national)
+  // 30 Mar – 3 Apr: Sprint 50% / PAS 50%
+  // 6–11 Apr: Sprint 50% / PAS 50%
+  // 14–17 Apr: Sprint 50% / PAS 50% (week of 14)
+  // 22 Apr onwards: 60% Sprint / 40% PAS
+  1:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  2:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  3:  {feriado:'🇵🇹 Sexta-Feira Santa', ch:['<div class="ch cf">🇵🇹 Sexta-Feira Santa</div>']},
+  4:  {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  5:  {we:true, ch:['<div class="ch cr">🌿 Páscoa 🐣</div>']},
+  6:  {feriado:'📍 2ª Feira Páscoa (Porto)', ch:['<div class="ch cf">📍 2ª Feira Páscoa · Porto</div>']},
+  7:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  8:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  9:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  10: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  11: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  12: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  13: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  14: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  15: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  16: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  17: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
+  18: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  19: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  20: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  21: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  22: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  23: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  24: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  25: {feriado:'🇵🇹 Dia da Liberdade', ch:['<div class="ch cf">🇵🇹 Dia da Liberdade</div>']},
+  26: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  27: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
+  28: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  29: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
+  30: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']}
+};
+
+function buildAprilCalendar(todayD, todayM) {
+  // April 2026: starts on Wednesday (col index 2 in Mon-first grid)
+  // Mon=0 ... Wed=2
+  var startOffset = 2; // Wednesday
+  var daysInMonth = 30;
+  var desktopEl = document.getElementById('apr-desktop');
+  var mobileEl = document.getElementById('apr-mobile');
+  if (!desktopEl || !mobileEl) return;
+
+  // Desktop 7-col grid
+  var dh = '<div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div><div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>';
+  // Empty cells before month starts (Mon, Tue = 2 empty)
+  for (var e=0; e<startOffset; e++) dh += '<div class="dc we"><div class="dn"></div></div>';
+  for (var day=1; day<=daysInMonth; day++) {
+    var info = APR_DAYS[day] || {};
+    var isWe = !!info.we;
+    var isToday = (todayM === 3 && todayD === day); // month 3 = April (0-indexed)
+    var cls = 'dc' + (isWe?' we':'') + (isToday?' td':'');
+    var dnText = day + (isToday?' ★':'');
+    var content = info.ch ? info.ch.join('') : '';
+    dh += '<div class="' + cls + '"><div class="dn">' + dnText + '</div>' + content + '</div>';
+  }
+  // Fill remaining cells to complete last row
+  var totalCells = startOffset + daysInMonth;
+  var remainder = totalCells % 7;
+  if (remainder !== 0) {
+    for (var r=0; r<(7-remainder); r++) dh += '<div class="dc we"><div class="dn"></div></div>';
+  }
+  desktopEl.innerHTML = dh;
+
+  // Mobile 2-col by week
+  var allCells = desktopEl.querySelectorAll('.dc');
+  var weeks = [];
+  var curWeek = [];
+  for (var i=0; i<allCells.length; i++) {
+    curWeek.push(allCells[i]);
+    if (curWeek.length === 7) { weeks.push(curWeek); curWeek = []; }
+  }
+  if (curWeek.length) weeks.push(curWeek);
+  var mh = '';
+  for (var w=0; w<weeks.length; w++) {
+    var wk = weeks[w];
+    var firstD = '', lastD = '';
+    for (var d=0; d<wk.length; d++) {
+      var dn = wk[d].querySelector('.dn');
+      var num = dn ? dn.textContent.replace(/[^\d]/g,'') : '';
+      if (num && !firstD) firstD = num;
+      if (num) lastD = num;
+    }
+    if (!firstD) continue;
+    mh += '<div class="mgm-week"><div class="mgm-week-label">Semana ' + firstD + '–' + lastD + ' Abr</div><div class="mgm-days">';
+    for (var d2=0; d2<wk.length; d2++) {
+      var cell = wk[d2];
+      var iw = cell.className.indexOf('we') >= 0;
+      var it = cell.className.indexOf('td') >= 0;
+      mh += '<div class="mgm-day'+(iw?' we':'')+(it?' td':'')+'">'+cell.innerHTML+'</div>';
+    }
+    mh += '</div></div>';
+  }
+  mobileEl.innerHTML = mh;
+}
+
+// ── Update logo month dynamically ──
+function updateLogoMonth(d) {
+  var PT_MONTHS_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  var el = document.getElementById('logo-month');
+  if (el) el.textContent = PT_MONTHS_FULL[d.getMonth()] + ' ' + d.getFullYear();
+}
+
 // ── Init ──
 (function init() {
   var d = new Date();
@@ -729,6 +1141,19 @@ function renderWeek() {
   // Set default week state
   if (match) { CW = match.w; CDI = match.i; }
   else { CW = 'w3'; CDI = 3; }
+
+  // Set logo month dynamically
+  updateLogoMonth(d);
+
+  // Build mobile grids
+  buildMobileGrid('cal-mar-desktop-ref', 'cal-mar-mobile');
+  buildAprilCalendar(dayN, d.getMonth());
+
+  // Auto-show April tab if current month is April
+  if (d.getMonth() === 3) {
+    var aprTab = document.querySelector('.month-tab:nth-child(2)');
+    if (aprTab) showMonth('apr', aprTab);
+  }
 
   // Mark today in month calendar (only for March 2026)
   if (d.getFullYear() === 2026 && d.getMonth() === 2) {
