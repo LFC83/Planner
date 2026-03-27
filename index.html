@@ -192,7 +192,7 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
   <div id="week-nav-items">
     <button class="nav-btn" onclick="showView('week');setWeek('w1')"><span class="nav-dot"></span>3–7 Mar</button>
     <button class="nav-btn" onclick="showView('week');setWeek('w2')"><span class="nav-dot"></span>10–14 Mar</button>
-    <button class="nav-btn" onclick="showView('week');setWeek('w3')"><span class="nav-dot"></span>16–20 Mar ★</button>
+    <button class="nav-btn" onclick="showView('week');setWeek('w3')"><span class="nav-dot"></span>16–20 Mar</button>
     <button class="nav-btn" onclick="showView('week');setWeek('w4')"><span class="nav-dot"></span>23–27 Mar</button>
   </div>
   <div class="nav-section">Mais</div>
@@ -216,10 +216,10 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
     <div class="icard ic-imp done"><div class="iid">Improv 641</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 1h</div><div class="idate done">✅ Concluído 17 Mar</div></div>
     <div class="icard ic-imp done"><div class="iid">Improv 496 #2</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 2h</div><div class="idate done">✅ Concluído 18 Mar</div></div>
     <div class="icard ic-bug done"><div class="iid">Bug 496 (novo)</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: 1h30</div><div class="idate done">✅ Concluído 23 Mar</div></div>
-    <div class="icard ic-tst"><div class="iid">Testes 644</div><div class="itype">🔵 Testes</div><div class="iest">Est: 8h restantes</div><div class="prog-wrap"><div class="prog-label"><span>em progresso</span><span>—</span></div><div class="prog-bar"><div class="prog-fill p-blue" style="width:50%"></div></div></div><div class="idate plan">📅 Prev: 27 Mar</div></div>
+    <div class="icard ic-tst done"><div class="iid">Testes 644</div><div class="itype">🔵 Testes</div><div class="iest">Est: 8h</div><div class="prog-wrap"><div class="prog-label"><span>8h/8h</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:100%"></div></div></div><div class="idate done">✅ Concluído 26 Mar</div></div>
     <div class="icard ic-tst done"><div class="iid">Testes 860</div><div class="itype">🔵 Testes</div><div class="iest">Est: 4d / 20h</div><div class="prog-wrap"><div class="prog-label"><span>20h/20h</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:100%"></div></div></div><div class="idate done">✅ Concluído 25 Mar</div></div>
-    <div class="icard ic-bug"><div class="iid">Bug 641</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: pendente</div><div class="prog-wrap"><div class="prog-label"><span>30min feitos</span><span>—</span></div><div class="prog-bar"><div class="prog-fill p-accent" style="width:20%"></div></div></div><div class="idate plan">📅 Prev: a definir</div></div>
-    <div class="icard ic-pdd"><div class="iid">PDD 875</div><div class="itype">🟢 PDD</div><div class="iest">Est: 6h</div><div class="prog-wrap"><div class="prog-label"><span>0h/6h</span><span>0%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:0%"></div></div></div><div class="idate plan">📅 Prev: 31 Mar</div></div>
+    <div class="icard ic-bug done"><div class="iid">Bug 641</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: 30min+</div><div class="prog-wrap"><div class="prog-label"><span>concluído</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:100%"></div></div></div><div class="idate done">✅ Concluído 26 Mar</div></div>
+    <div class="icard ic-pdd"><div class="iid">PDD 875</div><div class="itype">🟢 PDD</div><div class="iest">Est: 6h</div><div class="prog-wrap"><div class="prog-label"><span>0h/6h</span><span>0%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:0%"></div></div></div><div class="idate plan">📅 Prev: 27 Mar</div></div>
   </div>
   <div class="section-title" id="dash-today-title">Hoje</div>
   <div class="day-layout">
@@ -273,13 +273,13 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
     <div id="mday-22" class="dc we"><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
     <div id="mday-23" class="dc"><div class="dn">23</div><div class="ch cb">🐛 Bug 496 + ⚡ 641</div><div class="ch cp">🔵 644 ✅ + PAS</div></div>
     <div id="mday-24" class="dc"><div class="dn">24</div><div class="ch cb">🆕 PAS + 🔵 644</div><div class="ch cp">🔵 860 (9h30)</div></div>
-    <div id="mday-25" class="dc td"><div class="dn">25 ★</div><div class="ch cp">🔵 860 ✅ 20h</div><div class="ch cn">🟢 PDD 875</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-26" class="dc"><div class="dn">26</div><div class="ch cp">🔵 644 (4h)</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-27" class="dc"><div class="dn">27</div><div class="ch cp">🔵 644 ✅</div><div class="ch cb">🆕 PAS 50%</div></div>
+    <div id="mday-25" class="dc"><div class="dn">25</div><div class="ch cp">🔵 860 ✅ 20h</div><div class="ch cn">🟢 PDD 875</div><div class="ch cb">🆕 PAS 50%</div></div>
+    <div id="mday-26" class="dc td"><div class="dn">26 ★</div><div class="ch cn">🟢 PDD 875 (4h)</div><div class="ch cb">🆕 PAS 50%</div></div>
+    <div id="mday-27" class="dc"><div class="dn">27</div><div class="ch cn">🟢 PDD 875 ✅</div><div class="ch cb">🆕 PAS 50%</div></div>
     <div id="mday-28" class="dc we"><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
     <div id="mday-29" class="dc we"><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-30" class="dc"><div class="dn">30</div><div class="ch cn">🟢 PDD 875 (4h)</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-31" class="dc"><div class="dn">31</div><div class="ch cn">🟢 PDD 875 ✅</div><div class="ch cb">🆕 PAS 50%</div></div>
+    <div id="mday-30" class="dc"><div class="dn">30</div><div class="ch cw">💻 Sprint 50%</div><div class="ch cb">🆕 PAS 50%</div></div>
+    <div id="mday-31" class="dc"><div class="dn">31</div><div class="ch cw">💻 Sprint 50%</div><div class="ch cb">🆕 PAS 50%</div></div>
     <div class="dc we"><div class="dn"></div></div>
     <div class="dc we"><div class="dn"></div></div>
     <div class="dc we"><div class="dn"></div></div>
@@ -507,7 +507,7 @@ const weeks = {
     ]
   },
   w3: {
-    label: '16–20 Mar ★',
+    label: '16–20 Mar',
     days: [
       { name: 'Seg 16', sub: 'Mock ×3 + Sprint Planning + Bug 496 ✅', rows: [
         ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
@@ -617,48 +617,19 @@ const weeks = {
         ['ni','📊 PDD 875','Arranca Qui 26. 644 tem prioridade (8h restantes).'],
         ['ng','📚 Day 3 · Agent Memory 101','TTL and Scope']
       ] },
-      { name: 'Qui 26', sub: 'PAS 50% + Testes 644 (4h)', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:00','tc-pers','🔵 Testes 644 (4h) — 4h feitas'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 4 · Cross-Agent Memory'],
-      ], notes: [['ni','📊 Testes 644: 4h/8h','Faltam 4h → Sex 27 ✅'],
-        ['ni','🆕 PAS 50%','4h PAS (1h manhã + 3h tarde).'],
-        ['ng','📚 Day 4 · Cross-Agent Memory','Context: Agents vs. Robots']
-      ] },
-      { name: 'Sex 27', sub: 'PAS 50% + Testes 644 ✅', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:00','tc-pers','🔵 Testes 644 (4h) ✅ 8h concluído'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
-        ['21:00–22:00','tc-cert','📚 Day 5 · Memory & Behavior'],
-      ], notes: [['ng','✅ Testes 644 fechado Sex 27','4h Qui + 4h Sex = 8h ✅'],
-        ['ni','📊 PDD 875','Arranca Seg 30. 4h/dia → fecha Ter 31.'],
-        ['ng','📚 Day 5 · Memory & Behavior','Memory → tool-calling decisions']
-      ] },
-    ]
-  },
-  aw1: {
-    label: '30Mar–3Abr',
-    days: [
-      { name: 'Seg 30 Mar', sub: 'PDD 875 (4h) + PAS 50%', rows: [
+      { name: 'Qui 26 ★', sub: 'Hoje · 641 ✅ + 644 ✅ + PDD 875 arranque', rows: [
         ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
         ['08:00–12:00','tc-pdd','🟢 PDD 875 (4h)'],
         ['12:00–13:00','tc-block','🆕 PAS (1h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
         ['14:00–17:00','tc-block','🆕 PAS (3h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 6 · Grounding & Storage'],
-      ], notes: [['ni','📊 PDD 875: 4h/6h','Faltam 2h → Ter 31 ✅'],
-        ['ng','📚 Day 6 · Grounding & Storage','Storage Buckets + Integration Service']
+        ['21:00–22:00','tc-cert','📚 Day 4 · Cross-Agent Memory'],
+      ], notes: [['ng','✅ Bug 641 + Testes 644 fechados hoje 26 Mar','Sprint limpo — foco total no PDD 875.'],
+        ['ni','📊 PDD 875: 4h/6h','Faltam 2h → Sex 27 manhã ✅'],
+        ['ng','📚 Day 4 · Cross-Agent Memory','Context: Agents vs. Robots']
       ] },
-      { name: 'Ter 31 Mar', sub: 'PDD 875 ✅ + PAS 50%', rows: [
+      { name: 'Sex 27', sub: 'PDD 875 ✅ + PAS 50%', rows: [
         ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
         ['08:00–10:00','tc-pdd','🟢 PDD 875 (2h) ✅ 6h concluído'],
         ['10:00–12:00','tc-work','💻 Sprint — próximo issue'],
@@ -666,8 +637,36 @@ const weeks = {
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
         ['14:00–17:00','tc-block','🆕 PAS (3h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
+        ['21:00–22:00','tc-cert','📚 Day 5 · Memory & Behavior'],
+      ], notes: [['ng','✅ PDD 875 fechado Sex 27','4h Qui + 2h Sex = 6h ✅ Sprint S2 concluído'],
+        ['ng','📚 Day 5 · Memory & Behavior','Memory → tool-calling decisions']
+      ] },
+    ]
+  },
+  aw1: {
+    label: '30Mar–3Abr',
+    days: [
+      { name: 'Seg 30 Mar', sub: 'Sprint 50% + PAS 50%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:00','tc-work','💻 Sprint 50% (4h)'],
+        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+        ['21:00–22:00','tc-cert','📚 Day 6 · Grounding & Storage'],
+      ], notes: [['ng','✅ PDD 875 fechado Sex 27','Sprint livre — próximos issues.'],
+        ['ng','📚 Day 6 · Grounding & Storage','Storage Buckets + Integration Service']
+      ] },
+      { name: 'Ter 31 Mar', sub: 'Sprint 50% + PAS 50%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–12:00','tc-work','💻 Sprint 50% (4h)'],
+        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
         ['21:00–22:00','tc-cert','📚 Day 7 · Tabular Data / RAG'],
-      ], notes: [['ng','✅ PDD 875 fechado Ter 31','4h Seg + 2h Ter = 6h ✅'],
+      ], notes: [
         ['ng','📚 Day 7 · Tabular Data / RAG','Optimizing queries for tables']
       ] },
       { name: 'Qua 1 Abr', sub: 'Sprint 50% · PAS 50%', rows: [
@@ -703,39 +702,43 @@ const weeks = {
         ['Dia','tc-block','📍 2ª Feira Páscoa — Feriado Regional Porto'],
         ['Dia','tc-rest','🌿 Descanso'],
       ], notes: [['nw','📍 Feriado regional Porto','2ª Feira de Páscoa. Fim de semana longo de 4 dias (Sex 3 a Seg 6).']] },
-      { name: 'Ter 7', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+      { name: 'Ter 7', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ['21:00–22:00','tc-cert','📚 Day 10 · Gateways & Logic'],
-      ], notes: [
+        ['21:00–22:00','tc-cert','📚 Day 10 · Gateways & Logic'],
+      ], notes: [['ng','🔄 Nova alocação 60/40','A partir de 6 Abr: Sprint 60% · PAS 40%.'],
         ['ng','📚 Day 10 · Gateways & Logic','XOR / AND / Inclusive gateways ⚠️']
       ] },
-      { name: 'Qua 8', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+      { name: 'Qua 8', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ['21:00–22:00','tc-cert','📚 Day 11 · Maestro Implementation'],
+        ['21:00–22:00','tc-cert','📚 Day 11 · Maestro Implementation'],
       ], notes: [
         ['ng','📚 Day 11 · Maestro Implementation','Start+Wait vs. Invoke Workflow']
       ] },
-      { name: 'Qui 9', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+      { name: 'Qui 9', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ['21:00–22:00','tc-cert','📚 Day 12 · Agent Evaluations'],
+        ['21:00–22:00','tc-cert','📚 Day 12 · Agent Evaluations'],
       ], notes: [
         ['ng','📚 Day 12 · Agent Evaluations','Deterministic vs. LLM-as-Judge']
       ] },
-      { name: 'Sex 10', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+      { name: 'Sex 10', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
         ['17:00–23:00','tc-rest','🌿 Descanso'],
-      ['21:00–22:00','tc-cert','📚 Day 13 · The Full Picture'],
+        ['21:00–22:00','tc-cert','📚 Day 13 · The Full Picture'],
       ], notes: [
         ['ng','📚 Day 13 · The Full Picture','HITL + Escalation outcomes']
       ] },
@@ -744,37 +747,38 @@ const weeks = {
   aw3: {
     label: '13–17 Abr',
     days: [
-      { name: 'Seg 13', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+      { name: 'Seg 13', sub: '🎓 Formação (Dia 1/2) — 0% Sprint/PAS', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–17:00','tc-cert','🎓 Formação — Dia 1 (8h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ['21:00–22:00','tc-cert','📚 Day 14 · Final Mock Audit'],
-      ], notes: [
+        ['21:00–22:00','tc-cert','📚 Day 14 · Final Mock Audit'],
+      ], notes: [['nw','🎓 Formação Seg 13 + Ter 14','0% Sprint · 0% PAS. Dia completo de formação.'],
         ['ng','📚 Day 14 · Final Mock Audit','Gap identification']
       ] },
-      { name: 'Ter 14', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+      { name: 'Ter 14', sub: '🎓 Formação (Dia 2/2) — 0% Sprint/PAS', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–17:00','tc-cert','🎓 Formação — Dia 2 (8h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [['nw','🎓 Formação dia 2','0% Sprint · 0% PAS. Retoma 60/40 a partir de Qua 15.']] },
+      { name: 'Qua 15', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
+        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
+      ], notes: [['ng','🔄 Retoma 60/40','Após 2 dias de formação.']] },
+      { name: 'Qui 16', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
+        ['13:00–14:00','tc-meal','🍽️ Almoço'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
         ['17:00–18:00','tc-pers','🏋️ Ginásio'],
       ], notes: [] },
-      { name: 'Qua 15', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
+      { name: 'Sex 17', sub: 'Sprint 60% · PAS 40%', rows: [
+        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
+        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
         ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Qui 16', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Sex 17', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
+        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
         ['17:00–23:00','tc-rest','🌿 Descanso'],
       ], notes: [] },
     ]
@@ -846,7 +850,7 @@ const weeks = {
 };
 // ── State ──
 var CW = 'w4';
-var CDI = 2;
+var CDI = 3;
 
 // ── Day map ──
 var DAY_MAP = {
@@ -993,7 +997,7 @@ function renderWeek() {
 var MAR_WEEKS = [
   {label:'3–7 Mar', wk:'w1'},
   {label:'10–14 Mar', wk:'w2'},
-  {label:'16–20 Mar ★', wk:'w3'},
+  {label:'16–20 Mar', wk:'w3'},
   {label:'23–27 Mar', wk:'w4'}
 ];
 var APR_WEEKS = [
@@ -1007,12 +1011,15 @@ var APR_WEEKS = [
 function updateWeekNav(weekList) {
   var nav = document.getElementById('week-nav-items');
   if (!nav) return;
+  var td = DAY_MAP[getTodayKey()];
+  var todayWk = td ? td.w : null;
   var html = '';
   for (var i=0; i<weekList.length; i++) {
     var w = weekList[i];
-    var isToday = (w.wk === CW);
+    var isToday = (w.wk === todayWk);
+    var lbl = w.label + (isToday ? ' ★' : '');
     html += '<button class="nav-btn'+(isToday?' active':'')+'" onclick="showView(\'week\');setWeek(\''+w.wk+'\')">'
-      +'<span class="nav-dot"></span>'+w.label+'</button>';
+      +'<span class="nav-dot"></span>'+lbl+'</button>';
   }
   nav.innerHTML = html;
 }
@@ -1215,10 +1222,13 @@ function updateLogoMonth(d) {
 
   // Set default week state
   if (match) { CW = match.w; CDI = match.i; }
-  else { CW = 'w3'; CDI = 3; }
+  else { CW = 'w4'; CDI = 3; }
 
   // Set logo month dynamically
   updateLogoMonth(d);
+
+  // Update week nav to reflect current month and mark today's week
+  updateWeekNav(d.getMonth() === 3 ? APR_WEEKS : MAR_WEEKS);
 
   // Build mobile grids
   buildMobileGrid('cal-mar-desktop-ref', 'cal-mar-mobile');
@@ -1240,6 +1250,8 @@ function updateLogoMonth(d) {
     }
   }
 
+  // Update week nav to highlight correct week
+  updateWeekNav(CW && CW.startsWith('aw') ? APR_WEEKS : MAR_WEEKS);
   // Show dashboard
   showView('dash');
 })();
