@@ -3,1258 +3,1792 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planner Março 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Planner · Luís</title>
 <style>
-:root{
-  --bg:#0a0b0d;--s1:#111318;--s2:#181b21;--border:#232730;--border2:#2e3340;
-  --text:#e2e4ea;--muted:#606878;--muted2:#8892a4;
-  --accent:#f0c040;--blue:#6b9fff;--green:#4dd98a;--red:#ff6b6b;--purple:#b07fff;--orange:#ff9f5a;
-  --r:10px;--r-sm:6px;
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg:#0e0f11; --surface:#16181c; --surface2:#1c1f26;
+  --border:#2a2d35; --border2:#343843;
+  --accent:#e8b84b; --a2:#5b8dee; --a3:#e85b5b; --a4:#5be87a; --a5:#9b5be8;
+  --text:#e8e9ec; --muted:#7a7f8e; --muted2:#5a5f6e;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
-.app{display:flex;flex-direction:column;min-height:100vh}
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;border-bottom:1px solid var(--border);background:var(--s1);position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap}
-.topbar-left{display:flex;align-items:center;gap:.75rem}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;color:var(--accent);white-space:nowrap}
-.logo span{color:var(--muted2);font-weight:400;font-size:.75rem;margin-left:.4rem}
-.today-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;background:var(--accent);color:#000;padding:.2rem .55rem;border-radius:20px;font-weight:500;letter-spacing:.03em;white-space:nowrap}
-.legend{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
-.li{display:flex;align-items:center;gap:.3rem;font-size:.62rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.ld{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-/* MAIN */
-.main{display:flex;flex:1}
-/* SIDENAV */
-.sidenav{width:200px;flex-shrink:0;border-right:1px solid var(--border);padding:1rem .75rem;background:var(--s1);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;display:flex;flex-direction:column;gap:.25rem}
-.nav-section{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:.6rem .5rem .3rem}
-.nav-btn{display:flex;align-items:center;gap:.5rem;padding:.45rem .6rem;border-radius:var(--r-sm);border:none;background:transparent;color:var(--muted2);font-family:'Instrument Sans',sans-serif;font-size:.8rem;cursor:pointer;width:100%;text-align:left;transition:all .15s}
-.nav-btn:hover{background:var(--s2);color:var(--text)}
-.nav-btn.active{background:#f0c04018;color:var(--accent);font-weight:600}
-.nav-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;opacity:.6}
-/* CONTENT */
-.content{flex:1;padding:1.25rem;overflow-x:hidden;min-width:0}
-/* VIEWS - all hidden by default, JS shows active one */
-.view{display:none}
-/* PRIORITIES */
-.top-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
-.obj{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;position:relative;overflow:hidden}
-.obj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.obj.c1::before{background:var(--blue)}.obj.c2::before{background:var(--accent)}.obj.c3::before{background:var(--green)}
-.obj .lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.3rem}
-.obj .ttl{font-weight:600;font-size:.82rem;margin-bottom:.2rem}
-.obj.c1 .ttl{color:var(--blue)}.obj.c2 .ttl{color:var(--accent)}.obj.c3 .ttl{color:var(--green)}
-.obj .dl{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted)}
-/* SPRINT BOARD */
-.sprint-header{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
-.sprint-header::after{content:'';flex:1;height:1px;background:var(--border)}
-.itrack{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin-bottom:1.5rem}
-.icard{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);padding:.65rem .75rem;border-left:3px solid transparent}
-.icard.ic-bug{border-left-color:var(--red)}.icard.ic-imp{border-left-color:var(--orange)}.icard.ic-tst{border-left-color:var(--blue)}.icard.ic-pdd{border-left-color:var(--green)}
-.icard.done{opacity:.5}
-.iid{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem}
-.icard.done .iid{text-decoration:line-through}
-.itype{font-size:.7rem;color:var(--muted2);margin:.15rem 0}
-.iest{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted)}
-.idate{font-family:'JetBrains Mono',monospace;font-size:.62rem;margin-top:.3rem}
-.idate.done{color:var(--green)}.idate.plan{color:var(--accent)}
-.prog-wrap{margin:.4rem 0 .2rem}
-.prog-label{display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);margin-bottom:.2rem;font-family:'JetBrains Mono',monospace}
-.prog-bar{background:var(--border);border-radius:4px;height:4px;overflow:hidden}
-.prog-fill{height:100%;border-radius:4px}
-.p-blue{background:var(--blue)}.p-green{background:var(--green)}.p-accent{background:var(--accent)}
-/* MONTH GRID */
-.month-tabs{display:flex;gap:.4rem;margin-bottom:.9rem}
-.month-tab{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;padding:.35rem .8rem;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;transition:all .15s}
-.month-tab:hover{border-color:var(--border2);color:var(--text)}
-.month-tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
-.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;background:var(--border);border-radius:var(--r);overflow:hidden}
-.mh{background:var(--s2);font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center;padding:.5rem 0}
-.dc{background:var(--s1);padding:.45rem .4rem;min-height:90px}
-.dc.we{opacity:.4}.dc.td{background:#f0c04008;outline:1px solid var(--accent);outline-offset:-1px}
-.dc.gc{background:#4dd98a06}
-.dn{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;color:var(--muted);margin-bottom:.3rem}
-.dc.td .dn{color:var(--accent)}
-.ch{font-size:.56rem;padding:1px 4px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;line-height:1.5}
-.cw{background:#6b9fff15;color:#8baaff;border-left:2px solid #6b9fff}
-.cp{background:#f0c04015;color:#f0c040;border-left:2px solid #f0c040}
-.cc{background:#4dd98a15;color:#4dd98a;border-left:2px solid #4dd98a}
-.cb{background:#ff6b6b15;color:#ff8888;border-left:2px solid #ff6b6b}
-.cr{background:#b07fff15;color:#c09fff;border-left:2px solid #b07fff}
-.cn{background:#4dd98a10;color:#4dd98a;border-left:2px solid #4dd98a88}
-.cf{background:#ff9f5a18;color:#ffb87a;border-left:2px solid #ff9f5a}
-/* Mobile 2-col calendar */
-.month-grid-mobile{display:none;flex-direction:column;gap:8px}
-.mgm-week{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
-.mgm-week-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.35rem .6rem;background:var(--s2);border-bottom:1px solid var(--border)}
-.mgm-days{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);padding:2px}
-.mgm-day{background:var(--s1);padding:.5rem .5rem;min-height:80px}
-.mgm-day.we{opacity:.4}
-.mgm-day.td{background:#f0c04008;outline:1px solid var(--accent);outline-offset:-1px}
-/* DAY VIEW */
-.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-.02em;margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.week-selector{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
-.week-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:.3rem .65rem;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.05em}
-.week-btn:hover{border-color:var(--border2);color:var(--text)}
-.week-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
-.day-layout{display:grid;grid-template-columns:1fr;gap:.75rem}
-.day-nav{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
-.day-nav-arrow{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:.9rem;padding:.25rem .6rem;cursor:pointer;transition:all .15s;line-height:1}
-.day-nav-arrow:hover{background:var(--border2)}
-.day-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.03em;color:var(--text);flex:1}
-.day-title span{color:var(--muted);font-weight:400;font-size:.9rem}
-.day-nav-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.3rem .6rem;cursor:pointer;transition:all .15s}
-.day-nav-btn:hover,.day-nav-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
-.day-nav-btn.today-mark{border-color:var(--accent);color:var(--accent)}
-.timeline{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.tl-header{padding:.6rem 1rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.tl-row{display:flex;align-items:flex-start;gap:.75rem;padding:.55rem 1rem;border-bottom:1px solid var(--border)}
-.tl-row:last-child{border-bottom:none}
-.tl-time{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);min-width:90px;padding-top:2px;flex-shrink:0}
-.tl-content{flex:1;font-size:.8rem;padding:3px 8px 3px 10px;border-radius:5px;border-left:3px solid transparent;line-height:1.4}
-.tc-work{background:#6b9fff12;color:#8baaff;border-left-color:var(--blue)}
-.tc-pers{background:#f0c04012;color:#f0c060;border-left-color:var(--accent)}
-.tc-cert{background:#4dd98a12;color:#5de898;border-left-color:var(--green)}
-.tc-block{background:#ff6b6b12;color:#ff8888;border-left-color:var(--red)}
-.tc-rest{background:#b07fff10;color:#c09fff;border-left-color:var(--purple)}
-.tc-meal{background:#ffffff08;color:var(--muted2);border-left-color:var(--border2)}
-.tc-pdd{background:#4dd98a0c;color:#4dd98a;border-left-color:#4dd98a88}
-.day-notes{display:flex;flex-direction:column;gap:.5rem}
-.note{padding:.7rem .85rem;border-radius:var(--r-sm);font-size:.76rem;line-height:1.5;border:1px solid transparent}
-.note .nl{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;opacity:.8}
-.ng{background:#4dd98a0e;border-color:#4dd98a25;color:#5de898}
-.nw{background:#ff6b6b0e;border-color:#ff6b6b25;color:#ff8888}
-.ni{background:#6b9fff0e;border-color:#6b9fff25;color:#8baaff}
-.nr{background:#b07fff0e;border-color:#b07fff25;color:#c09fff}
-.ny{background:#f0c0400e;border-color:#f0c04025;color:#f0d060}
-/* CERT */
-.cert-grid{display:grid;grid-template-columns:1fr;gap:1rem}
-.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem}
-.card h3{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.9rem}
-.sh{font-weight:600;font-size:.8rem;margin:.9rem 0 .4rem;font-family:'Syne',sans-serif}
-.sh:first-of-type{margin-top:0}
-.sh.b{color:var(--blue)}.sh.y{color:var(--accent)}.sh.g{color:var(--green)}.sh.r{color:var(--red)}.sh.v{color:var(--purple)}
-.tb{display:flex;gap:.75rem;margin-bottom:.4rem;align-items:flex-start}
-.tt{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);min-width:86px;padding-top:3px}
-.tc{flex:1;font-size:.76rem;padding:3px 8px;border-radius:4px;line-height:1.4}
-.tw{background:#6b9fff12;color:#8baaff}.tpp{background:#f0c04012;color:#f0c060}
-.tcc{background:#4dd98a12;color:#5de898}.tbb{background:#ff6b6b12;color:#ff8888}
-.tn{background:#ffffff08;color:var(--muted2)}.tr{background:#b07fff10;color:#c09fff}
-.divider{height:1px;background:var(--border);margin:1rem 0}
-/* BOTTOM NAV */
-.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);z-index:100}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.6rem .25rem;background:none;border:none;color:var(--muted);font-size:.58rem;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;gap:.2rem;transition:color .15s}
-.bnav-btn .bicon{font-size:1.1rem;line-height:1}
-.bnav-btn.active{color:var(--accent)}
-/* RESPONSIVE */
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* Noise overlay */
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.4;}
+
+.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:2rem;}
+
+/* ─── HEADER ─── */
+header{display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+h1{font-family:'Syne',sans-serif;font-size:3.2rem;line-height:1;letter-spacing:-2px;font-weight:800;}
+h1 em{color:var(--accent);font-style:italic;}
+.sub{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);margin-top:.4rem;text-transform:uppercase;letter-spacing:.12em;}
+.legend{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:flex-end;}
+.li{display:flex;align-items:center;gap:.4rem;font-size:.65rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.ld{width:7px;height:7px;border-radius:50%;}
+
+/* ─── TODAY BANNER ─── */
+#today-banner{
+  background:linear-gradient(135deg,#1a1c2a 0%,#16181c 60%,#1a1f1a 100%);
+  border:1px solid var(--border2);border-left:3px solid var(--accent);
+  border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;
+  display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;}
+.today-main .today-date{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--accent);}
+.today-main .today-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.3rem;}
+.today-alloc{text-align:right;}
+.alloc-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:.3rem .8rem;border-radius:6px;font-weight:500;}
+.alloc-sprint{background:#5b8dee18;color:#8baaff;border:1px solid #5b8dee44;}
+.alloc-pas{background:#e8b84b18;color:#f0c96a;border:1px solid #e8b84b44;}
+.alloc-formacao{background:#e85b5b18;color:#f07a7a;border:1px solid #e85b5b44;}
+.today-tasks{margin-top:.75rem;display:flex;flex-wrap:wrap;gap:.4rem;}
+.today-task-chip{font-size:.7rem;font-family:'JetBrains Mono',monospace;padding:.2rem .6rem;border-radius:4px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+
+/* ─── OBJECTIVES ─── */
+.objs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+.obj{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;position:relative;overflow:hidden;}
+.obj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.obj.c1::before{background:var(--a2);}.obj.c2::before{background:var(--accent);}.obj.c3::before{background:var(--a4);}
+.obj .lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.25rem;}
+.obj .ttl{font-weight:600;font-size:.88rem;}
+.obj.c1 .ttl{color:#8baaff;}.obj.c2 .ttl{color:var(--accent);}.obj.c3 .ttl{color:var(--a4);}
+.obj .dl{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-top:.2rem;}
+
+/* ─── ISSUE TRACKER ─── */
+.itrack-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.5rem;}
+.itrack{display:grid;grid-template-columns:repeat(9,1fr);gap:.4rem;margin-bottom:1.5rem;}
+.inote{font-family:'JetBrains Mono',monospace;font-size:.58rem;margin-top:.3rem;color:var(--muted);}
+.icard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;position:relative;overflow:hidden;}
+.icard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.icard.done{opacity:.65;}.icard.done::after{content:'✓';position:absolute;top:.5rem;right:.6rem;font-size:.9rem;color:var(--a4);}
+.icard.ic-bug::before{background:var(--a3);}.icard.ic-imp::before{background:var(--accent);}
+.icard.ic-tst::before{background:var(--a2);}.icard.ic-pdd::before{background:var(--a5);}
+.iid{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.2rem;}
+.itype{font-size:.64rem;font-weight:600;margin-bottom:.25rem;}
+.ic-bug .itype{color:#f07a7a;}.ic-imp .itype{color:var(--accent);}.ic-tst .itype{color:#8baaff;}.ic-pdd .itype{color:#c09bf5;}
+.iest{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-bottom:.2rem;}
+.idate{font-family:'JetBrains Mono',monospace;font-size:.6rem;margin-top:.3rem;}
+.idate.done{color:var(--a4);}.idate.plan{color:var(--muted);}
+
+/* ─── TABS / NAV ─── */
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.tab{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;
+  padding:.45rem .9rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);
+  cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tab:hover{border-color:var(--accent);color:var(--accent);}
+.tab.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600;}
+
+/* Mobile nav dropdown */
+.tabs-mobile{display:none;position:relative;margin-bottom:1.5rem;}
+.tabs-mobile select{width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:.6rem 1rem;
+  border-radius:8px;cursor:pointer;appearance:none;outline:none;}
+.tabs-mobile::after{content:'▾';position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--accent);pointer-events:none;}
+
+/* ─── VIEWS ─── */
+.view{display:none;}.view.on{display:block;}
+
+/* ─── CALENDAR GRID ─── */
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.mh{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:center;padding:.45rem 0;}
+.dc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem;min-height:108px;}
+.dc.we{opacity:.45;}.dc.today-cell{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)22;}
+.dc.gc{border-color:var(--a4);}.dc.emp{background:transparent;border-color:transparent;}
+.dn{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between;}
+.dc.today-cell .dn{color:var(--accent);}
+.dc.we .dn::after{content:'WE';font-size:.5rem;background:var(--border);padding:1px 4px;border-radius:3px;color:var(--muted);}
+.ch{font-size:.59rem;padding:2px 5px;border-radius:3px;margin-bottom:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
+.cw{background:#5b8dee18;color:#8baaff;border-left:2px solid #5b8dee;}
+.cp{background:#e8b84b18;color:#f0c96a;border-left:2px solid #e8b84b;}
+.cc{background:#5be87a18;color:#7aef99;border-left:2px solid #5be87a;}
+.cb{background:#e85b5b18;color:#f07a7a;border-left:2px solid #e85b5b;}
+.cr{background:#9b5be818;color:#c09bf5;border-left:2px solid #9b5be8;}
+.cn{background:#1a4a2822;color:#7aef99;border-left:2px solid #5be87a;}
+
+/* ─── PROGRESS CARDS ─── */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
+.pl{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.8rem;}
+.pbo{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-bottom:.4rem;}
+.pbi{height:100%;border-radius:4px;}
+.pt{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.ml{margin-top:.7rem;}
+.ms{display:flex;align-items:center;gap:.5rem;font-size:.72rem;padding:.28rem 0;border-bottom:1px solid var(--border);color:var(--muted);}
+.ms:last-child{border-bottom:none;}
+.md{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.mx{font-family:'JetBrains Mono',monospace;font-size:.62rem;min-width:55px;}
+
+/* ─── CARDS (week views) ─── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
+.card h3{font-family:'JetBrains Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;}
+.tb{display:flex;gap:.8rem;margin-bottom:.45rem;align-items:flex-start;}
+.tt{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);min-width:84px;padding-top:4px;}
+.tc{flex:1;font-size:.77rem;padding:4px 8px;border-radius:5px;line-height:1.4;}
+.tw{background:#5b8dee18;color:#8baaff;}
+.tpp{background:#e8b84b18;color:#f0c96a;}
+.tcc{background:#5be87a18;color:#7aef99;}
+.tbb{background:#e85b5b18;color:#f07a7a;}
+.tn{background:#1a1c22;color:var(--muted);}
+.tr{background:#9b5be818;color:#c09bf5;}
+
+/* ─── NOTES ─── */
+.note{padding:.75rem;border-radius:8px;margin-top:.75rem;font-size:.73rem;line-height:1.5;}
+.note .nl{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem;}
+.nr{background:#2a1a4a22;border:1px solid #9b5be833;color:#c09bf5;}
+.nw{background:#4a1a1a22;border:1px solid #e85b5b33;color:#f07a7a;}
+.ni{background:#2a3f6e22;border:1px solid #5b8dee33;color:#8baaff;}
+.ng{background:#1a4a2822;border:1px solid #2a5a3833;color:#7aef99;}
+
+.sh{font-weight:600;font-size:.8rem;margin:1rem 0 .4rem;}
+.sh.b{color:#8baaff;}.sh.y{color:var(--accent);}.sh.g{color:var(--a4);}.sh.r{color:#f07a7a;}.sh.v{color:#c09bf5;}
+
+.week-meta{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);margin-bottom:1rem;}
+
+/* ─── ISSUE BADGES (estado visual) ─── */
+.issue-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.55rem;
+  padding:.15rem .4rem;border-radius:3px;margin-top:.3rem;font-weight:600;letter-spacing:.04em;}
+.badge-done    {background:#5be87a18;color:var(--a4);border:1px solid #5be87a44;}
+.badge-progress{background:#5b8dee18;color:#8baaff; border:1px solid #5b8dee44;}
+.badge-pending {background:#e8b84b18;color:var(--accent);border:1px solid #e8b84b44;}
+
+/* ─── TODAY CELL — borda accent + fundo suave ─── */
+.dc.today-cell{
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 1px var(--accent)33;
+  background:linear-gradient(135deg,#1a1c22 0%,#1e1a0f 100%);
+}
+.dc.today-cell .dn{color:var(--accent);}
+
+/* ─── MOBILE SIDENAV → menu horizontal sticky no topo ─── */
+/* (as tabs já são flex; em mobile tornam-se scroll horizontal sticky) */
+
+/* ─── CERT VIEW ─── */
+.dtopics-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem;}
+.dtopic{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.6rem .7rem;position:relative;transition:border-color .2s;}
+.dtopic:hover{border-color:var(--a4);}
+.dtopic-done{opacity:.6;background:#1a4a2811;border-color:#2a5a3855;}
+.dtopic-done::after{content:'✓';position:absolute;top:.4rem;right:.5rem;font-size:.75rem;color:var(--a4);}
+.dtag{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--accent);font-weight:600;margin-bottom:.2rem;letter-spacing:.06em;}
+.dtitle{font-size:.7rem;font-weight:600;color:var(--text);margin-bottom:.2rem;line-height:1.3;}
+.ddesc{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);line-height:1.4;}
+.dcheck{display:none;}
+@media(max-width:1100px){.dtopics-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:768px){.dtopics-grid{grid-template-columns:repeat(2,1fr);}}
+.cert-hours{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
+.cert-row{display:flex;justify-content:space-between;font-size:.76rem;}
+.cert-row span:first-child{color:var(--muted);}
+.cert-row span:last-child{font-family:'JetBrains Mono',monospace;}
+.cert-total{border-top:1px solid var(--border);padding-top:.5rem;display:flex;justify-content:space-between;font-size:.85rem;}
+.cert-total span:first-child{color:var(--text);font-weight:600;}
+.cert-total span:last-child{font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:600;}
+
+/* ─── ALLOC INFO BOX ─── */
+.alloc-info{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;}
+.alloc-info-item{display:flex;flex-direction:column;gap:.2rem;}
+.alloc-info-item .label{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.alloc-info-item .value{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;}
+.alloc-info-item .value.sprint{color:#8baaff;}
+.alloc-info-item .value.pas{color:var(--accent);}
+.alloc-info-item .value.formacao{color:#f07a7a;}
+.alloc-info-divider{width:1px;height:40px;background:var(--border);}
+
+/* ─── DAY PICKER ─── */
+#day-picker{
+  display:flex;gap:.35rem;align-items:center;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:10px;padding:.5rem .75rem;margin-bottom:1.2rem;
+  flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+}
+#day-picker::-webkit-scrollbar{display:none;}
+.day-picker-label{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);
+  white-space:nowrap;padding-right:.5rem;
+  border-right:1px solid var(--border);margin-right:.15rem;
+}
+.dpbtn{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  padding:.3rem .7rem;border-radius:6px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;
+  transition:all .18s;white-space:nowrap;flex-shrink:0;
+  letter-spacing:.04em;
+}
+.dpbtn:hover{border-color:var(--accent);color:var(--accent);}
+.dpbtn.dp-active{
+  background:var(--accent);border-color:var(--accent);
+  color:var(--bg);font-weight:700;
+}
+.dpbtn.dp-today::after{
+  content:'★';font-size:.55rem;margin-left:.3rem;
+  vertical-align:super;color:var(--bg);
+}
+.dpbtn:not(.dp-active).dp-today::after{color:var(--accent);}
+
+/* Day section in daily view */
+#daily-day-content{transition:opacity .15s;}
+#daily-day-content.fading{opacity:0;}
+
+/* ─── CERT PHASES ─── */
+.cert-phase{margin-bottom:1.4rem;}
+.cert-phase-header{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.5rem .8rem;border-radius:8px;
+  margin-bottom:.5rem;
+  background:var(--surface2);border:1px solid var(--border2);
+}
+.cert-phase-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;
+  padding:.15rem .5rem;border-radius:4px;letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.cert-phase-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);}
+.cert-phase-dates{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:auto;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .itrack{grid-template-columns:repeat(5,1fr);}
+}
 @media(max-width:900px){
-  .sidenav{display:none}
-  .content{padding:1rem;padding-bottom:80px}
-  .top-grid{grid-template-columns:1fr}
-  .month-grid{display:none}
-  .month-grid-mobile{display:flex}
-  .bottom-nav{display:flex}
+  .itrack{grid-template-columns:repeat(4,1fr);}
 }
-@media(min-width:900px){
-  .day-layout{grid-template-columns:1fr 320px}
-  .cert-grid{grid-template-columns:1fr 1fr}
+@media(max-width:768px){
+  body{font-size:.9rem;}
+  .wrap{padding:1rem;}
+  header{flex-direction:column;align-items:flex-start;gap:1rem;}
+  h1{font-size:2.4rem;}
+  .legend{justify-content:flex-start;}
+
+  /* Grids → coluna única total */
+  .objs{grid-template-columns:1fr;}
+  .itrack{grid-template-columns:repeat(2,1fr);}
+  .grid2{grid-template-columns:1fr;}
+  .pgrid{grid-template-columns:1fr;}
+  .dtopics-grid{grid-template-columns:repeat(2,1fr);}
+
+  /* Today banner */
+  #today-banner{grid-template-columns:1fr;}
+  .today-alloc{text-align:left;margin-top:.5rem;}
+
+  /* Alloc info */
+  .alloc-info{gap:.8rem;flex-wrap:wrap;}
+  .alloc-info-divider{display:none;}
+
+  /* Cert */
+  .cert-hours{gap:.4rem;}
+
+  /* Calendário compacto */
+  .mgrid{grid-template-columns:repeat(7,1fr);gap:1px;}
+  .dc{min-height:60px;padding:.3rem;}
+  .ch{font-size:.5rem;padding:1px 3px;}
+  .dn{font-size:.6rem;}
+  .mh{font-size:.55rem;}
+
+  /* ── TABS: passam a menu horizontal sticky no topo ── */
+  .tabs{
+    display:flex !important;          /* sobrepõe o display:none anterior */
+    flex-direction:row;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+    padding:.4rem .5rem;
+    gap:.35rem;
+    margin-bottom:1rem;
+    margin-left:-1rem;
+    margin-right:-1rem;
+    padding-left:1rem;
+    padding-right:1rem;
+    scrollbar-width:none;             /* Firefox */
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex-shrink:0;
+    font-size:.65rem;
+    padding:.35rem .7rem;
+    white-space:nowrap;
+  }
+
+  /* Esconde o dropdown mobile (já não é necessário) */
+  .tabs-mobile{display:none;}
+
+  /* Day Picker sticky no mobile */
+  #day-picker{
+    position:sticky;
+    top:48px;           /* abaixo das tabs sticky */
+    z-index:99;
+    border-radius:0;
+    margin-left:-1rem;
+    margin-right:-1rem;
+    border-left:none;border-right:none;border-top:none;
+  }
 }
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media(max-width:480px){
+  h1{font-size:2rem;}
+  .itrack{grid-template-columns:1fr 1fr;}
+  .mgrid .mh{font-size:.5rem;}
+  .dn{font-size:.62rem;}
+}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="noise"></div>
+<div class="wrap">
 
-<header class="topbar">
-  <div class="topbar-left">
-    <div class="logo">Daily Planner <span id="logo-month">Mar 2026</span></div>
-    <div class="today-badge" id="today-badge">— Mar</div>
+<!-- ════════════════════════════════════════════════════════════
+     PLANNER_DB — INÍCIO DO OBJETO DE DADOS
+     Para atualizar: pede ao modelo para gerar apenas este bloco.
+     Contém: objetivos, issues, semanas, calendário, rotinas, cert.
+     ════════════════════════════════════════════════════════════ -->
+<script>
+const PLANNER_DB = {
+
+  /* ── META ── */
+  meta: {
+    title: "Planner",
+    subtitle: "Planner Pessoal · Rotina Sustentável Anti-Burnout",
+    person: "Luís"
+  },
+
+  /* ── REGRAS DE ALOCAÇÃO ──
+     Compara a data do sistema com as regras definidas.
+     Alterar aqui as datas para futuras transições. */
+  allocRules: {
+    sprintOnly: { until: "2026-04-05" },        /* Até 05 Abr (inclusive): 100% Sprint */
+    mixed:      { from:  "2026-04-06" },        /* A partir de 06 Abr: 60% Sprint / 40% PAS */
+    formacao:   { days: ["2026-04-13","2026-04-14"] } /* 13 e 14 Abr: 0% Sprint (Formação 8h) */
+  },
+
+  /* ── OBJETIVOS / PRIORIDADES ── */
+  objectives: [
+    { rank:"🥇 Prioridade 1", color:"c2", title:"Certificação Agentic Automation", detail:"🎯 Mock ×3 feito · Exame 24 Mar–6 Abr" },
+    { rank:"🥈 Prioridade 2", color:"c3", title:"Sprint: Testes 860 → Testes 644 → PDD 875", detail:"📅 16–27 Mar · 60% slot trabalho" },
+    { rank:"🥉 Best Effort",  color:"c1", title:"POC Microsoft Copilot", detail:"⏱ 2h/dia · recuperar POC em falta" }
+  ],
+
+  /* ── SPRINT ISSUES ──
+     Estado real · done:true = concluído · done:false = pendente.
+     note: campo opcional para badge de estado. */
+  issues: [
+    { id:"Bug 496",        type:"ic-bug", typeLabel:"🐛 Bug Fix",     est:"Est: 8h",         done:true,  date:"✅ 16 Mar" },
+    { id:"Improv 496",     type:"ic-imp", typeLabel:"⚡ Improvement", est:"Est: 2h",         done:true,  date:"✅ 16 Mar" },
+    { id:"Improv 641",     type:"ic-imp", typeLabel:"⚡ Improvement", est:"Est: 1h",         done:true,  date:"✅ 17 Mar" },
+    { id:"Improv 496 #2",  type:"ic-imp", typeLabel:"⚡ Improvement", est:"Est: 2h",         done:true,  date:"✅ 18 Mar" },
+    { id:"Bug 496 (novo)", type:"ic-bug", typeLabel:"🐛 Bug Fix",     est:"Est: 1h30",       done:true,  date:"✅ 23 Mar" },
+    { id:"Testes 860",     type:"ic-tst", typeLabel:"🔵 Testes",      est:"20h · 100%",      done:true,  date:"✅ 25 Mar" },
+    { id:"Testes 644",     type:"ic-tst", typeLabel:"🔵 Testes",      est:"Est: 8h",         done:true,  date:"✅ 27 Mar", note:"✅ Concluído" },
+    { id:"Bug 641",        type:"ic-bug", typeLabel:"🐛 Bug Fix",     est:"Est: 30min",      done:true,  date:"✅ Concluído",   note:"✅ Concluído" },
+    { id:"PDD 875",        type:"ic-pdd", typeLabel:"🟢 PDD",         est:"Est: 6h · 0%",    done:false, date:"📅 Prev: 31 Mar", note:"⬜ Não iniciado" }
+  ],
+
+  /* ── SEMANAS (tabs) ── */
+  weeks: [
+    { id:"month",  label:"Mês" },
+    { id:"w1",     label:"Sem 3–7 Mar" },
+    { id:"w2",     label:"Sem 10–14 Mar" },
+    { id:"w3",     label:"Sem 16–20 Mar" },
+    { id:"w4",     label:"Sem 23–27 Mar" },
+    { id:"daily",  label:"Rotina Diária" },
+    { id:"cert",   label:"Plano Cert." }
+  ],
+
+  /* ── FERIADOS (Portugal 2026) ──
+     type:"national" = feriado nacional
+     type:"optional" = feriado opcional / municipal */
+  holidays: [
+    { date:"2026-04-03", name:"Sexta-feira Santa",   type:"national" },
+    { date:"2026-04-05", name:"Páscoa",              type:"national" },
+    { date:"2026-04-25", name:"Dia da Liberdade",    type:"national" },
+    { date:"2026-05-01", name:"Dia do Trabalhador",  type:"national" },
+    { date:"2026-06-04", name:"Corpo de Deus",       type:"national" },
+    { date:"2026-06-10", name:"Dia de Portugal",     type:"national" },
+    { date:"2026-06-13", name:"Santo António",       type:"optional" },
+    { date:"2026-06-24", name:"São João",            type:"optional" },
+    { date:"2026-06-29", name:"São Pedro",           type:"optional" }
+  ],
+
+  /* ── EVENTOS DO CALENDÁRIO (D1–D14 + marcos) ──
+     Usado pelo Day Picker para mostrar a tarefa cert. no card de destaque.
+     iso: "YYYY-MM-DD" · chipCls: classe de cor do chip */
+  calendarEvents: [
+    /* Fase 0 */
+    { iso:"2026-03-10", label:"🎓 Formação oficial UiPath (4h)",     chipCls:"cc" },
+    { iso:"2026-03-16", label:"⚡ Mock Exam ×3 ✅",                   chipCls:"cc" },
+    /* Fase I */
+    { iso:"2026-03-23", label:"📚 D1 · Agent vs. RPA",               chipCls:"cc" },
+    { iso:"2026-03-24", label:"📚 D2 · System Prompts",              chipCls:"cc" },
+    /* Fase II */
+    { iso:"2026-03-25", label:"📚 D3 · Agent Memory 101",            chipCls:"cc" },
+    { iso:"2026-03-26", label:"📚 D4 · Cross-Agent Memory",          chipCls:"cc" },
+    { iso:"2026-03-27", label:"📚 D5 · Memory & Behavior",           chipCls:"cc" },
+    /* Fase III */
+    { iso:"2026-03-30", label:"📚 D6 · Grounding & Storage",         chipCls:"cc" },
+    { iso:"2026-03-31", label:"📚 D7 · Tabular Data / RAG",          chipCls:"cc" },
+    { iso:"2026-04-01", label:"📚 D8 · Chunking Strategies",         chipCls:"cc" },
+    /* Fase IV */
+    { iso:"2026-04-02", label:"📚 D9 · BPMN 2.0 Basics",            chipCls:"cc" },
+    { iso:"2026-04-07", label:"📚 D10 · Gateways & Logic",           chipCls:"cc" },
+    { iso:"2026-04-08", label:"📚 D11 · Maestro Implementation",     chipCls:"cc" },
+    /* Fase V–VI */
+    { iso:"2026-04-09", label:"📚 D12 · Agent Evaluations",          chipCls:"cc" },
+    { iso:"2026-04-10", label:"📚 D13 · The Full Picture",           chipCls:"cc" },
+    { iso:"2026-04-13", label:"📚 D14 · Final Mock Audit",           chipCls:"cc" },
+    /* Final Stretch */
+    { iso:"2026-05-01", label:"🏆 Exame UiPath — ALVO",              chipCls:"cc", highlight:true }
+  ],
+
+  /* ── CALENDÁRIO (MARÇO 2026) ──
+     Grelha: Seg–Dom. 1 Mar = Domingo → 6 slots vazios antes.
+     NOTA: star e highlight foram removidos — o JS injeta-os dinamicamente
+     com base em todayISO e calendarEvents. */
+  calendar: {
+    month: "Março", year: 2026,
+    startOffset: 6,
+    days: [
+      { d:1,  we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:2,  we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:3,  we:false, chips:[{c:"cw",t:"💻 POC Copilot"},{c:"cc",t:"📚 D — Estudo (Ter)"}] },
+      { d:4,  we:false, chips:[{c:"cb",t:"🦷 Dentista 9–10:30"},{c:"cw",t:"📞 Call #2 15:00"},{c:"cw",t:"📞 Call #4 15:30"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:5,  we:false, chips:[{c:"cw",t:"💻 POC Copilot"},{c:"cp",t:"🏢 Escritório 11:30"},{c:"cw",t:"📞 Call #1 14:30"},{c:"cw",t:"📞 Call #3 15:00"},{c:"cb",t:"🦷 Follow-up Dentista"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:6,  we:false, chips:[{c:"cw",t:"💻 POC Copilot"},{c:"cw",t:"📹 Zoom 15:30"},{c:"cc",t:"📚 D — Estudo (Sex)"}] },
+      { d:7,  we:true,  chips:[{c:"cb",t:"🚗 Deslocação 07:45"},{c:"cb",t:"🏥 Consulta 8:15"},{c:"cp",t:"✂️ Barbeiro 9h"},{c:"cp",t:"🐾 Veterinário ~10h"}] },
+      { d:8,  we:true,  chips:[{c:"cr",t:"🌿 Descanso total"}] },
+      { d:9,  we:false, chips:[{c:"cw",t:"📞 Reunião 08:30"},{c:"cw",t:"💻 POC Copilot 09–13h"},{c:"cw",t:"📞 3× Calls 14–16h"},{c:"cb",t:"⚡ Velocity JIRA 16h"},{c:"cc",t:"📚 D — Estudo (Seg)"}] },
+      { d:10, we:false, chips:[{c:"cc",t:"🎓 Formação UiPath 08–12h"},{c:"cp",t:"🟡 RPA simples 12–13h"},{c:"cw",t:"📞 Reunião JIRA 14h"},{c:"cp",t:"🦷 Dentista 14:45"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:11, we:false, chips:[{c:"cw",t:"💻 POC 08–09:30h"},{c:"cw",t:"📞 JIRA Planning 09:30h"},{c:"cp",t:"🟡 RPA simples 11–13h"},{c:"cp",t:"🟡 RPA simples 14–17h"},{c:"cb",t:"🔧 Mecânico 16:30"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:12, we:false, chips:[{c:"cw",t:"💻 POC 08–10h"},{c:"cb",t:"🐛 Bug Fix 10–13h"},{c:"cb",t:"🐛 Bug Fix 14–15h"},{c:"cp",t:"🟡 RPA testes 15–17h"},{c:"cc",t:"📚 D — Estudo (Qui)"}] },
+      { d:13, we:false, chips:[{c:"cw",t:"💻 POC 08–10:30h"},{c:"cw",t:"📞 Reunião PDS 10:30"},{c:"cb",t:"🐛 Bug Fix 11–13h"},{c:"cb",t:"🐛 Bug Fix 14–17h"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:14, we:true,  chips:[{c:"cb",t:"🔧 Instalação 08–13h"},{c:"cr",t:"🌿 Tarde descanso"}] },
+      { d:15, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:16, we:false, chips:[{c:"cc",t:"⚡ Mock #1 08–09h ✅"},{c:"cw",t:"📞 Sprint Planning 09:30"},{c:"cb",t:"🐛 Bug 496 ✅ · Improv ✅"},{c:"cc",t:"⚡ Mock #2 15h · #3 19h ✅"}] },
+      { d:17, we:false, chips:[{c:"cw",t:"🗒️ Tarefas gerais 08h"},{c:"cp",t:"🏦 Banco 09–10h"},{c:"cc",t:"⚡ Mock Exam ✅"},{c:"cb",t:"⚡ Improv 641 ✅"},{c:"cp",t:"🔵 Testes 644 14–17h"},{c:"cc",t:"📚 D — Estudo (Ter)"}] },
+      { d:18, we:false, chips:[{c:"cc",t:"📬 Voucher window abre"},{c:"cw",t:"💻 POC 08–10h"},{c:"cb",t:"⚡ Improv 496 #2 ✅"},{c:"cp",t:"🔵 Testes 644 12–17h"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:19, we:false, chips:[{c:"cw",t:"💻 POC 08–09:30h"},{c:"cw",t:"📞 Scrum Daily 09:30"},{c:"cp",t:"🔵 Testes 860 10:30–17h"},{c:"cc",t:"📚 D — Estudo (Qui)"}] },
+      { d:20, we:false, chips:[{c:"cw",t:"💻 POC 08–10h"},{c:"cp",t:"🔵 Testes 644 ✅ 10–13h"},{c:"cp",t:"🔵 Testes 860 14–17h"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:21, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:22, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:23, we:false, chips:[{c:"cp",t:"🔵 Testes 860 08–12:30h"},{c:"cw",t:"📞 Sync 10:30 · PAS 12:00"},{c:"cp",t:"🔵 Testes 860 14–17h"},{c:"cc",t:"📚 D1 · Agent vs. RPA"}] },
+      { d:24, we:false, chips:[{c:"cp",t:"🔵 Testes 860 ✅ 08–12:30h"},{c:"cn",t:"🟢 PDD 875 12:30–17h"},{c:"cc",t:"📚 D2 · System Prompts"}] },
+      { d:25, we:false, chips:[{c:"cn",t:"🟢 PDD 875 ✅ 08–10:30h"},{c:"cc",t:"📚 D3 · Agent Memory 101"}] },
+      { d:26, we:false, chips:[{c:"cc",t:"📚 D4 · Cross-Agent Memory"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:27, we:false, chips:[{c:"cc",t:"📚 D5 · Memory & Behavior"},{c:"cr",t:"🌿 Noite descanso"}] },
+      { d:28, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:29, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
+      { d:30, we:false, chips:[{c:"cw",t:"💻 Sprint 60% · PAS 40%"},{c:"cc",t:"📚 D6 · Grounding & Storage"}] },
+      { d:31, we:false, chips:[{c:"cw",t:"💻 Sprint 60% · PAS 40%"},{c:"cc",t:"📚 D7 · Tabular Data / RAG"}] }
+    ]
+  },
+
+  /* ── ROTINA DIÁRIA BASE ── */
+  dailyRoutine: {
+    weekdays: [
+      { t:"07:00–07:30", cls:"tn", txt:"🐕 Passeio da cadela" },
+      { t:"07:30–08:00", cls:"tn", txt:"🥐 Pequeno-almoço + preparação" },
+      { t:"08:00–10:00", cls:"tw", txt:"💻 Bloco foco — POC Copilot (máxima concentração)" },
+      { t:"10:00–13:00", cls:"tw", txt:"💻 Trabalho — reuniões, emails, operacional" },
+      { t:"13:00–14:00", cls:"tn", txt:"🍽️ Almoço — inegociável, sem ecrã" },
+      { t:"14:00–17:00", cls:"tw", txt:"💻 Trabalho — POC + tarefas + calls" },
+      { t:"17:00–18:00", cls:"tpp", txt:"🏋️ Ginásio — inegociável" },
+      { t:"18:00–21:00", cls:"tr",  txt:"🌿 Bloco pessoal — jantar, cadela, desligar" },
+      { t:"21:00–22:00", cls:"tcc", txt:"📚 Estudo (apenas 3 noites/semana — 1h máx.)" },
+      { t:"21:00–23:00", cls:"tr",  txt:"🌿 Descanso (noites sem estudo)" },
+      { t:"22:00–23:00", cls:"tr",  txt:"🌙 Descanso — sem ecrãs exigentes" }
+    ],
+    notes: [
+      { cls:"nr", label:"🐕 Âncora mental", txt:"Os dois passeios (07h e 18–19h) são os teus resets cognitivos. Usa-os sem telemóvel." }
+    ]
+  },
+
+  /* ── FILOSOFIA ANTI-BURNOUT ── */
+  antiBurnout: [
+    { cls:"nr", label:"💜 Regra das 3 noites", txt:"Estudo apenas 3 noites por semana, 1h máximo. As restantes 4 noites e fim de semana são de recuperação. Zero excepções." },
+    { cls:"ni", label:"💙 Bloco 08–10h é sagrado", txt:"É o teu pico cognitivo. Sem emails, sem Slack, sem reuniões. O POC Copilot avança aqui ou não avança." },
+    { cls:"ng", label:"💚 1h de estudo é suficiente", txt:"3 sessões/semana × ~3 semanas = ~9h + 4h formação + mock. Preparação adequada para um Associate." },
+    { cls:"nw", label:"⚠️ Sinal de alerta", txt:"Se após 20 min não consegues concentrar — para. Descanso não planeado é melhor que estudo ineficaz." }
+  ],
+  burnoutMath: "Estudo diário neste mês → burnout semana 3 → produtividade zero em tudo.<br>3 noites/semana → ritmo sustentável → chegas ao dia 25 em condições de exame.",
+
+  /* ── PROGRESSOS (barra) ── */
+  progress: [
+    {
+      label:"💻 POC Copilot — Best Effort", pct:5, color:"var(--a2)",
+      sub:"Sem deadline fixa · subordinado à certificação · bloco 08–10h diário",
+      milestones:[{mx:"3–7",txt:"Setup & arquitectura"},{mx:"9–13",txt:"Desenvolvimento core"},{mx:"16–20",txt:"Testes & iteração"},{mx:"23–31",txt:"Refinamento (se tempo)"}]
+    },
+    {
+      label:"🎓 Formação UiPath", pct:10, color:"var(--accent)",
+      sub:"3 noites/semana · máx. 1h por sessão · estudo suporta certificação",
+      milestones:[{mx:"3–9",txt:"Estudo Ter/Sex/Seg"},{mx:"10",txt:"Formação 4h"},{mx:"11–18",txt:"Mock Exam (janela 7 dias)"},{mx:"16–22",txt:"Revisão por domínio"}]
+    },
+    {
+      label:"🥇 Certificação UiPath AA — Prioridade #1", pct:10, color:"var(--a4)",
+      sub:"Datas fixas — inegociável · Exam window: 23 Mar – 6 Abr",
+      milestones:[{mx:"10",txt:"Formação 4h"},{mx:"11–18",txt:"Mock Exam (janela)"},{mx:"18–23",txt:"Aguardar voucher"},{mx:"23–6Abr",txt:"🎯 Exame final"}]
+    }
+  ],
+
+  /* ── PLANO DE CERTIFICAÇÃO ── */
+  cert: {
+    title:  "UiPath Agentic Automation",
+    target: "1 Mai 2026",
+
+    /* ── PHASES (nova estrutura) ──
+       renderCert() lê este array se existir; fallback para weeks se não. */
+    phases: [
+      {
+        tag:"Fase 0", title:"Preparação",  dates:"Mar 2026",
+        color:"var(--accent)",
+        events:[
+          { date:"Ter 10 Mar", task:"🎓 Formação oficial UiPath (4h)", done:true  },
+          { date:"Seg 16 Mar", task:"⚡ Mock Exam ×3 ✅",              done:true  }
+        ]
+      },
+      {
+        tag:"Fase I", title:"Foundations (D1–D2)", dates:"23–24 Mar",
+        color:"#8baaff",
+        events:[
+          { date:"Seg 23 Mar", task:"📚 D1 · Agent vs. RPA",    done:false },
+          { date:"Ter 24 Mar", task:"📚 D2 · System Prompts",   done:false }
+        ]
+      },
+      {
+        tag:"Fase II", title:"Memory (D3–D5)", dates:"25–27 Mar",
+        color:"var(--a5)",
+        events:[
+          { date:"Qua 25 Mar", task:"📚 D3 · Agent Memory 101",   done:false },
+          { date:"Qui 26 Mar", task:"📚 D4 · Cross-Agent Memory",  done:false },
+          { date:"Sex 27 Mar", task:"📚 D5 · Memory & Behavior",   done:false }
+        ]
+      },
+      {
+        tag:"Fase III", title:"Context (D6–D8)", dates:"30 Mar – 1 Abr",
+        color:"var(--a2)",
+        events:[
+          { date:"Seg 30 Mar", task:"📚 D6 · Grounding & Storage",    done:false },
+          { date:"Ter 31 Mar", task:"📚 D7 · Tabular Data / RAG",     done:false },
+          { date:"Qua 1 Abr",  task:"📚 D8 · Chunking Strategies",    done:false }
+        ]
+      },
+      {
+        tag:"Fase IV", title:"Maestro (D9–D11)", dates:"2–8 Abr",
+        color:"var(--a4)",
+        events:[
+          { date:"Qui 2 Abr",  task:"📚 D9 · BPMN 2.0 Basics",          done:false },
+          { date:"Ter 7 Abr",  task:"📚 D10 · Gateways & Logic",         done:false },
+          { date:"Qua 8 Abr",  task:"📚 D11 · Maestro Implementation",   done:false }
+        ]
+      },
+      {
+        tag:"Fase V–VI", title:"Quality + Review (D12–D14)", dates:"9–13 Abr",
+        color:"var(--a3)",
+        events:[
+          { date:"Qui 9 Abr",  task:"📚 D12 · Agent Evaluations",  done:false },
+          { date:"Sex 10 Abr", task:"📚 D13 · The Full Picture",   done:false },
+          { date:"Seg 13 Abr", task:"📚 D14 · Final Mock Audit",   done:false }
+        ]
+      },
+      {
+        tag:"Final", title:"Final Stretch", dates:"14 Abr – 1 Mai",
+        color:"var(--accent)",
+        events:[
+          { date:"14–30 Abr", task:"🔁 Buffer revisão + consolidação", done:false },
+          { date:"1 Mai",     task:"🏆 Exame — ALVO",                  done:false, highlight:true }
+        ]
+      }
+    ],
+
+    /* weeks mantido como fallback ─ não é renderizado directamente */
+    weeks: [
+      { label:"Semana 1 · 3–6 Mar",   cls:"b", sessions:2, hours:"2h",
+        days:[{ d:"Ter 3", cls:"tcc", txt:"🏗️ Fundamentos Agentic AI" },{ d:"Sex 6", cls:"tcc", txt:"🔧 UiPath Studio — overview" }] },
+      { label:"Semana 2 · 9–13 Mar",  cls:"y", note:"Formação + mock + revisão",
+        days:[{ d:"Seg 9", cls:"tcc", txt:"📖 Revisão pré-formação" },{ d:"Ter 10", cls:"tcc", txt:"🎓 FORMAÇÃO 4h" },{ d:"Qua 11", cls:"tcc", txt:"⚡ MOCK EXAM" },{ d:"Qui 12", cls:"tcc", txt:"📖 Revisão domínios fracos" }] },
+      { label:"Semana 3 · 16–20 Mar", cls:"g", sessions:3, hours:"3h",
+        days:[{ d:"Ter 17", cls:"tcc", txt:"🔍 Testing & Validation" },{ d:"Qui 19", cls:"tcc", txt:"🚀 Deployment & Monitoring" },{ d:"Sex 20", cls:"tcc", txt:"🧠 Revisão geral" }] },
+      { label:"Semana 4 · 23–31 Mar", cls:"r", note:"D1–D7 + exam window",
+        days:[{ d:"Seg 23", cls:"tcc", txt:"📚 D1 · Agent vs. RPA" },{ d:"Ter 24", cls:"tcc", txt:"📚 D2 · System Prompts" },{ d:"26–31", cls:"tbb", txt:"📚 D3–D7 · Memory & Context" }] }
+    ],
+
+    hoursBreakdown: [
+      { label:"Formação UiPath (Ter 10 Mar)", hrs:"4h",  color:"var(--accent)" },
+      { label:"Mock Exam × 3 (Seg 16 Mar)",  hrs:"3h",  color:"var(--accent)" },
+      { label:"Fases I–II · D1–D5 (Mar)",    hrs:"5h",  color:"#8baaff"       },
+      { label:"Fases III–IV · D6–D11 (Abr)", hrs:"6h",  color:"var(--a4)"     },
+      { label:"Fases V–VI · D12–D14 (Abr)",  hrs:"3h",  color:"var(--a3)"     },
+      { label:"Buffer revisão (Abr)",         hrs:"~4h", color:"var(--muted)"  }
+    ],
+    totalHours: "≈ 25h",
+
+    notes: [
+      { cls:"ng", label:"📊 Contexto", txt:"Exame Associate = nível entrada. Plano de 14 dias estruturado cobre todos os domínios com buffer de revisão antes de 1 Mai." },
+      { cls:"nr", label:"💜 Consolidação", txt:"Com descanso entre sessões o cérebro processa melhor. 1h por noite × 3 noites/semana é o ritmo ideal sem burnout." },
+      { cls:"nw", label:"🏁 Buffer Final", txt:"14–30 Abr são buffer de consolidação. Se algum tópico ficou por rever, este é o momento. Exame marcado para 1 Mai." }
+    ],
+
+    topics: [
+      { d:"D1",  title:"Agent vs. RPA",       desc:"Reasoning Engine vs. Rule-Based",           done:false },
+      { d:"D2",  title:"System Prompts",       desc:"Identity, goals, escalation logic",         done:false },
+      { d:"D3",  title:"Agent Memory 101",     desc:"TTL and Scope",                             done:false },
+      { d:"D4",  title:"Cross-Agent Memory",   desc:"Context: Agents vs. Robots",               done:false },
+      { d:"D5",  title:"Memory & Behavior",    desc:"Memory → tool-calling decisions",           done:false },
+      { d:"D6",  title:"Grounding & Storage",  desc:"Buckets + Integration Service",            done:false },
+      { d:"D7",  title:"Tabular Data / RAG",   desc:"Optimizing queries for tables",            done:false },
+      { d:"D8",  title:"Chunking Strategies",  desc:"Chunk size → retrieval accuracy",          done:false },
+      { d:"D9",  title:"BPMN 2.0",            desc:"Service/User/Send tasks → right executor", done:false },
+      { d:"D10", title:"Gateways",            desc:"XOR / AND / Inclusive gateways ⚠️",        done:false },
+      { d:"D11", title:"Maestro",             desc:"Start+Wait vs. Invoke Workflow",            done:false },
+      { d:"D12", title:"Evaluations",         desc:"Deterministic vs. LLM-as-Judge",           done:false },
+      { d:"D13", title:"Full Picture",        desc:"HITL + Escalation outcomes",               done:false },
+      { d:"D14", title:"Final Mock Audit",    desc:"Gap identification",                        done:false }
+    ]
+  },
+
+  /* ── SEMANAS DETALHADAS ──
+     Conteúdo narrativo de cada semana para os cards. */
+  weekDetails: {
+
+    w1: {
+      meta:"Semana 2–6 Março · Qua 4★ hoje · Qui 5 escritório + calls · Sex 6 Zoom call",
+      cards: [
+        {
+          title:"Qua 4 · Hoje  |  Qui 5 · Escritório + Calls",
+          sections: [
+            {
+              shCls:"", shLabel:"",
+              rows:[
+                {t:"07:00–07:30",cls:"tn",txt:"🐕 Passeio cadela"},
+                {t:"07:30–08:00",cls:"tn",txt:"🥐 Pequeno-almoço"},
+                {t:"08:00–09:00",cls:"tw",txt:"💻 POC Copilot"},
+                {t:"09:00–10:30",cls:"tbb",txt:"🦷 Dentista (ausente)"},
+                {t:"10:30–13:00",cls:"tw",txt:"💻 Trabalho — retomar tarefas"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–15:00",cls:"tw",txt:"💻 Trabalho"},
+                {t:"15:00–15:30",cls:"tw",txt:"📞 Call #2"},
+                {t:"15:30–16:00",cls:"tw",txt:"📞 Call #4"},
+                {t:"16:00–17:00",cls:"tw",txt:"✅ Wrap-up + notas do dia"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–23:00",cls:"tr",txt:"🌿 Descanso total — sem estudo"}
+              ],
+              notes:[{cls:"nr",label:"💜 Nota",txt:"Dia com dentista + 2 calls. Trolhas adiados para data a definir. Noite de descanso."}]
+            },
+            {
+              shCls:"b", shLabel:"Qui 5 · Escritório + Calls remarcadas",
+              rows:[
+                {t:"07:00–07:30",cls:"tn",txt:"🐕 Passeio cadela"},
+                {t:"07:30–08:00",cls:"tn",txt:"🥐 Pequeno-almoço"},
+                {t:"08:00–11:30",cls:"tw",txt:"💻 POC Copilot + trabalho (foco)"},
+                {t:"11:00–11:15",cls:"tbb",txt:"🦷 Follow-up dentista (chamada)"},
+                {t:"11:30–12:00",cls:"tpp",txt:"🚗 Deslocação → escritório"},
+                {t:"12:00–12:30",cls:"tpp",txt:"🏢 Entrega documento"},
+                {t:"12:30–13:00",cls:"tpp",txt:"🚗 Regresso"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–14:30",cls:"tw",txt:"💻 Trabalho"},
+                {t:"14:30–15:00",cls:"tw",txt:"📞 Call #1"},
+                {t:"15:00–15:30",cls:"tw",txt:"📞 Call #3"},
+                {t:"15:30–17:00",cls:"tw",txt:"💻 Trabalho + wrap-up"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–23:00",cls:"tr",txt:"🌿 Descanso total — sem estudo"}
+              ]
+            }
+          ]
+        },
+        {
+          title:"Ter 3 · Estudo  |  Sex 6 · Zoom + Estudo",
+          sections: [
+            {
+              shCls:"v", shLabel:"Ter 3",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:00",cls:"tw",txt:"💻 Bloco foco — POC Copilot"},
+                {t:"10:00–13:00",cls:"tw",txt:"💻 Trabalho"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tw",txt:"💻 Trabalho + POC"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo UiPath (1h)"},
+                {t:"22:00–23:00",cls:"tr",txt:"🌙 Descanso"}
+              ]
+            },
+            {
+              shCls:"g", shLabel:"Sex 6",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:00",cls:"tw",txt:"💻 Bloco foco — POC Copilot"},
+                {t:"10:00–13:00",cls:"tw",txt:"💻 Trabalho"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–15:30",cls:"tw",txt:"💻 Trabalho + POC"},
+                {t:"15:30–16:10",cls:"tw",txt:"📹 Zoom Call"},
+                {t:"16:10–17:00",cls:"tw",txt:"✅ Wrap-up semana"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo UiPath (1h)"},
+                {t:"22:00–23:00",cls:"tr",txt:"🌙 Descanso"}
+              ],
+              notes:[{cls:"nr",label:"💜 Semana 1 resumo",txt:"Estudo: Ter 3 + Sex 6 (2 × 1h = 2h). Qua 4 + Qui 5: descanso total à noite. Trolhas: data a definir."}]
+            },
+            {
+              shCls:"r", shLabel:"Sáb 7 · Manhã Preenchida",
+              rows:[
+                {t:"07:45",cls:"tpp",txt:"🚗 Deslocação (30 min)"},
+                {t:"08:15",cls:"tbb",txt:"🏥 Consulta médica"},
+                {t:"09:00",cls:"tpp",txt:"✂️ Barbeiro"},
+                {t:"~10:00",cls:"tpp",txt:"🐾 Veterinário"},
+                {t:"Tarde",cls:"tr",txt:"🌿 Descanso"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    w2: {
+      meta:"Semana 9–13 Março · Qua 11 ★ hoje · RPA simples · Trolhas · Qui/Sex continuação",
+      cards: [
+        {
+          title:"Seg 9 / Ter 10 🎓 / Qua 11 ★ Hoje",
+          sections:[
+            {
+              shCls:"b", shLabel:"Seg 9 — concluído",
+              rows:[
+                {t:"08:30–09:00",cls:"tw",txt:"📞 Reunião"},
+                {t:"09:00–13:00",cls:"tw",txt:"💻 POC Copilot"},
+                {t:"14:00–16:00",cls:"tw",txt:"📞 3× Calls"},
+                {t:"16:00–17:00",cls:"tbb",txt:"⚡ Velocity JIRA"}
+              ]
+            },
+            {
+              shCls:"y", shLabel:"Ter 10 🎓 — concluído",
+              rows:[
+                {t:"08:00–12:00",cls:"tcc",txt:"🎓 Formação Agentic Automation (4h)"},
+                {t:"12:00–13:00",cls:"tpp",txt:"🟡 RPA simples (1h)"},
+                {t:"14:00–14:45",cls:"tw",txt:"📞 Reunião JIRA"},
+                {t:"14:45–16:30",cls:"tpp",txt:"🦷 Dentista (deslocação + consulta + regresso)"},
+                {t:"16:30–17:00",cls:"tpp",txt:"🟡 RPA simples (30min)"}
+              ]
+            },
+            {
+              shCls:"g", shLabel:"Qua 11 ★ · JIRA Planning + RPA simples + Mecânico",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–09:30",cls:"tw",txt:"💻 POC Copilot (1h30)"},
+                {t:"09:30–11:00",cls:"tw",txt:"📞 JIRA Planning (1h30)"},
+                {t:"11:00–13:00",cls:"tpp",txt:"🟡 RPA simples — desenvolvimento (2h)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tpp",txt:"🟡 RPA simples — desenvolvimento (3h)"},
+                {t:"16:30–17:30",cls:"tbb",txt:"🚗 Deslocação mecânico"},
+                {t:"17:30–18:30",cls:"tbb",txt:"🔧 Mecânico"},
+                {t:"18:30–19:30",cls:"tbb",txt:"🚗 Regresso mecânico"},
+                {t:"19:30–23:00",cls:"tr",txt:"🌿 Descanso"}
+              ],
+              notes:[
+                {cls:"nw",label:"⚠️ Ginásio cancelado · Trolhas → Qui 12",txt:"Mecânico 16:30–19:30. Trolhas remarcados para amanhã 08–10h."},
+                {cls:"ni",label:"📊 RPA simples",txt:"Ter 1h30 + Qua 5h = ~6.5h. Continua Qui 12."}
+              ]
+            }
+          ]
+        },
+        {
+          title:"Qui 12 / Sex 13 / Sáb 14",
+          sections:[
+            {
+              shCls:"b", shLabel:"Qui 12 · Bug Fix (prioridade) + RPA testes",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:00",cls:"tw",txt:"💻 POC Copilot ⚠️ trolhas 30min"},
+                {t:"10:00–13:00",cls:"tbb",txt:"🐛 Bug Fix — resolução (3h)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–15:00",cls:"tbb",txt:"🐛 Bug Fix — resolução (1h) ✅ concluído"},
+                {t:"15:00–17:00",cls:"tpp",txt:"🟡 RPA simples — testes (2h)"},
+                {t:"17:00–21:00",cls:"tr",txt:"🌿 Cadela + descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo — revisão (1h)"}
+              ],
+              notes:[
+                {cls:"nw",label:"🔧 Trolhas",txt:"30min dentro da janela 08–10h — POC mantém-se no restante tempo."},
+                {cls:"ni",label:"📊 Bug fix hoje",txt:"4h totais (10–15h). RPA testes: 2h hoje + 5h Sex = 7h ✅"}
+              ]
+            },
+            {
+              shCls:"v", shLabel:"Sex 13 · POC + PDS + Bug Fix #2 (novo)",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:30",cls:"tw",txt:"💻 POC Copilot (2h30)"},
+                {t:"10:30–11:00",cls:"tw",txt:"📞 Reunião PDS"},
+                {t:"11:00–13:00",cls:"tbb",txt:"🐛 Bug Fix #2 — resolução (2h)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tbb",txt:"🐛 Bug Fix #2 — resolução (3h)"},
+                {t:"17:00–23:00",cls:"tr",txt:"🌿 Descanso — fim de semana"}
+              ],
+              notes:[{cls:"nw",label:"⚠️ Bug Fix #2 transborda 1h",txt:"6h estimadas, 5h disponíveis hoje. 1h restante → Seg 16 tarde. RPA simples testes derrapam para semana 16."}]
+            },
+            {
+              shCls:"r", shLabel:"Sáb 14 · Instalação 08:00–13:00",
+              rows:[
+                {t:"08:00–13:00",cls:"tbb",txt:"🔧 Instalação Operador"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"Tarde",cls:"tr",txt:"🌿 Descanso — fim de semana"}
+              ],
+              notes:[{cls:"nw",label:"⚠️ Semana densa",txt:"Formação Agentic (Ter 10) + trolhas possível (Qua 11). Noites de descanso protegidas."}]
+            }
+          ]
+        }
+      ]
+    },
+
+    w3: {
+      meta:"Semana 16–20 Março · Seg 16 ★ hoje · Sprint: Bug 496 → Improv 641/496 → Testes 860 · POC 2h/dia · Voucher 18 Mar",
+      cards:[
+        {
+          title:"Seg 16 ★ · Mock ×3 + Bug 496  |  Ter 17 · Banco + Bug 496 ✅",
+          sections:[
+            {
+              shCls:"b", shLabel:"Seg 16 ★ · Mock ×3 + Sprint Planning + Bug 496 ✅ + Improv 496 ✅",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–09:00",cls:"tcc",txt:"⚡ Mock Exam #1 (1h) ✅"},
+                {t:"09:00–09:30",cls:"tbb",txt:"🐛 Bug 496 (30min)"},
+                {t:"09:30–10:30",cls:"tw",txt:"📞 Sprint Planning (1h)"},
+                {t:"10:30–13:00",cls:"tbb",txt:"🐛 Bug 496 + Improv 496 — manhã ✅"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–15:00",cls:"tbb",txt:"🐛 Bug 496 — conclusão ✅ 8h"},
+                {t:"15:00–16:00",cls:"tcc",txt:"⚡ Mock Exam #2 (1h)"},
+                {t:"16:00–17:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–19:00",cls:"tr",txt:"🌿 Jantar + descanso"},
+                {t:"19:00–20:00",cls:"tcc",txt:"⚡ Mock Exam #3 (1h)"},
+                {t:"20:00–23:00",cls:"tr",txt:"🌿 Descanso"}
+              ],
+              notes:[
+                {cls:"ng",label:"✅ Bug 496 · Improv 496",txt:"Ambos fechados hoje. Mock ×3 concluídos. POC cancelado — recuperar Ter–Sex."},
+                {cls:"ni",label:"⚡ Mock ×3 — excepção única",txt:"#1 às 08h ✅ · #2 às 15h · #3 às 19h. Intervalo obrigatório entre tentativas."}
+              ]
+            },
+            {
+              shCls:"y", shLabel:"Ter 17 — concluído · Banco + Mock ✅ + Improv 641 ✅ + Testes 644",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–09:00",cls:"tw",txt:"🗒️ Tarefas gerais"},
+                {t:"09:00–10:00",cls:"tpp",txt:"🏦 Banco"},
+                {t:"10:00–11:00",cls:"tcc",txt:"⚡ Mock Exam ✅"},
+                {t:"11:00–12:00",cls:"tbb",txt:"⚡ Improv 641 (1h) ✅"},
+                {t:"12:00–13:00",cls:"tr",txt:"🌿 Buffer"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tpp",txt:"🔵 Testes 644 (3h)"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo UiPath (1h)"}
+              ],
+              notes:[{cls:"ng",label:"✅ Mock · Improv 641 · Testes 644 3h",txt:"POC não aconteceu — sem recuperação prevista. Testes 860 substituídos por Testes 644."}]
+            }
+          ]
+        },
+        {
+          title:"Qua 18 ★ · Voucher  |  Qui 19  |  Sex 20",
+          sections:[
+            {
+              shCls:"g", shLabel:"Qua 18 ★ · 📬 Voucher + Improv 496 #2 ✅ + Testes 644",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:00",cls:"tw",txt:"💻 POC (2h)"},
+                {t:"10:00–12:00",cls:"tbb",txt:"⚡ Improv 496 #2 (2h) ✅"},
+                {t:"12:00–13:00",cls:"tpp",txt:"🔵 Testes 644 (1h)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tpp",txt:"🔵 Testes 644 (3h) — 7h feitas"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso — verificar email voucher"},
+                {t:"21:00–23:00",cls:"tr",txt:"🌿 Descanso"}
+              ],
+              notes:[
+                {cls:"ni",label:"📬 Voucher window 18–23 Mar",txt:"Se mock aprovado, voucher disponível a partir de hoje. Verificar email. Agendar exame."},
+                {cls:"ng",label:"📊 Testes 644: Ter 3h + Qua 4h = 7h/10h",txt:"Faltam 3h → Qui 19 manhã ✅. Só depois avança Testes 860."}
+              ]
+            },
+            {
+              shCls:"v", shLabel:"Qui 19 ★ · POC + Scrum Daily + Testes 860",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–09:30",cls:"tw",txt:"💻 POC (1h30)"},
+                {t:"09:30–10:00",cls:"tw",txt:"📞 Scrum Daily (30min)"},
+                {t:"10:00–10:30",cls:"tw",txt:"💻 POC — retoma (30min)"},
+                {t:"10:30–13:00",cls:"tpp",txt:"🔵 Testes 860 (2h30)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tpp",txt:"🔵 Testes 860 (3h) — 5h30 feitas"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo UiPath (1h)"}
+              ],
+              notes:[{cls:"ng",label:"📊 Testes 860: 5h30 hoje · POC: 2h efectivas",txt:"Acumulado 860: 5h30/20h. Sex 20: Testes 644 manhã ✅ → 860 tarde (3h) → total 8h30/20h."}]
+            },
+            {
+              shCls:"r", shLabel:"Sex 20 · Testes 644 ✅ (manhã) → Testes 860 (tarde)",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:00",cls:"tw",txt:"💻 POC (2h)"},
+                {t:"10:00–13:00",cls:"tpp",txt:"🔵 Testes 644 (3h) ✅ 10h concluído"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tpp",txt:"🔵 Testes 860 (3h) — 8h30 feitas"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–23:00",cls:"tr",txt:"🌿 Descanso — fim de semana"}
+              ],
+              notes:[{cls:"ng",label:"📊 Testes 644 ✅ · Testes 860: 8h30/20h",txt:"Faltam 11h30 → S2: Seg 23 3h + Ter 24 3h + Qui 26 3h + Sex 27 2h30 = ✅ ~28 Mar."}]
+            }
+          ]
+        }
+      ]
+    },
+
+    w4: {
+      meta:"Semana 23–27 Março · Sprint S2 conclusão · Testes 860 → PDD 875 · Sem POC fixo · Cert. standby · PAS reúne Seg 23",
+      cards:[
+        {
+          title:"Seg 23 · Testes 860  |  Ter 24 · Testes 860 ✅",
+          sections:[
+            {
+              shCls:"b", shLabel:"Seg 23 · Testes 860 + Sync + PAS",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:30",cls:"tpp",txt:"🔵 Testes 860 (2h30)"},
+                {t:"10:30–11:00",cls:"tw",txt:"📞 Sync (30min)"},
+                {t:"11:00–12:00",cls:"tpp",txt:"🔵 Testes 860 (1h)"},
+                {t:"12:00–12:30",cls:"tw",txt:"📞 PAS (30min)"},
+                {t:"12:30–13:00",cls:"tpp",txt:"🔵 Testes 860 (30min)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tpp",txt:"🔵 Testes 860 (3h) — 15h30 feitas"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo cert. (1h)"}
+              ],
+              notes:[
+                {cls:"ng",label:"📊 Testes 860: 8h30 + 7h = 15h30/20h",txt:"Faltam 4h30 → Ter 24 manhã ✅. Tarde livre para PDD 875."},
+                {cls:"ni",label:"📬 Voucher",txt:"Verificar email — window 18–23 Mar. Agendar exame assim que recebido."}
+              ]
+            },
+            {
+              shCls:"y", shLabel:"Ter 24 · Testes 860 ✅ (manhã) → PDD 875 (tarde)",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–12:30",cls:"tpp",txt:"🔵 Testes 860 (4h30) ✅ 20h concluído"},
+                {t:"12:30–13:00",cls:"tcc",txt:"🟢 PDD 875 (30min)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tcc",txt:"🟢 PDD 875 (3h) — 3h30 feitas"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo cert. (1h)"}
+              ],
+              notes:[{cls:"ng",label:"📊 Testes 860 ✅ · PDD 875: 3h30/6h",txt:"860 fechado. PDD faltam 2h30 → Qua 25 ✅ fechado a meio do dia."}]
+            }
+          ]
+        },
+        {
+          title:"Qua 25 · PDD 875 ✅  |  Qui 26 · Buffer  |  Sex 27 · Cert. + Wrap-up",
+          sections:[
+            {
+              shCls:"g", shLabel:"Qua 25 · PDD 875 ✅ + Buffer sprint + Cert. standby",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–10:30",cls:"tcc",txt:"🟢 PDD 875 (2h30) ✅ 6h concluído"},
+                {t:"10:30–13:00",cls:"tcc",txt:"📚 Revisão certificação (2h30)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tcc",txt:"📚 Revisão certificação / buffer sprint (3h)"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–23:00",cls:"tr",txt:"🌿 Descanso"}
+              ],
+              notes:[
+                {cls:"ng",label:"✅ Sprint S2 fechado Qua 25",txt:"Testes 860 ✅ · PDD 875 ✅ · Todos os issues concluídos. Tarde para cert. ou buffer."},
+                {cls:"nw",label:"⚠️ Exame sem data",txt:"Voucher não recebido. Se chegar esta semana, agendar imediatamente. Cert. pode estender para semana 30."}
+              ]
+            },
+            {
+              shCls:"v", shLabel:"Qui 26 · Buffer sprint + Preparação semana 30 (PAS)",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–13:00",cls:"tcc",txt:"📚 Revisão cert. + prep. semana 30 (5h)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tcc",txt:"📚 Revisão cert. / buffer (3h)"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–21:00",cls:"tr",txt:"🌿 Descanso"},
+                {t:"21:00–22:00",cls:"tcc",txt:"📚 Estudo cert. (1h)"}
+              ],
+              notes:[{cls:"ni",label:"🔄 Prep. semana 30",txt:"Novo projecto PAS arranca 30 Mar com alocação 40%. Sprint 60% retoma. Usa Qui para alinhar contexto."}]
+            },
+            {
+              shCls:"r", shLabel:"Sex 27 · Revisão cert. + Wrap-up sprint",
+              rows:[
+                {t:"07:00–08:00",cls:"tn",txt:"🐕 Passeio + pequeno-almoço"},
+                {t:"08:00–13:00",cls:"tcc",txt:"📚 Revisão cert. + wrap-up sprint (5h)"},
+                {t:"13:00–14:00",cls:"tn",txt:"🍽️ Almoço"},
+                {t:"14:00–17:00",cls:"tcc",txt:"📚 Buffer / cert. (3h)"},
+                {t:"17:00–18:00",cls:"tpp",txt:"🏋️ Ginásio"},
+                {t:"18:00–23:00",cls:"tr",txt:"🌿 Descanso — fim de semana"}
+              ],
+              notes:[{cls:"ng",label:"📊 Semana 23–27 resumo",txt:"Testes 860 ✅ Ter 24 · PDD 875 ✅ Qua 25 · Sprint S2 fechado ✅ · Cert. standby · Prep. PAS semana 30"}]
+            }
+          ]
+        }
+      ]
+    }
+  }
+
+};
+/* ════════════════════════════════════════════════════════════
+   PLANNER_DB — FIM DO OBJETO DE DADOS
+   ════════════════════════════════════════════════════════════ */
+</script>
+
+<!-- ─── HTML SHELL (moldura) ─── -->
+<header>
+  <div>
+    <h1 id="header-title">Março <em>2026</em></h1>
+    <div class="sub" id="header-sub"></div>
   </div>
-  <div class="legend">
-    <div class="li"><div class="ld" style="background:#6b9fff"></div>Trabalho</div>
-    <div class="li"><div class="ld" style="background:#f0c040"></div>Pessoal</div>
-    <div class="li"><div class="ld" style="background:#4dd98a"></div>Cert.</div>
-    <div class="li"><div class="ld" style="background:#ff6b6b"></div>Bloqueado</div>
-    <div class="li"><div class="ld" style="background:#b07fff"></div>Descanso</div>
-  </div>
+  <div class="legend" id="legend"></div>
 </header>
 
-<div class="main">
-<nav class="sidenav">
-  <div class="nav-section">Vistas</div>
-  <button class="nav-btn" onclick="showView('dash')"><span class="nav-dot"></span>Dashboard</button>
-  <button class="nav-btn" onclick="showView('month')"><span class="nav-dot"></span>Calendário</button>
-  <div class="nav-section">Semanas</div>
-  <div id="week-nav-items">
-    <button class="nav-btn" onclick="showView('week');setWeek('w1')"><span class="nav-dot"></span>3–7 Mar</button>
-    <button class="nav-btn" onclick="showView('week');setWeek('w2')"><span class="nav-dot"></span>10–14 Mar</button>
-    <button class="nav-btn" onclick="showView('week');setWeek('w3')"><span class="nav-dot"></span>16–20 Mar</button>
-    <button class="nav-btn" onclick="showView('week');setWeek('w4')"><span class="nav-dot"></span>23–27 Mar</button>
+<!-- TODAY BANNER -->
+<div id="today-banner">
+  <div class="today-main">
+    <div class="today-label">📅 Hoje</div>
+    <div class="today-date" id="today-date-text"></div>
+    <div class="today-tasks" id="today-tasks"></div>
   </div>
-  <div class="nav-section">Mais</div>
-  <button class="nav-btn" onclick="showView('daily')"><span class="nav-dot"></span>Rotina Diária</button>
-  <button class="nav-btn" onclick="showView('cert')"><span class="nav-dot"></span>Plano Cert.</button>
-</nav>
-
-<div class="content">
-
-<!-- DASH -->
-<div id="view-dash" class="view">
-  <div class="top-grid">
-    <div class="obj c2"><div class="lbl">🥇 Prioridade 1</div><div class="ttl">Certificação Agentic Automation</div><div class="dl">🎯 Estudo 23 Mar–13 Abr · Exame alvo 1 Mai</div></div>
-    <div class="obj c3"><div class="lbl">🥈 Prioridade 2</div><div class="ttl">Sprint: Testes 860 → PDD 875</div><div class="dl">📅 16–27 Mar · 60% slot trabalho</div></div>
-    <div class="obj c1"><div class="lbl">🥉 Best Effort</div><div class="ttl">POC Copilot / PAS</div><div class="dl">⏱ 2h/dia · PAS arranca 30 Mar</div></div>
-  </div>
-  <div class="sprint-header">Sprint 16–27 Mar · Issues</div>
-  <div class="itrack">
-    <div class="icard ic-bug done"><div class="iid">Bug 496</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: 8h</div><div class="idate done">✅ Concluído 16 Mar</div></div>
-    <div class="icard ic-imp done"><div class="iid">Improv 496</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 2h</div><div class="idate done">✅ Concluído 16 Mar</div></div>
-    <div class="icard ic-imp done"><div class="iid">Improv 641</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 1h</div><div class="idate done">✅ Concluído 17 Mar</div></div>
-    <div class="icard ic-imp done"><div class="iid">Improv 496 #2</div><div class="itype">⚡ Improvement</div><div class="iest">Est: 2h</div><div class="idate done">✅ Concluído 18 Mar</div></div>
-    <div class="icard ic-bug done"><div class="iid">Bug 496 (novo)</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: 1h30</div><div class="idate done">✅ Concluído 23 Mar</div></div>
-    <div class="icard ic-tst done"><div class="iid">Testes 644</div><div class="itype">🔵 Testes</div><div class="iest">Est: 8h</div><div class="prog-wrap"><div class="prog-label"><span>8h/8h</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:100%"></div></div></div><div class="idate done">✅ Concluído 26 Mar</div></div>
-    <div class="icard ic-tst done"><div class="iid">Testes 860</div><div class="itype">🔵 Testes</div><div class="iest">Est: 4d / 20h</div><div class="prog-wrap"><div class="prog-label"><span>20h/20h</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:100%"></div></div></div><div class="idate done">✅ Concluído 25 Mar</div></div>
-    <div class="icard ic-bug done"><div class="iid">Bug 641</div><div class="itype">🐛 Bug Fix</div><div class="iest">Est: 30min+</div><div class="prog-wrap"><div class="prog-label"><span>concluído</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:100%"></div></div></div><div class="idate done">✅ Concluído 26 Mar</div></div>
-    <div class="icard ic-pdd"><div class="iid">PDD 875</div><div class="itype">🟢 PDD</div><div class="iest">Est: 6h</div><div class="prog-wrap"><div class="prog-label"><span>0h/6h</span><span>0%</span></div><div class="prog-bar"><div class="prog-fill p-green" style="width:0%"></div></div></div><div class="idate plan">📅 Prev: 27 Mar</div></div>
-  </div>
-  <div class="section-title" id="dash-today-title">Hoje</div>
-  <div class="day-layout">
-    <div class="timeline" id="dash-timeline"></div>
-    <div class="day-notes">
-      <div class="note ng"><div class="nl">📊 Testes 860</div>5h30 hoje. Acumulado: 5h30/20h.</div>
-      <div class="note ni"><div class="nl">💻 POC</div>2h efectivas — Scrum Daily fragmenta mas não reduz total.</div>
-      <div class="note ny"><div class="nl">🎓 Estudo nocturno</div>21–22h · 14 dias · 23 Mar → 13 Abr · Exame alvo: 1 Mai</div>
-    </div>
-  </div>
+  <div class="today-alloc" id="today-alloc"></div>
 </div>
 
-<!-- MONTH -->
-<div id="view-month" class="view">
-  <div class="month-tabs">
-    <button class="month-tab active" onclick="showMonth('mar',this)">Março 2026</button>
-    <button class="month-tab" onclick="showMonth('apr',this)">Abril 2026</button>
-  </div>
+<!-- ALLOC CONTEXT -->
+<div class="alloc-info" id="alloc-info"></div>
 
-  <!-- MARÇO desktop -->
-  <div id="cal-mar">
-  <div class="month-grid" id="cal-mar-desktop-ref">
-    <div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div><div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div id="mday-1" class="dc we"><div class="dn">1</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-2" class="dc"><div class="dn">2</div><div class="ch cw">💻 Trabalho</div></div>
-    <div id="mday-3" class="dc we"><div class="dn">3</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-4" class="dc we"><div class="dn">4</div><div class="ch cw">💻 POC</div></div>
-    <div id="mday-5" class="dc we"><div class="dn">5</div><div class="ch cw">💻 Trabalho</div></div>
-    <div id="mday-6" class="dc we"><div class="dn">6</div><div class="ch cw">💻 Trabalho</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-7" class="dc we"><div class="dn">7</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-8" class="dc we"><div class="dn">8</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-9" class="dc"><div class="dn">9</div><div class="ch cw">💻 POC 09–13h</div><div class="ch cw">📞 Calls</div></div>
-    <div id="mday-10" class="dc"><div class="dn">10 🎓</div><div class="ch cc">🎓 Formação UiPath</div><div class="ch cw">📞 JIRA</div><div class="ch cp">🦷 Dentista</div></div>
-    <div id="mday-11" class="dc"><div class="dn">11</div><div class="ch cw">💻 POC + JIRA Planning</div><div class="ch cp">🟡 RPA testes</div><div class="ch cp">🔧 Mecânico</div></div>
-    <div id="mday-12" class="dc"><div class="dn">12</div><div class="ch cb">🐛 Bug Fix (4h)</div><div class="ch cp">🟡 RPA testes</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-13" class="dc"><div class="dn">13</div><div class="ch cw">💻 POC + PDS</div><div class="ch cb">🐛 Bug Fix #2</div></div>
-    <div id="mday-14" class="dc we"><div class="dn">14</div><div class="ch cb">🔧 Instalação</div></div>
-    <div id="mday-15" class="dc we"><div class="dn">15</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-16" class="dc"><div class="dn">16</div><div class="ch cc">⚡ Mock #1 ✅</div><div class="ch cw">📞 Sprint Planning</div><div class="ch cb">🐛 Bug 496 ✅</div><div class="ch cc">⚡ Mock #2+#3</div></div>
-    <div id="mday-17" class="dc"><div class="dn">17</div><div class="ch cw">🗒️ Tarefas gerais</div><div class="ch cp">🏦 Banco</div><div class="ch cc">⚡ Mock ✅ · Improv 641 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
-    <div class="dc" id="mday-18"><div class="dn">18</div><div class="ch cw">💻 POC</div><div class="ch cb">⚡ Improv 496 #2 ✅</div><div class="ch cp">🔵 Testes 644</div></div>
-    <div class="dc" id="mday-19"><div class="dn" id="mday-19-dn">19</div><div class="ch cw">💻 POC + Scrum Daily</div><div class="ch cp">🔵 Testes 860</div><div class="ch cc">📚 Estudo</div></div>
-    <div id="mday-20" class="dc"><div class="dn">20</div><div class="ch cw">💻 POC</div><div class="ch cp">🔵 Testes 644 ✅</div><div class="ch cp">🔵 Testes 860</div></div>
-    <div id="mday-21" class="dc we"><div class="dn">21</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-22" class="dc we"><div class="dn">22</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-23" class="dc"><div class="dn">23</div><div class="ch cb">🐛 Bug 496 + ⚡ 641</div><div class="ch cp">🔵 644 ✅ + PAS</div></div>
-    <div id="mday-24" class="dc"><div class="dn">24</div><div class="ch cb">🆕 PAS + 🔵 644</div><div class="ch cp">🔵 860 (9h30)</div></div>
-    <div id="mday-25" class="dc"><div class="dn">25</div><div class="ch cp">🔵 860 ✅ 20h</div><div class="ch cn">🟢 PDD 875</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-26" class="dc td"><div class="dn">26 ★</div><div class="ch cn">🟢 PDD 875 (4h)</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-27" class="dc"><div class="dn">27</div><div class="ch cn">🟢 PDD 875 ✅</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-28" class="dc we"><div class="dn">28</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-29" class="dc we"><div class="dn">29</div><div class="ch cr">🌿 Descanso</div></div>
-    <div id="mday-30" class="dc"><div class="dn">30</div><div class="ch cw">💻 Sprint 50%</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div id="mday-31" class="dc"><div class="dn">31</div><div class="ch cw">💻 Sprint 50%</div><div class="ch cb">🆕 PAS 50%</div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-    <div class="dc we"><div class="dn"></div></div>
-  </div>
-  <!-- MARÇO mobile (2-col) -->
-  <div class="month-grid-mobile" id="cal-mar-mobile"></div>
-  </div>
+<!-- OBJECTIVES -->
+<div class="objs" id="objectives-container"></div>
 
-  <!-- ABRIL (gerado via JS) -->
-  <div id="cal-apr" style="display:none">
-    <div class="month-grid" id="apr-desktop"></div>
-    <div class="month-grid-mobile" id="apr-mobile"></div>
-  </div>
+<!-- SPRINT ISSUE TRACKER -->
+<div class="itrack-label" id="issues-label"></div>
+<div class="itrack" id="issues-container"></div>
+
+<!-- TABS -->
+<div class="tabs" id="tabs-desktop"></div>
+<div class="tabs-mobile">
+  <select id="tabs-mobile-select" onchange="switchView(this.value)"></select>
 </div>
 
-<!-- WEEK -->
-<div id="view-week" class="view">
-  <div id="week-selector" class="week-selector"></div>
-  <div id="week-content"></div>
+<!-- DAY PICKER (visível nas vistas Rotina Diária) -->
+<div id="day-picker" style="display:none">
+  <span class="day-picker-label">Dia</span>
+  <!-- botões injetados por JS -->
 </div>
 
-<!-- DAILY -->
+<!-- VIEWS (rendered by JS) -->
+<div id="view-month" class="view"></div>
+<div id="view-w1" class="view"></div>
+<div id="view-w2" class="view"></div>
+<div id="view-w3" class="view"></div>
+<div id="view-w4" class="view"></div>
 <div id="view-daily" class="view">
-  <div class="section-title">Rotina Diária Base</div>
-  <div class="day-layout">
-    <div class="timeline">
-      <div class="tl-header">Dias úteis — estrutura padrão</div>
-      <div class="tl-row"><div class="tl-time">07:00–07:30</div><div class="tl-content tc-pers">🐕 Passeio da cadela</div></div>
-      <div class="tl-row"><div class="tl-time">07:30–08:00</div><div class="tl-content tc-meal">🥐 Pequeno-almoço</div></div>
-      <div class="tl-row"><div class="tl-time">08:00–10:00</div><div class="tl-content tc-work">💻 Bloco foco — POC / trabalho prioritário</div></div>
-      <div class="tl-row"><div class="tl-time">10:00–13:00</div><div class="tl-content tc-work">💻 Trabalho — reuniões, desenvolvimento, testes</div></div>
-      <div class="tl-row"><div class="tl-time">13:00–14:00</div><div class="tl-content tc-meal">🍽️ Almoço — inegociável, sem ecrã</div></div>
-      <div class="tl-row"><div class="tl-time">14:00–17:00</div><div class="tl-content tc-work">💻 Trabalho — continuação</div></div>
-      <div class="tl-row"><div class="tl-time">17:00–18:00</div><div class="tl-content tc-pers">🏋️ Ginásio</div></div>
-      <div class="tl-row"><div class="tl-time">18:00–21:00</div><div class="tl-content tc-rest">🌿 Descanso pessoal</div></div>
-      <div class="tl-row"><div class="tl-time">21:00–22:00</div><div class="tl-content tc-cert">📚 Estudo (máx 3×/semana)</div></div>
-      <div class="tl-row"><div class="tl-time">22:00–23:00</div><div class="tl-content tc-rest">🌙 Descanso</div></div>
-    </div>
-    <div class="day-notes">
-      <div class="note nr"><div class="nl">💜 Regra das 3 noites</div>Estudo apenas 3 noites/semana, 1h máximo. Restantes noites e fins de semana: recuperação total.</div>
-      <div class="note ni"><div class="nl">🍽️ Almoço inegociável</div>13:00–14:00 todos os dias. Sem excepções, sem ecrãs.</div>
-      <div class="note nw"><div class="nl">⚠️ Sinal de alerta</div>Se após 20 min não consegues concentrar — para. Descanso não planeado é melhor que estudo ineficaz.</div>
-      <div class="note ng"><div class="nl">🐕 Âncora mental</div>Os dois passeios (07h e 18–19h) são os resets cognitivos do dia.</div>
-    </div>
-  </div>
+  <div id="daily-day-content"></div>
 </div>
+<div id="view-cert" class="view"></div>
 
-<!-- CERT -->
-<div id="view-cert" class="view">
-  <div class="section-title">Plano Certificação UiPath Agentic</div>
-  <div class="cert-grid">
-    <div class="card">
-      <h3>Timeline · Exame alvo 1 Mai 2026</h3>
-      <div class="sh b">Fase 0 · Preparação (Mar)</div>
-      <div class="tb"><div class="tt">Ter 10 Mar</div><div class="tc tcc">🎓 Formação oficial UiPath (4h)</div></div>
-      <div class="tb"><div class="tt">Seg 16 Mar</div><div class="tc tcc">⚡ Mock Exam ×3 ✅</div></div>
-      <div class="sh y">Fase I · Foundations (Days 1–2)</div>
-      <div class="tb"><div class="tt">Seg 23 Mar</div><div class="tc tcc">📚 Day 1 · Agent vs. RPA</div></div>
-      <div class="tb"><div class="tt">Ter 24 Mar</div><div class="tc tcc">📚 Day 2 · System Prompts</div></div>
-      <div class="sh g">Fase II · Memory (Days 3–5)</div>
-      <div class="tb"><div class="tt">Qua 25 Mar</div><div class="tc tcc">📚 Day 3 · Agent Memory 101</div></div>
-      <div class="tb"><div class="tt">Qui 26 Mar</div><div class="tc tcc">📚 Day 4 · Cross-Agent Memory</div></div>
-      <div class="tb"><div class="tt">Sex 27 Mar</div><div class="tc tcc">📚 Day 5 · Memory & Behavior</div></div>
-      <div class="sh v">Fase III · Context (Days 6–8)</div>
-      <div class="tb"><div class="tt">Seg 30 Mar</div><div class="tc tcc">📚 Day 6 · Grounding & Storage</div></div>
-      <div class="tb"><div class="tt">Ter 31 Mar</div><div class="tc tcc">📚 Day 7 · Tabular Data / RAG</div></div>
-      <div class="tb"><div class="tt">Qua 1 Abr</div><div class="tc tcc">📚 Day 8 · Chunking Strategies</div></div>
-      <div class="sh r">Fase IV · Maestro (Days 9–11)</div>
-      <div class="tb"><div class="tt">Qui 2 Abr</div><div class="tc tcc">📚 Day 9 · BPMN 2.0 Basics</div></div>
-      <div class="tb"><div class="tt">Ter 7 Abr</div><div class="tc tcc">📚 Day 10 · Gateways & Logic</div></div>
-      <div class="tb"><div class="tt">Qua 8 Abr</div><div class="tc tcc">📚 Day 11 · Maestro Implementation</div></div>
-      <div class="sh b">Fase V–VI · Quality + Review (Days 12–14)</div>
-      <div class="tb"><div class="tt">Qui 9 Abr</div><div class="tc tcc">📚 Day 12 · Agent Evaluations</div></div>
-      <div class="tb"><div class="tt">Sex 10 Abr</div><div class="tc tcc">📚 Day 13 · The Full Picture</div></div>
-      <div class="tb"><div class="tt">Seg 13 Abr</div><div class="tc tcc">📚 Day 14 · Final Mock Audit</div></div>
-      <div class="tb"><div class="tt">14 Abr–30 Abr</div><div class="tc tcc">🔁 Buffer revisão + consolidação</div></div>
-      <div class="tb"><div class="tt">1 Mai</div><div class="tc tbb">🏆 Exame — alvo</div></div>
-    </div>
-    <div class="card">
-      <h3>Tópicos · Key Failure Points</h3>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:.3rem .6rem;font-size:.72rem;margin-top:.25rem">
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D1</span><span style="color:var(--text)">Agent vs. RPA — Reasoning Engine vs. Rule-Based</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D2</span><span style="color:var(--text)">System Prompts — Identity, goals, escalation logic</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D3</span><span style="color:var(--text)">Agent Memory 101 — TTL and Scope</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D4</span><span style="color:var(--text)">Cross-Agent Memory — Context: Agents vs. Robots</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D5</span><span style="color:var(--text)">Memory & Behavior — Memory → tool-calling decisions</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D6</span><span style="color:var(--text)">Grounding & Storage — Buckets + Integration Service</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D7</span><span style="color:var(--text)">Tabular Data / RAG — Optimizing queries for tables</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D8</span><span style="color:var(--text)">Chunking Strategies — Chunk size → retrieval accuracy</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D9</span><span style="color:var(--text)">BPMN 2.0 — Service/User/Send tasks → right executor</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D10</span><span style="color:var(--text)">Gateways — XOR / AND / Inclusive gateways ⚠️</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D11</span><span style="color:var(--text)">Maestro — Start+Wait vs. Invoke Workflow</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D12</span><span style="color:var(--text)">Evaluations — Deterministic vs. LLM-as-Judge</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D13</span><span style="color:var(--text)">Full Picture — HITL + Escalation outcomes</span>
-        <span style="color:var(--muted);font-family:'JetBrains Mono',monospace">D14</span><span style="color:var(--text)">Final Mock Audit — Gap identification</span>
-      </div>
-      <div class="divider"></div>
-      <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:600;padding:.2rem 0">
-        <span style="color:var(--muted2)">Horas de estudo</span>
-        <span style="color:var(--accent);font-family:'JetBrains Mono',monospace">14h + buffer</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:600;padding:.2rem 0">
-        <span style="color:var(--muted2)">Formação + Mock</span>
-        <span style="color:var(--accent);font-family:'JetBrains Mono',monospace">7h ✅</span>
-      </div>
-      <div class="note ng" style="margin-top:.5rem"><div class="nl">📅 Calendarização</div>14 dias úteis · 21–22h · Salta feriados (3 e 6 Abr). Buffer 14–30 Abr antes do exame.</div>
-      <div class="note ni" style="margin-top:.5rem"><div class="nl">🏆 Exame alvo: 1 Mai 2026</div>Após Day 14 (13 Abr) há 18 dias de buffer para consolidação e revisão final.</div>
-    </div>
-  </div>
-</div>
+</div><!-- .wrap -->
 
-</div><!-- /content -->
-</div><!-- /main -->
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="bnav-btn" onclick="showView('dash')"><span class="bicon">⊞</span>Hoje</button>
-  <button class="bnav-btn" onclick="showView('month')"><span class="bicon">📅</span>Mês</button>
-  <button class="bnav-btn" onclick="showView('week');setWeek('w3')"><span class="bicon">📋</span>Semana</button>
-  <button class="bnav-btn" onclick="showView('cert')"><span class="bicon">🎓</span>Cert.</button>
-</nav>
-
-</div><!-- /app -->
-
+<!-- ─── MOTOR JAVASCRIPT ─── -->
 <script>
-const weeks = {
-  w1: {
-    label: '3–7 Mar',
-    days: [
-      { name: 'Seg 2', sub: 'Fim de semana', we: true, rows: [], notes: [] },
-      { name: 'Ter 3', sub: 'Trabalho + Estudo', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–10:00','tc-work','💻 POC Copilot (2h)'],
-        ['10:00–13:00','tc-work','💻 Trabalho'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-work','💻 Trabalho + POC'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–21:00','tc-rest','🌿 Descanso'],
-        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
-      ], notes: [] },
-      { name: 'Qua 4', sub: 'Trabalho', rows: [
-        ['08:00–10:00','tc-work','💻 POC Copilot'],
-        ['10:00–13:00','tc-work','💻 Trabalho'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-work','💻 Trabalho'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–23:00','tc-rest','🌿 Descanso'],
-      ], notes: [] },
-      { name: 'Qui 5', sub: 'Escritório + Calls', rows: [
-        ['08:00–10:00','tc-work','💻 POC Copilot'],
-        ['10:00–13:00','tc-work','💻 Calls + trabalho'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-work','💻 Trabalho'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–23:00','tc-rest','🌿 Descanso'],
-      ], notes: [] },
-      { name: 'Sex 6', sub: 'Trabalho + Zoom + Estudo', rows: [
-        ['08:00–10:00','tc-work','💻 POC Copilot'],
-        ['10:00–13:00','tc-work','💻 Trabalho'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–15:30','tc-work','💻 Trabalho'],
-        ['15:30–16:10','tc-work','📹 Zoom Call'],
-        ['16:10–17:00','tc-work','✅ Wrap-up semana'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
-      ], notes: [['ng','Semana 1','Estudo: Ter 3 + Sex 6 = 2h.']] },
-      { name: 'Sáb 7', sub: 'Manhã preenchida', we: true, rows: [
-        ['07:45','tc-pers','🚗 Deslocação (30min)'],
-        ['08:15','tc-block','🏥 Consulta médica'],
-        ['09:00','tc-pers','✂️ Barbeiro'],
-        ['~10:00','tc-pers','🐾 Veterinário'],
-        ['Tarde','tc-rest','🌿 Descanso'],
-      ], notes: [] },
-    ]
-  },
-  w2: {
-    label: '10–14 Mar',
-    days: [
-      { name: 'Seg 9', sub: 'Concluído', rows: [
-        ['08:30–09:00','tc-work','📞 Reunião'],
-        ['09:00–13:00','tc-work','💻 POC Copilot'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–16:00','tc-work','📞 3× Calls'],
-        ['16:00–17:00','tc-block','⚡ Velocity JIRA'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Ter 10 🎓', sub: 'Formação + Dentista — concluído', rows: [
-        ['08:00–12:00','tc-cert','🎓 Formação Agentic Automation (4h)'],
-        ['12:00–13:00','tc-pers','🟡 RPA simples (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–14:45','tc-work','📞 Reunião JIRA'],
-        ['14:45–16:30','tc-pers','🦷 Dentista (deslocação + consulta + regresso)'],
-        ['16:30–17:00','tc-pers','🟡 RPA simples (30min)'],
-      ], notes: [] },
-      { name: 'Qua 11', sub: 'JIRA Planning + RPA + Mecânico', rows: [
-        ['08:00–09:30','tc-work','💻 POC (1h30)'],
-        ['09:30–11:00','tc-work','📞 JIRA Planning'],
-        ['11:00–13:00','tc-pers','🟡 RPA simples (2h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-pers','🟡 RPA simples (3h)'],
-        ['16:30–17:30','tc-block','🚗 Deslocação mecânico'],
-        ['17:30–18:30','tc-block','🔧 Mecânico'],
-        ['18:30–19:30','tc-block','🚗 Regresso mecânico'],
-        ['19:30–23:00','tc-rest','🌿 Descanso'],
-      ], notes: [['nw','⚠️ Ginásio cancelado','Mecânico 16:30–19:30.']] },
-      { name: 'Qui 12', sub: 'Bug Fix + RPA testes', rows: [
-        ['08:00–10:00','tc-work','💻 POC ⚠️ trolhas 30min aqui'],
-        ['10:00–13:00','tc-block','🐛 Bug Fix (3h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–15:00','tc-block','🐛 Bug Fix (1h) ✅'],
-        ['15:00–17:00','tc-pers','🟡 RPA testes (2h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Estudo (1h)'],
-      ], notes: [['ng','📊 Bug Fix','4h concluído. RPA testes: 2h hoje + 5h Sex = 7h.']] },
-      { name: 'Sex 13', sub: 'POC + PDS + Bug Fix #2', rows: [
-        ['08:00–10:30','tc-work','💻 POC (2h30)'],
-        ['10:30–11:00','tc-work','📞 Reunião PDS'],
-        ['11:00–13:00','tc-block','🐛 Bug Fix #2 (2h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🐛 Bug Fix #2 (3h) — 5h · transborda 1h → Seg 16'],
-        ['17:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
-      ], notes: [['nw','⚠️ Bug Fix #2 transborda','6h estimadas, 5h hoje. 1h → Seg 16 tarde.']] },
-    ]
-  },
-  w3: {
-    label: '16–20 Mar',
-    days: [
-      { name: 'Seg 16', sub: 'Mock ×3 + Sprint Planning + Bug 496 ✅', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–09:00','tc-cert','⚡ Mock Exam #1 (1h) ✅'],
-        ['09:00–09:30','tc-block','🐛 Bug 496 (30min)'],
-        ['09:30–10:30','tc-work','📞 Sprint Planning'],
-        ['10:30–13:00','tc-block','🐛 Bug 496 + Improv 496 ✅'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–15:00','tc-block','🐛 Bug 496 conclusão ✅ 8h'],
-        ['15:00–16:00','tc-cert','⚡ Mock Exam #2'],
-        ['16:00–17:00','tc-rest','🌿 Descanso'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–19:00','tc-rest','🌿 Jantar'],
-        ['19:00–20:00','tc-cert','⚡ Mock Exam #3'],
-        ['20:00–23:00','tc-rest','🌿 Descanso'],
-      ], notes: [['ng','✅ Bug 496 · Improv 496','Ambos fechados. Mock ×3 concluídos.'],['nw','💻 POC','Cancelado — recuperar ao longo da semana.']] },
-      { name: 'Ter 17', sub: 'Banco + Mock ✅ + Improv 641 ✅ + Testes 644', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–09:00','tc-work','🗒️ Tarefas gerais'],
-        ['09:00–10:00','tc-pers','🏦 Banco'],
-        ['10:00–11:00','tc-cert','⚡ Mock Exam ✅'],
-        ['11:00–12:00','tc-block','⚡ Improv 641 (1h) ✅'],
-        ['12:00–13:00','tc-rest','🌿 Buffer'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-pers','🔵 Testes 644 (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
-      ], notes: [['ng','✅ Mock · Improv 641','Testes 644: 3h feitas.']] },
-      { name: 'Qua 18', sub: 'Voucher abre + Improv 496 #2 ✅ + Testes 644', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–10:00','tc-work','💻 POC (2h)'],
-        ['10:00–12:00','tc-block','⚡ Improv 496 #2 (2h) ✅'],
-        ['12:00–13:00','tc-pers','🔵 Testes 644 (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-pers','🔵 Testes 644 (3h) — 7h feitas'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–21:00','tc-rest','🌿 Descanso — verificar voucher'],
-      ], notes: [['ni','📬 Voucher window 18–23 Mar','Verificar email. Agendar exame.'],['ng','📊 Testes 644: 7h/10h','Faltam 3h → Sex 20 manhã ✅.']] },
-      { name: 'Qui 19 ★', sub: 'Hoje · POC + Scrum + Testes 860', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–09:30','tc-work','💻 POC (1h30)'],
-        ['09:30–10:00','tc-work','📞 Scrum Daily'],
-        ['10:00–10:30','tc-work','💻 POC retoma (30min)'],
-        ['10:30–13:00','tc-pers','🔵 Testes 860 (2h30)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-pers','🔵 Testes 860 (3h) — 5h30 feitas'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Estudo UiPath (1h)'],
-      ], notes: [['ng','📊 Testes 860: 5h30 hoje','Acumulado: 5h30/20h. Sex 20: +3h → 8h30.'],['ni','💻 POC: 2h efectivas','Scrum fragmenta mas não reduz total.']] },
-      { name: 'Sex 20', sub: 'Testes 644 ✅ + Testes 860', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–10:00','tc-work','💻 POC (2h)'],
-        ['10:00–13:00','tc-pers','🔵 Testes 644 (3h) ✅ 10h concluído'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-pers','🔵 Testes 860 (3h) — 8h30 feitas'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
-      ], notes: [['ng','📊 Testes 644 ✅ · Testes 860: 8h30/20h','Faltam 11h30 → semana 23–27.']] },
-    ]
-  },
-  w4: {
-    label: '23–27 Mar',
-    days: [
-      { name: 'Seg 23 ★', sub: 'Hoje · 641 + Bug 496 + 644 + Sync + PAS', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–09:30','tc-block','⚡ 641 (1h30)'],
-        ['09:30–11:00','tc-block','🐛 Bug 496 novo (1h30)'],
-        ['11:00–11:30','tc-pers','🔵 Testes 644 (30min)'],
-        ['11:30–12:00','tc-work','📞 Sync'],
-        ['12:00–12:30','tc-work','📞 PAS'],
-        ['12:30–13:00','tc-pers','🔵 Testes 644 (30min) — 8h feitas'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 1 · Agent vs. RPA'],
-      ], notes: [['ni','📊 Testes 644: 8h/10h (aceitação)','95% completo — em aceitação.'],
-        ['ni','📊 Testes 860: 8h30/20h','Inicia amanhã Ter 24. Prioridade máxima bloco trabalho.'],
-        ['ng','📚 Day 1 · Agent vs. RPA','Reasoning Engine vs. Rule-Based flow']
-      ] },
-      { name: 'Ter 24 ★', sub: 'Hoje · PAS + 644 ✅ + Call 496 + Bug 641 + 860', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–09:00','tc-block','🆕 PAS (1h)'],
-        ['09:00–11:00','tc-pers','🔵 Testes 644 (2h)'],
-        ['11:00–11:30','tc-work','📞 Call 496 (30min)'],
-        ['11:30–13:00','tc-pers','🔵 Testes 644 (1h30) ✅ 11h30 concluído'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–14:30','tc-block','🆕 PAS (30min)'],
-        ['14:30–15:30','tc-rest','🌿 Buffer'],
-        ['15:30–16:00','tc-block','🐛 Bug 641 (30min) — pendente estimativa'],
-        ['16:00–17:00','tc-pers','🔵 Testes 860 (1h) — 9h30 feitas'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 2 · System Prompts'],
-      ], notes: [['ng','✅ Testes 644 fechado','8h + 3h30 = 11h30 > 10h ✅'],
-        ['ni','📊 Testes 860: 9h30/20h','Faltam 10h30 → Qua 4h + Qui 4h + Sex 2h30 = ✅ Sex 27'],
-        ['nw','🐛 Bug 641','30min feitos. Estimativa pendente — reagendar quando definida.'],
-        ['ng','📚 Day 2 · System Prompts','Identity, goals, escalation logic']
-      ] },
-      { name: 'Qua 25 ★', sub: 'Hoje · 860 ✅ + PDD 875 + PAS 50%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:00','tc-pers','🔵 Testes 860 — conclusão ✅ 20h'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 3 · Agent Memory 101'],
-      ], notes: [['ng','✅ Testes 860 fechado 25 Mar','20h concluído ✅'],
-        ['ni','📊 PDD 875','Arranca Qui 26. 644 tem prioridade (8h restantes).'],
-        ['ng','📚 Day 3 · Agent Memory 101','TTL and Scope']
-      ] },
-      { name: 'Qui 26 ★', sub: 'Hoje · 641 ✅ + 644 ✅ + PDD 875 arranque', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:00','tc-pdd','🟢 PDD 875 (4h)'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 4 · Cross-Agent Memory'],
-      ], notes: [['ng','✅ Bug 641 + Testes 644 fechados hoje 26 Mar','Sprint limpo — foco total no PDD 875.'],
-        ['ni','📊 PDD 875: 4h/6h','Faltam 2h → Sex 27 manhã ✅'],
-        ['ng','📚 Day 4 · Cross-Agent Memory','Context: Agents vs. Robots']
-      ] },
-      { name: 'Sex 27', sub: 'PDD 875 ✅ + PAS 50%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–10:00','tc-pdd','🟢 PDD 875 (2h) ✅ 6h concluído'],
-        ['10:00–12:00','tc-work','💻 Sprint — próximo issue'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['18:00–23:00','tc-rest','🌿 Descanso — fim de semana'],
-        ['21:00–22:00','tc-cert','📚 Day 5 · Memory & Behavior'],
-      ], notes: [['ng','✅ PDD 875 fechado Sex 27','4h Qui + 2h Sex = 6h ✅ Sprint S2 concluído'],
-        ['ng','📚 Day 5 · Memory & Behavior','Memory → tool-calling decisions']
-      ] },
-    ]
-  },
-  aw1: {
-    label: '30Mar–3Abr',
-    days: [
-      { name: 'Seg 30 Mar', sub: 'Sprint 50% + PAS 50%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:00','tc-work','💻 Sprint 50% (4h)'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 6 · Grounding & Storage'],
-      ], notes: [['ng','✅ PDD 875 fechado Sex 27','Sprint livre — próximos issues.'],
-        ['ng','📚 Day 6 · Grounding & Storage','Storage Buckets + Integration Service']
-      ] },
-      { name: 'Ter 31 Mar', sub: 'Sprint 50% + PAS 50%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:00','tc-work','💻 Sprint 50% (4h)'],
-        ['12:00–13:00','tc-block','🆕 PAS (1h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 7 · Tabular Data / RAG'],
-      ], notes: [
-        ['ng','📚 Day 7 · Tabular Data / RAG','Optimizing queries for tables']
-      ] },
-      { name: 'Qua 1 Abr', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ['21:00–22:00','tc-cert','📚 Day 8 · Chunking Strategies'],
-      ], notes: [
-        ['ng','📚 Day 8 · Chunking Strategies','Chunk size → retrieval accuracy']
-      ] },
-      { name: 'Qui 2 Abr', sub: 'Sprint 50% · PAS 50%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–12:30','tc-work','💻 Sprint 50%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 50%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ['21:00–22:00','tc-cert','📚 Day 9 · BPMN 2.0 Basics'],
-      ], notes: [
-        ['ng','📚 Day 9 · BPMN 2.0 Basics','Service/User/Send tasks → executor']
-      ] },
-      { name: 'Sex 3 Abr', sub: '🇵🇹 Sexta-Feira Santa — Feriado Nacional', rows: [
-        ['Dia','tc-block','🇵🇹 Sexta-Feira Santa — Feriado Nacional'],
-        ['Dia','tc-rest','🌿 Descanso'],
-      ], notes: [['nw','🇵🇹 Feriado nacional','Sexta-Feira Santa. Fim de semana longo: Sex 3 + Sáb 4 + Dom 5 (Páscoa) + Seg 6 (feriado Porto).']] },
-    ]
-  },
-  aw2: {
-    label: '6–10 Abr',
-    days: [
-      { name: 'Seg 6', sub: '📍 2ª Feira Páscoa — Feriado Regional Porto', rows: [
-        ['Dia','tc-block','📍 2ª Feira Páscoa — Feriado Regional Porto'],
-        ['Dia','tc-rest','🌿 Descanso'],
-      ], notes: [['nw','📍 Feriado regional Porto','2ª Feira de Páscoa. Fim de semana longo de 4 dias (Sex 3 a Seg 6).']] },
-      { name: 'Ter 7', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 10 · Gateways & Logic'],
-      ], notes: [['ng','🔄 Nova alocação 60/40','A partir de 6 Abr: Sprint 60% · PAS 40%.'],
-        ['ng','📚 Day 10 · Gateways & Logic','XOR / AND / Inclusive gateways ⚠️']
-      ] },
-      { name: 'Qua 8', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 11 · Maestro Implementation'],
-      ], notes: [
-        ['ng','📚 Day 11 · Maestro Implementation','Start+Wait vs. Invoke Workflow']
-      ] },
-      { name: 'Qui 9', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 12 · Agent Evaluations'],
-      ], notes: [
-        ['ng','📚 Day 12 · Agent Evaluations','Deterministic vs. LLM-as-Judge']
-      ] },
-      { name: 'Sex 10', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–23:00','tc-rest','🌿 Descanso'],
-        ['21:00–22:00','tc-cert','📚 Day 13 · The Full Picture'],
-      ], notes: [
-        ['ng','📚 Day 13 · The Full Picture','HITL + Escalation outcomes']
-      ] },
-    ]
-  },
-  aw3: {
-    label: '13–17 Abr',
-    days: [
-      { name: 'Seg 13', sub: '🎓 Formação (Dia 1/2) — 0% Sprint/PAS', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–17:00','tc-cert','🎓 Formação — Dia 1 (8h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-        ['21:00–22:00','tc-cert','📚 Day 14 · Final Mock Audit'],
-      ], notes: [['nw','🎓 Formação Seg 13 + Ter 14','0% Sprint · 0% PAS. Dia completo de formação.'],
-        ['ng','📚 Day 14 · Final Mock Audit','Gap identification']
-      ] },
-      { name: 'Ter 14', sub: '🎓 Formação (Dia 2/2) — 0% Sprint/PAS', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–17:00','tc-cert','🎓 Formação — Dia 2 (8h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [['nw','🎓 Formação dia 2','0% Sprint · 0% PAS. Retoma 60/40 a partir de Qua 15.']] },
-      { name: 'Qua 15', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [['ng','🔄 Retoma 60/40','Após 2 dias de formação.']] },
-      { name: 'Qui 16', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Sex 17', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['07:00–08:00','tc-meal','🐕 Passeio + pequeno-almoço'],
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–23:00','tc-rest','🌿 Descanso'],
-      ], notes: [] },
-    ]
-  },
-  aw4: {
-    label: '20–24 Abr',
-    days: [
-      { name: 'Seg 20', sub: 'Sprint 60% · PAS 40% — nova alocação', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60% (5h)'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40% (3h)'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [['ng','🔄 Nova alocação 60/40','Sprint 60% · PAS 40% a partir de hoje.']] },
-      { name: 'Ter 21', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Qua 22', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Qui 23', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Sex 24', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–23:00','tc-rest','🌿 Descanso'],
-      ], notes: [['nw','🇵🇹 Dia da Liberdade amanhã','25 Abr é feriado nacional.']] },
-    ]
-  },
-  aw5: {
-    label: '27–30 Abr',
-    days: [
-      { name: 'Seg 27', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Ter 28', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Qua 29', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [] },
-      { name: 'Qui 30', sub: 'Sprint 60% · PAS 40%', rows: [
-        ['08:00–13:00','tc-work','💻 Sprint 60%'],
-        ['13:00–14:00','tc-meal','🍽️ Almoço'],
-        ['14:00–17:00','tc-block','🆕 PAS 40%'],
-        ['17:00–18:00','tc-pers','🏋️ Ginásio'],
-      ], notes: [['ng','📊 Fim de Abril','Sprint 60/40 mantém-se em Maio.']] },
-    ]
-  }
-};
-// ── State ──
-var CW = 'w4';
-var CDI = 3;
-
-// ── Day map ──
-var DAY_MAP = {
-  '2026-03-02':{w:'w1',i:0},'2026-03-03':{w:'w1',i:1},'2026-03-04':{w:'w1',i:2},
-  '2026-03-05':{w:'w1',i:3},'2026-03-06':{w:'w1',i:4},'2026-03-07':{w:'w1',i:5},
-  '2026-03-09':{w:'w2',i:0},'2026-03-10':{w:'w2',i:1},'2026-03-11':{w:'w2',i:2},
-  '2026-03-12':{w:'w2',i:3},'2026-03-13':{w:'w2',i:4},
-  '2026-03-16':{w:'w3',i:0},'2026-03-17':{w:'w3',i:1},'2026-03-18':{w:'w3',i:2},
-  '2026-03-19':{w:'w3',i:3},'2026-03-20':{w:'w3',i:4},
-  '2026-03-23':{w:'w4',i:0},'2026-03-24':{w:'w4',i:1},'2026-03-25':{w:'w4',i:2},
-  '2026-03-26':{w:'w4',i:3},'2026-03-27':{w:'w4',i:4},
-  '2026-03-30':{w:'aw1',i:0},'2026-03-31':{w:'aw1',i:1},
-  '2026-04-01':{w:'aw1',i:2},'2026-04-02':{w:'aw1',i:3},'2026-04-03':{w:'aw1',i:4},
-  '2026-04-06':{w:'aw2',i:0},'2026-04-07':{w:'aw2',i:1},'2026-04-08':{w:'aw2',i:2},
-  '2026-04-09':{w:'aw2',i:3},'2026-04-10':{w:'aw2',i:4},
-  '2026-04-13':{w:'aw3',i:0},'2026-04-14':{w:'aw3',i:1},'2026-04-15':{w:'aw3',i:2},
-  '2026-04-16':{w:'aw3',i:3},'2026-04-17':{w:'aw3',i:4},
-  '2026-04-20':{w:'aw4',i:0},'2026-04-21':{w:'aw4',i:1},'2026-04-22':{w:'aw4',i:2},
-  '2026-04-23':{w:'aw4',i:3},'2026-04-24':{w:'aw4',i:4},
-  '2026-04-27':{w:'aw5',i:0},'2026-04-28':{w:'aw5',i:1},'2026-04-29':{w:'aw5',i:2},
-  '2026-04-30':{w:'aw5',i:3}
-};
-var PT_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-var PT_MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-var ALL_VIEWS = ['dash','month','week','daily','cert'];
-
-function getKey() {
-  var d = new Date();
-  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-}
-function pad(n){ return n<10?'0'+n:''+n; }
-
-// ── Show view ──
-function showView(name) {
-  for (var i=0; i<ALL_VIEWS.length; i++) {
-    var el = document.getElementById('view-'+ALL_VIEWS[i]);
-    if (el) el.style.display = 'none';
-  }
-  var t = document.getElementById('view-'+name);
-  if (t) t.style.display = 'block';
-
-  var btns = document.querySelectorAll('.nav-btn,.bnav-btn');
-  for (var b=0; b<btns.length; b++) {
-    var oc = btns[b].getAttribute('onclick')||'';
-    if (oc.indexOf("'"+name+"'") >= 0) {
-      btns[b].className = btns[b].className.replace(/\bactive\b/,'').trim()+' active';
-    } else {
-      btns[b].className = btns[b].className.replace(/\bactive\b/,'').trim();
-    }
-  }
-  if (name === 'week') renderWeek();
-}
-
-// ── Week ──
-function setWeek(wk) {
-  if (!weeks[wk]) return;
-  CW = wk;
-  var td = DAY_MAP[getKey()];
-  CDI = (td && td.w===wk) ? td.i : 0;
-  renderWeek();
-}
-
-function navDay(dir) {
-  var wk = weeks[CW];
-  if (!wk) return;
-  CDI = Math.max(0, Math.min(wk.days.length-1, CDI+dir));
-  renderWeek();
-}
-
-function gotoDay(i) {
-  CDI = i;
-  renderWeek();
-}
-
-function renderWeek() {
-  var wk = weeks[CW];
-  if (!wk) return;
-  var td = DAY_MAP[getKey()];
-
-  // Week selector
-  var sel = document.getElementById('week-selector');
-  if (sel) {
-    var sh = '';
-    var wks = Object.keys(weeks);
-    for (var k=0; k<wks.length; k++) {
-      var key = wks[k];
-      var active = (key===CW) ? ' active' : '';
-      var star = (td && td.w===key) ? ' ★' : '';
-      var tdIdx = (td && td.w===key) ? td.i : 0;
-      sh += '<button class="week-btn'+active+'" onclick="CW=\''+key+'\';CDI='+tdIdx+';renderWeek()">'+weeks[key].label+star+'</button>';
-    }
-    sel.innerHTML = sh;
-  }
-
-  if (CDI >= wk.days.length) CDI = 0;
-  var day = wk.days[CDI];
-  if (!day) return;
-
-  var isToday = (td && td.w===CW && td.i===CDI);
-  var notes = day.notes || [];
-  var rows = day.rows || [];
-
-  // Day picker buttons
-  var db = '';
-  for (var di=0; di<wk.days.length; di++) {
-    var d = wk.days[di];
-    var ac = (di===CDI) ? ' active' : '';
-    var tm = (td && td.w===CW && td.i===di) ? ' today-mark' : '';
-    var pts = d.name.split(' ');
-    db += '<button class="day-nav-btn'+ac+tm+'" onclick="gotoDay('+di+')">'+pts[0]+' '+(pts[1]||'')+'</button>';
-  }
-
-  // Timeline
-  var tr = '';
-  for (var ri=0; ri<rows.length; ri++) {
-    tr += '<div class="tl-row"><div class="tl-time">'+rows[ri][0]+'</div><div class="tl-content '+rows[ri][1]+'">'+rows[ri][2]+'</div></div>';
-  }
-  if (!tr) tr = '<div class="tl-row"><div class="tl-time">—</div><div class="tl-content tc-rest">Sem eventos</div></div>';
-
-  // Notes
-  var nh = '';
-  for (var ni=0; ni<notes.length; ni++) {
-    nh += '<div class="note '+notes[ni][0]+'"><div class="nl">'+notes[ni][1]+'</div>'+notes[ni][2]+'</div>';
-  }
-  if (!nh) nh = '<div class="note ni"><div class="nl">💡 Tip</div>Usa ◀ ▶ para navegar entre dias.</div>';
-
-  var star = isToday ? ' ★' : '';
-  var out = '<div class="day-nav">'
-    +'<button class="day-nav-arrow" onclick="navDay(-1)">◀</button>'
-    +'<div class="day-title">'+day.name+star+' <span>'+(day.sub||'')+'</span></div>'
-    +'<button class="day-nav-arrow" onclick="navDay(1)">▶</button>'
-    +'</div>'
-    +'<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;">'+db+'</div>'
-    +'<div class="day-layout">'
-    +'<div class="timeline"><div class="tl-header">'+day.name+(isToday?' ★':'')+' · '+(day.sub||'')+'</div>'+tr+'</div>'
-    +'<div class="day-notes">'+nh+'</div>'
-    +'</div>';
-
-  var wc = document.getElementById('week-content');
-  if (wc) wc.innerHTML = out;
-}
-
-// ── Month tab switching ──
-var MAR_WEEKS = [
-  {label:'3–7 Mar', wk:'w1'},
-  {label:'10–14 Mar', wk:'w2'},
-  {label:'16–20 Mar', wk:'w3'},
-  {label:'23–27 Mar', wk:'w4'}
-];
-var APR_WEEKS = [
-  {label:'30Mar–3Abr', wk:'aw1'},
-  {label:'6–10 Abr', wk:'aw2'},
-  {label:'13–17 Abr', wk:'aw3'},
-  {label:'20–24 Abr', wk:'aw4'},
-  {label:'27–30 Abr', wk:'aw5'}
-];
-
-function updateWeekNav(weekList) {
-  var nav = document.getElementById('week-nav-items');
-  if (!nav) return;
-  var td = DAY_MAP[getTodayKey()];
-  var todayWk = td ? td.w : null;
-  var html = '';
-  for (var i=0; i<weekList.length; i++) {
-    var w = weekList[i];
-    var isToday = (w.wk === todayWk);
-    var lbl = w.label + (isToday ? ' ★' : '');
-    html += '<button class="nav-btn'+(isToday?' active':'')+'" onclick="showView(\'week\');setWeek(\''+w.wk+'\')">'
-      +'<span class="nav-dot"></span>'+lbl+'</button>';
-  }
-  nav.innerHTML = html;
-}
-
-function showMonth(m, btn) {
-  var calMar = document.getElementById('cal-mar');
-  var calApr = document.getElementById('cal-apr');
-  if (calMar) calMar.style.display = m === 'mar' ? '' : 'none';
-  if (calApr) calApr.style.display = m === 'apr' ? '' : 'none';
-  var tabs = document.querySelectorAll('.month-tab');
-  for (var i=0; i<tabs.length; i++) {
-    tabs[i].className = tabs[i].className.replace(/\bactive\b/,'').trim();
-  }
-  if (btn) btn.className += ' active';
-  // Update week nav
-  updateWeekNav(m === 'apr' ? APR_WEEKS : MAR_WEEKS);
-}
-
-// ── Build mobile 2-col calendar from desktop grid ──
-function buildMobileGrid(sourceGridId, targetId) {
-  var src = document.getElementById(sourceGridId);
-  var tgt = document.getElementById(targetId);
-  if (!src || !tgt) return;
-  var cells = src.querySelectorAll('.dc');
-  var weeks = [];
-  var curWeek = [];
-  for (var i=0; i<cells.length; i++) {
-    curWeek.push(cells[i]);
-    if (curWeek.length === 7) { weeks.push(curWeek); curWeek = []; }
-  }
-  if (curWeek.length) weeks.push(curWeek);
-  var html = '';
-  for (var w=0; w<weeks.length; w++) {
-    var wk = weeks[w];
-    var firstDay = '', lastDay = '';
-    for (var d=0; d<wk.length; d++) {
-      var dn = wk[d].querySelector('.dn');
-      var num = dn ? dn.textContent.replace(/[^\d]/g,'') : '';
-      if (num && !firstDay) firstDay = num;
-      if (num) lastDay = num;
-    }
-    if (!firstDay) continue;
-    html += '<div class="mgm-week">';
-    html += '<div class="mgm-week-label">Semana ' + firstDay + '–' + lastDay + ' Mar</div>';
-    html += '<div class="mgm-days">';
-    for (var d2=0; d2<wk.length; d2++) {
-      var cell = wk[d2];
-      var isWe = cell.className.indexOf('we') >= 0;
-      var isTd = cell.className.indexOf('td') >= 0;
-      html += '<div class="mgm-day'+(isWe?' we':'')+(isTd?' td':'')+'">'+cell.innerHTML+'</div>';
-    }
-    html += '</div></div>';
-  }
-  tgt.innerHTML = html;
-}
-
-// ── April 2026 calendar data ──
-// April 1 = Wednesday (day of week index 3, Mon=0)
-var APR_DAYS = {
-  // week 30Mar-5Apr (starts in month view from Mon)
-  // Actually April starts Wed 1st
-  // Feriados: 3 (Sex Santa national), 6 (2ª Páscoa regional Porto), 25 (Liberdade national)
-  // 30 Mar – 3 Apr: Sprint 50% / PAS 50%
-  // 6–11 Apr: Sprint 50% / PAS 50%
-  // 14–17 Apr: Sprint 50% / PAS 50% (week of 14)
-  // 22 Apr onwards: 60% Sprint / 40% PAS
-  1:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  2:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  3:  {feriado:'🇵🇹 Sexta-Feira Santa', ch:['<div class="ch cf">🇵🇹 Sexta-Feira Santa</div>']},
-  4:  {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  5:  {we:true, ch:['<div class="ch cr">🌿 Páscoa 🐣</div>']},
-  6:  {feriado:'📍 2ª Feira Páscoa (Porto)', ch:['<div class="ch cf">📍 2ª Feira Páscoa · Porto</div>']},
-  7:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  8:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  9:  {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  10: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  11: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  12: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  13: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  14: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  15: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  16: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  17: {ch:['<div class="ch cw">💻 Sprint 50%</div>','<div class="ch cb">🆕 PAS 50%</div>']},
-  18: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  19: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  20: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  21: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  22: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  23: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  24: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  25: {feriado:'🇵🇹 Dia da Liberdade', ch:['<div class="ch cf">🇵🇹 Dia da Liberdade</div>']},
-  26: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  27: {we:true, ch:['<div class="ch cr">🌿 Descanso</div>']},
-  28: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  29: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']},
-  30: {ch:['<div class="ch cw">💻 Sprint 60%</div>','<div class="ch cb">🆕 PAS 40%</div>']}
-};
-
-function buildAprilCalendar(todayD, todayM) {
-  // April 2026: starts on Wednesday (col index 2 in Mon-first grid)
-  // Mon=0 ... Wed=2
-  var startOffset = 2; // Wednesday
-  var daysInMonth = 30;
-  var desktopEl = document.getElementById('apr-desktop');
-  var mobileEl = document.getElementById('apr-mobile');
-  if (!desktopEl || !mobileEl) return;
-
-  // Desktop 7-col grid
-  var dh = '<div class="mh">Seg</div><div class="mh">Ter</div><div class="mh">Qua</div><div class="mh">Qui</div><div class="mh">Sex</div><div class="mh">Sáb</div><div class="mh">Dom</div>';
-  // Empty cells before month starts (Mon, Tue = 2 empty)
-  for (var e=0; e<startOffset; e++) dh += '<div class="dc we"><div class="dn"></div></div>';
-  for (var day=1; day<=daysInMonth; day++) {
-    var info = APR_DAYS[day] || {};
-    var isWe = !!info.we;
-    var isToday = (todayM === 3 && todayD === day); // month 3 = April (0-indexed)
-    var cls = 'dc' + (isWe?' we':'') + (isToday?' td':'');
-    var dnText = day + (isToday?' ★':'');
-    var content = info.ch ? info.ch.join('') : '';
-    dh += '<div class="' + cls + '"><div class="dn">' + dnText + '</div>' + content + '</div>';
-  }
-  // Fill remaining cells to complete last row
-  var totalCells = startOffset + daysInMonth;
-  var remainder = totalCells % 7;
-  if (remainder !== 0) {
-    for (var r=0; r<(7-remainder); r++) dh += '<div class="dc we"><div class="dn"></div></div>';
-  }
-  desktopEl.innerHTML = dh;
-
-  // Mobile 2-col by week
-  var allCells = desktopEl.querySelectorAll('.dc');
-  var weeks = [];
-  var curWeek = [];
-  for (var i=0; i<allCells.length; i++) {
-    curWeek.push(allCells[i]);
-    if (curWeek.length === 7) { weeks.push(curWeek); curWeek = []; }
-  }
-  if (curWeek.length) weeks.push(curWeek);
-  var mh = '';
-  for (var w=0; w<weeks.length; w++) {
-    var wk = weeks[w];
-    var firstD = '', lastD = '';
-    for (var d=0; d<wk.length; d++) {
-      var dn = wk[d].querySelector('.dn');
-      var num = dn ? dn.textContent.replace(/[^\d]/g,'') : '';
-      if (num && !firstD) firstD = num;
-      if (num) lastD = num;
-    }
-    if (!firstD) continue;
-    mh += '<div class="mgm-week"><div class="mgm-week-label">Semana ' + firstD + '–' + lastD + ' Abr</div><div class="mgm-days">';
-    for (var d2=0; d2<wk.length; d2++) {
-      var cell = wk[d2];
-      var iw = cell.className.indexOf('we') >= 0;
-      var it = cell.className.indexOf('td') >= 0;
-      mh += '<div class="mgm-day'+(iw?' we':'')+(it?' td':'')+'">'+cell.innerHTML+'</div>';
-    }
-    mh += '</div></div>';
-  }
-  mobileEl.innerHTML = mh;
-}
-
-// ── Update logo month dynamically ──
-function updateLogoMonth(d) {
-  var PT_MONTHS_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  var el = document.getElementById('logo-month');
-  if (el) el.textContent = PT_MONTHS_FULL[d.getMonth()] + ' ' + d.getFullYear();
-}
-
-// ── Init ──
-(function init() {
-  var d = new Date();
-  var key = getKey();
-  var dow = PT_DAYS[d.getDay()];
-  var dayN = d.getDate();
-  var mon = PT_MONTHS[d.getMonth()];
-
-  // Badge
-  var badge = document.getElementById('today-badge');
-  if (badge) badge.textContent = '★ '+dayN+' '+mon+' · '+dow;
-
-  // Dashboard title
-  var dt = document.getElementById('dash-today-title');
-  if (dt) dt.textContent = 'Hoje · '+dow+' '+dayN+' '+mon;
-
-  // Dashboard timeline
-  var match = DAY_MAP[key];
-  var tl = document.getElementById('dash-timeline');
-  if (tl) {
-    var dayData = match ? (weeks[match.w] ? weeks[match.w].days[match.i] : null) : null;
-    if (dayData) {
-      var h = '<div class="tl-header">'+dayData.name+' · '+(dayData.sub||'')+'</div>';
-      var dr = dayData.rows || [];
-      for (var i=0; i<dr.length; i++) {
-        h += '<div class="tl-row"><div class="tl-time">'+dr[i][0]+'</div><div class="tl-content '+dr[i][1]+'">'+dr[i][2]+'</div></div>';
-      }
-      tl.innerHTML = h;
-    } else {
-      tl.innerHTML = '<div class="tl-row"><div class="tl-time">—</div><div class="tl-content tc-rest">Fora do período planeado</div></div>';
-    }
-  }
-
-  // Set default week state
-  if (match) { CW = match.w; CDI = match.i; }
-  else { CW = 'w4'; CDI = 3; }
-
-  // Set logo month dynamically
-  updateLogoMonth(d);
-
-  // Update week nav to reflect current month and mark today's week
-  updateWeekNav(d.getMonth() === 3 ? APR_WEEKS : MAR_WEEKS);
-
-  // Build mobile grids
-  buildMobileGrid('cal-mar-desktop-ref', 'cal-mar-mobile');
-  buildAprilCalendar(dayN, d.getMonth());
-
-  // Auto-show April tab if current month is April
-  if (d.getMonth() === 3) {
-    var aprTab = document.querySelector('.month-tab:nth-child(2)');
-    if (aprTab) showMonth('apr', aprTab);
-  }
-
-  // Mark today in month calendar (only for March 2026)
-  if (d.getFullYear() === 2026 && d.getMonth() === 2) {
-    var mday = document.getElementById('mday-'+dayN);
-    if (mday) {
-      mday.className = mday.className + ' td';
-      var dn = mday.querySelector('.dn');
-      if (dn) dn.textContent = dayN + ' ★';
-    }
-  }
-
-  // Update week nav to highlight correct week
-  updateWeekNav(CW && CW.startsWith('aw') ? APR_WEEKS : MAR_WEEKS);
-  // Show dashboard
-  showView('dash');
+/* ══════════════════════════════════════════════════════════
+   1. UTILITÁRIOS DE DATA — fonte única: new Date()
+   ══════════════════════════════════════════════════════════ */
+const hoje     = new Date();
+const todayISO = (() => {
+  const y = hoje.getFullYear();
+  const m = String(hoje.getMonth()+1).padStart(2,'0');
+  const d = String(hoje.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
 })();
+const todayDay   = hoje.getDate();
+const todayMonth = hoje.getMonth();   /* 0-indexed */
+const todayYear  = hoje.getFullYear();
+const todayDow   = hoje.getDay();     /* 0=Dom … 6=Sáb */
+
+const PT_MONTHS  = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+                    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const PT_DAYS    = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira",
+                    "Quinta-feira","Sexta-feira","Sábado"];
+const PT_DAYS_SH = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const WEEKDAY_LABELS = ["Seg","Ter","Qua","Qui","Sex"]; /* dias úteis */
+
+/* Converte Date → "YYYY-MM-DD" sem fuso horário */
+function toISO(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+/* Constrói Date local a partir de "YYYY-MM-DD" */
+function fromISO(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function isMarch2026()  { return todayMonth === 2 && todayYear === 2026; }
+function isApril2026()  { return todayMonth === 3 && todayYear === 2026; }
+function isPlannerRange(){ return (isMarch2026() && todayDay >= 23) || isApril2026(); }
+
+/* ══════════════════════════════════════════════════════════
+   2. MAPA DE SEMANAS → DATAS REAIS
+   Liga cada weekId a um intervalo real [startISO, endISO].
+   w4-mar = 23-27 Mar; w1…w4 = semanas de Abril.
+   ══════════════════════════════════════════════════════════ */
+const WEEK_MAP = {
+  /* Março */
+  'w1-mar': { start:'2026-03-02', end:'2026-03-08',  label:'Sem 2–6 Mar'   },
+  'w2-mar': { start:'2026-03-09', end:'2026-03-15',  label:'Sem 9–13 Mar'  },
+  'w3-mar': { start:'2026-03-16', end:'2026-03-22',  label:'Sem 16–20 Mar' },
+  'w4-mar': { start:'2026-03-23', end:'2026-03-29',  label:'Sem 23–27 Mar' },
+  /* Abril */
+  'w1':     { start:'2026-03-30', end:'2026-04-05',  label:'Sem 30 Mar–5 Abr'  },
+  'w2':     { start:'2026-04-06', end:'2026-04-12',  label:'Sem 6–10 Abr'  },
+  'w3':     { start:'2026-04-13', end:'2026-04-19',  label:'Sem 13–17 Abr' },
+  'w4':     { start:'2026-04-20', end:'2026-04-26',  label:'Sem 20–24 Abr' },
+};
+
+/* Descobre o weekId da semana actual comparando com WEEK_MAP */
+function getCurrentWeekId() {
+  for (const [id, rng] of Object.entries(WEEK_MAP)) {
+    if (todayISO >= rng.start && todayISO <= rng.end) return id;
+  }
+  /* fallback: última semana de março para datas fora do mapa */
+  if (todayISO < '2026-03-02') return 'w1-mar';
+  return 'w4';
+}
+
+/* Índice 0-4 (Seg-Sex) do dia actual; -1 se fim de semana */
+function getCurrentDayIndex() {
+  const dow = todayDow; /* 0=Dom,1=Seg … 5=Sex,6=Sáb */
+  if (dow === 0 || dow === 6) return -1;
+  return dow - 1; /* 1→0, 2→1 … 5→4 */
+}
+
+const currentWeekId  = getCurrentWeekId();
+const currentDayIdx  = getCurrentDayIndex();
+
+/* ══════════════════════════════════════════════════════════
+   3. MOTOR DE ALOCAÇÃO — dinâmico por data ISO
+   ══════════════════════════════════════════════════════════ */
+function getAllocation(dateISO) {
+  const r = PLANNER_DB.allocRules;
+  if (r.formacao.days.includes(dateISO))
+    return { type:'formacao', label:'🎓 Formação 8h — 0% Sprint',
+             badge:'alloc-formacao', sprint:null, pas:null };
+  if (dateISO >= r.mixed.from)
+    return { type:'mixed', label:'60% Sprint / 40% PAS',
+             badge:'alloc-sprint', sprint:'60% Sprint', pas:'40% PAS' };
+  return   { type:'sprint', label:'100% Sprint',
+             badge:'alloc-sprint', sprint:'100% Sprint', pas:null };
+}
+const todayAlloc = getAllocation(todayISO);
+
+/* Retorna ISO do dia útil n (0=Seg) da semana que contém refISO */
+function getWeekdayISO(refISO, dayIdx) {
+  const ref = fromISO(refISO);
+  const dow = ref.getDay(); /* 0=Dom */
+  const monday = new Date(ref);
+  monday.setDate(ref.getDate() - (dow === 0 ? 6 : dow - 1));
+  const target = new Date(monday);
+  target.setDate(monday.getDate() + dayIdx);
+  return toISO(target);
+}
+
+/* ══════════════════════════════════════════════════════════
+   4. HELPERS DE RENDERIZAÇÃO
+   ══════════════════════════════════════════════════════════ */
+function renderNote(n) {
+  return `<div class="note ${n.cls}"><div class="nl">${n.label}</div>${n.txt}</div>`;
+}
+function renderRow(r) {
+  return `<div class="tb"><div class="tt">${r.t}</div><div class="tc ${r.cls}">${r.txt}</div></div>`;
+}
+function renderSection(s) {
+  let h = s.shLabel ? `<div class="sh ${s.shCls}">${s.shLabel}</div>` : '';
+  (s.rows  || []).forEach(r => h += renderRow(r));
+  (s.notes || []).forEach(n => h += renderNote(n));
+  return h;
+}
+function renderCard(c) {
+  let inner = `<h3>${c.title}</h3>`;
+  (c.sections || []).forEach(s => inner += renderSection(s));
+  return `<div class="card">${inner}</div>`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   5. HEADER & LEGEND
+   ══════════════════════════════════════════════════════════ */
+document.getElementById('header-sub').textContent = PLANNER_DB.meta.subtitle;
+[{color:'#5b8dee',label:'Trabalho/POC'},{color:'#e8b84b',label:'Pessoal'},
+ {color:'#5be87a',label:'Certificação'},{color:'#e85b5b',label:'Bloqueado'},
+ {color:'#9b5be8',label:'Descanso'}].forEach(l => {
+  document.getElementById('legend').innerHTML +=
+    `<div class="li"><div class="ld" style="background:${l.color}"></div>${l.label}</div>`;
+});
+
+/* ══════════════════════════════════════════════════════════
+   6. TODAY BANNER — data real + alocação dinâmica
+   ══════════════════════════════════════════════════════════ */
+document.getElementById('today-date-text').textContent =
+  `${PT_DAYS[todayDow]}, ${todayDay} de ${PT_MONTHS[todayMonth]} ${todayYear}`;
+
+(function renderBannerAlloc() {
+  const el = document.getElementById('today-alloc');
+  if (todayAlloc.type === 'mixed') {
+    el.innerHTML =
+      `<div class="alloc-badge alloc-sprint" style="margin-bottom:.3rem">${todayAlloc.sprint}</div><br>` +
+      `<div class="alloc-badge alloc-pas">${todayAlloc.pas}</div>`;
+  } else {
+    el.innerHTML = `<div class="alloc-badge ${todayAlloc.badge}">${todayAlloc.label}</div>`;
+  }
+})();
+
+/* Chips do dia (calendário de março) */
+(function renderBannerChips() {
+  const el = document.getElementById('today-tasks');
+  if (isMarch2026()) {
+    const d = PLANNER_DB.calendar.days.find(x => x.d === todayDay);
+    (d && d.chips ? d.chips : []).forEach(chip => {
+      const s = document.createElement('span');
+      s.className = 'today-task-chip'; s.textContent = chip.t;
+      el.appendChild(s);
+    });
+  } else {
+    el.innerHTML = `<span class="today-task-chip">Ver calendário para eventos de hoje</span>`;
+  }
+})();
+
+/* ══════════════════════════════════════════════════════════
+   7. ALLOC INFO BOX
+   ══════════════════════════════════════════════════════════ */
+(function renderAllocInfo() {
+  const vc = todayAlloc.type === 'formacao' ? 'formacao'
+           : todayAlloc.type === 'mixed'    ? 'pas' : 'sprint';
+  document.getElementById('alloc-info').innerHTML = `
+    <div class="alloc-info-item">
+      <span class="label">Até 05 Abr</span>
+      <span class="value sprint">100% Sprint</span>
+    </div>
+    <div class="alloc-info-divider"></div>
+    <div class="alloc-info-item">
+      <span class="label">A partir de 06 Abr</span>
+      <span class="value sprint">60% Sprint</span>
+      <span class="value pas">40% PAS</span>
+    </div>
+    <div class="alloc-info-divider"></div>
+    <div class="alloc-info-item">
+      <span class="label">13–14 Abr</span>
+      <span class="value formacao">0% Sprint · Formação 8h</span>
+    </div>
+    <div class="alloc-info-divider"></div>
+    <div class="alloc-info-item">
+      <span class="label">Estado hoje</span>
+      <span class="value ${vc}">${todayAlloc.label}</span>
+    </div>`;
+})();
+
+/* ══════════════════════════════════════════════════════════
+   8. OBJETIVOS
+   ══════════════════════════════════════════════════════════ */
+PLANNER_DB.objectives.forEach(o => {
+  document.getElementById('objectives-container').innerHTML +=
+    `<div class="obj ${o.color}">
+       <div class="lbl">${o.rank}</div>
+       <div class="ttl">${o.title}</div>
+       <div class="dl">${o.detail}</div>
+     </div>`;
+});
+
+/* ══════════════════════════════════════════════════════════
+   9. SPRINT ISSUES — fidelidade visual completa
+   ══════════════════════════════════════════════════════════ */
+const issueTypeColor = {
+  'ic-bug':'var(--a3)', 'ic-imp':'var(--accent)',
+  'ic-tst':'var(--a2)', 'ic-pdd':'var(--a5)'
+};
+(function renderIssues() {
+  const done = PLANNER_DB.issues.filter(i => i.done).length;
+  document.getElementById('issues-label').textContent =
+    `Sprint Issues · ${done}/${PLANNER_DB.issues.length} concluídos · ${PT_DAYS_SH[todayDow]} ${todayDay} ${PT_MONTHS[todayMonth].slice(0,3)}`;
+
+  const el = document.getElementById('issues-container');
+  PLANNER_DB.issues.forEach(iss => {
+    const col = iss.done ? 'var(--a4)' : (issueTypeColor[iss.type] || 'var(--muted)');
+    let badge = '';
+    if (iss.done) {
+      badge = `<span class="issue-badge badge-done">✅ Concluído</span>`;
+    } else if (iss.note) {
+      const bc = iss.note.includes('progresso') ? 'badge-progress' : 'badge-pending';
+      badge = `<span class="issue-badge ${bc}">${iss.note}</span>`;
+    }
+    const dateHtml = iss.done
+      ? `<div class="idate done">✅ ${iss.date.replace('✅ Concluído ','')}</div>`
+      : `<div class="idate plan">📅 ${iss.date.replace('📅 Prev: ','').replace('📅 ','')}</div>`;
+
+    el.innerHTML += `
+      <div class="icard ${iss.type}${iss.done?' done':''}"
+           style="border-top-color:${col};${iss.done?'opacity:.55;':''}">
+        <div class="iid" style="${iss.done?'text-decoration:line-through;':''}">${iss.id}</div>
+        <div class="itype" style="color:${col}">${iss.typeLabel}</div>
+        <div class="iest" style="${iss.done?'text-decoration:line-through;':''}">${iss.est}</div>
+        ${dateHtml}${badge}
+      </div>`;
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════
+   10. TABS — desktop + mobile dropdown
+       ★ injetado na semana actual da sidenav
+   ══════════════════════════════════════════════════════════ */
+/* Mapeia weekId (tabs) → chave WEEK_MAP para comparar com currentWeekId */
+const tabWeekMap = {
+  'w1':'w1-mar', 'w2':'w2-mar', 'w3':'w3-mar', 'w4':'w4-mar'
+  /* semanas de abril: os IDs coincidem */
+};
+function tabMatchesCurrent(tabId) {
+  const mapped = tabWeekMap[tabId] || tabId;
+  return mapped === currentWeekId;
+}
+
+const tabsDesktop      = document.getElementById('tabs-desktop');
+const tabsMobileSelect = document.getElementById('tabs-mobile-select');
+
+PLANNER_DB.weeks.forEach((w, i) => {
+  const isCurrent = tabMatchesCurrent(w.id);
+  const label = isCurrent ? `★ ${w.label}` : w.label;
+
+  const btn = document.createElement('button');
+  btn.className = 'tab' + (i === 0 ? ' on' : '');
+  btn.textContent = label;
+  btn.dataset.weekId = w.id;
+  btn.onclick = () => switchView(w.id, btn);
+  tabsDesktop.appendChild(btn);
+
+  const opt = document.createElement('option');
+  opt.value = w.id; opt.textContent = label;
+  tabsMobileSelect.appendChild(opt);
+});
+
+function switchView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('view-' + id).classList.add('on');
+  if (btn) btn.classList.add('on');
+  tabsMobileSelect.value = id;
+
+  /* Day Picker: só visível na vista Rotina Diária */
+  const dp = document.getElementById('day-picker');
+  dp.style.display = (id === 'daily') ? 'flex' : 'none';
+}
+
+/* ══════════════════════════════════════════════════════════
+   11. DAY PICKER
+       Injetado no topo de view-daily.
+       Ao clicar: atualiza rotina, alocação e eventos do dia.
+   ══════════════════════════════════════════════════════════ */
+let activeDayIdx = currentDayIdx >= 0 ? currentDayIdx : 0;
+
+(function buildDayPicker() {
+  const dp = document.getElementById('day-picker');
+  WEEKDAY_LABELS.forEach((lbl, idx) => {
+    const dayISO  = getWeekdayISO(todayISO, idx);
+    const isToday = (idx === currentDayIdx);
+    const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
+    const holiday  = (PLANNER_DB.holidays || []).find(h => (h.iso||h.date) === dayISO);
+
+    const btn      = document.createElement('button');
+    btn.className  = 'dpbtn' +
+                     (idx === activeDayIdx ? ' dp-active' : '') +
+                     (isToday             ? ' dp-today'  : '');
+    /* Mostrar ícone de cert ou feriado no label */
+    let lblSuffix = '';
+    if (certEvt)  lblSuffix = ' 📚';
+    if (holiday)  lblSuffix = ' 🏖️';
+    if (certEvt && certEvt.highlight) lblSuffix = ' 🏆';
+
+    btn.textContent    = lbl + lblSuffix;
+    btn.title          = certEvt ? certEvt.label : (holiday ? holiday.name : dayISO);
+    btn.dataset.dayIdx = idx;
+    btn.dataset.iso    = dayISO;
+    btn.onclick = () => selectDay(idx, btn);
+    dp.appendChild(btn);
+  });
+})();
+
+function selectDay(idx, btn) {
+  activeDayIdx = idx;
+  document.querySelectorAll('.dpbtn').forEach(b => b.classList.remove('dp-active'));
+  btn.classList.add('dp-active');
+
+  /* Calcular ISO do dia seleccionado na semana actual */
+  const dayISO = getWeekdayISO(todayISO, idx);
+  renderDailyForDay(idx, dayISO);
+}
+
+/* ══════════════════════════════════════════════════════════
+   12. ROTINA DIÁRIA — reactiva ao Day Picker
+   ══════════════════════════════════════════════════════════ */
+function renderDailyForDay(dayIdx, dayISO) {
+  const container = document.getElementById('daily-day-content');
+  const routine   = PLANNER_DB.dailyRoutine;
+  const alloc     = getAllocation(dayISO);
+  const isWeekend = (dayIdx < 0);
+  const dayLabel  = isWeekend ? 'Fim de semana' : WEEKDAY_LABELS[dayIdx];
+  const isToday   = (dayISO === todayISO);
+
+  /* Alocação badge para este dia */
+  let allocBadge = '';
+  if (alloc.type === 'mixed') {
+    allocBadge = `<span class="alloc-badge alloc-sprint" style="font-size:.65rem">${alloc.sprint}</span>
+                  <span class="alloc-badge alloc-pas" style="font-size:.65rem;margin-left:.3rem">${alloc.pas}</span>`;
+  } else {
+    allocBadge = `<span class="alloc-badge ${alloc.badge}" style="font-size:.65rem">${alloc.label}</span>`;
+  }
+
+  /* Eventos do calendário para este dia — usa calendarEvents (qualquer mês) */
+  let calEvents = '';
+  const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
+  const holiday  = (PLANNER_DB.holidays || []).find(h => (h.iso || h.date) === dayISO);
+
+  /* Card de destaque: evento de certificação do dia */
+  if (certEvt) {
+    const hlStyle = certEvt.highlight
+      ? `background:var(--accent)22;border-color:var(--accent);`
+      : `background:var(--surface2);border-color:var(--border2);`;
+    calEvents += `
+      <div style="${hlStyle}border:1px solid;border-radius:8px;padding:.7rem 1rem;margin-bottom:.6rem;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;
+             text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.3rem;">
+          🎓 Certificação · ${dayISO}
+        </div>
+        <div style="font-size:.82rem;font-weight:600;color:${certEvt.highlight?'var(--accent)':'var(--a4)'}">
+          ${certEvt.label}
+        </div>
+      </div>`;
+  }
+
+  /* Feriado */
+  if (holiday) {
+    calEvents += `
+      <div style="background:var(--accent)11;border:1px solid var(--accent)33;
+           border-radius:8px;padding:.6rem 1rem;margin-bottom:.6rem;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--accent);">
+          🏖️ ${holiday.name} ${holiday.type === 'optional' ? '(opcional)' : ''}
+        </div>
+      </div>`;
+  }
+
+  /* Chips do calendário de março (se aplicável) */
+  if (dayISO.startsWith('2026-03-')) {
+    const d = parseInt(dayISO.slice(-2));
+    const calDay = PLANNER_DB.calendar.days.find(x => x.d === d);
+    if (calDay && calDay.chips && calDay.chips.length) {
+      const chipsHtml = calDay.chips.map(c =>
+        `<div class="ch ${c.c}" style="font-size:.65rem;margin-bottom:3px">${c.t}</div>`
+      ).join('');
+      calEvents += `
+        <div style="background:var(--surface2);border-radius:8px;
+             border:1px solid var(--border2);padding:.7rem 1rem;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;
+               text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;">
+            📅 Agenda · ${d} Mar
+          </div>
+          ${chipsHtml}
+        </div>`;
+    }
+  }
+
+  /* Rotina do dia (dias úteis) */
+  let rows = '';
+  if (isWeekend || dayIdx < 0) {
+    rows = `<div class="note nr" style="margin-top:0">
+              <div class="nl">🌿 Fim de semana</div>
+              Descanso, recuperação, passeios. Zero ecrãs exigentes.
+            </div>`;
+  } else {
+    rows = routine.weekdays.map(r => renderRow(r)).join('');
+  }
+
+  const notes   = (routine.notes || []).map(n => renderNote(n)).join('');
+  const ab      = PLANNER_DB.antiBurnout.map(n => renderNote(n)).join('');
+  const math    = `
+    <div style="padding:.75rem;background:#1a1c22;border-radius:8px;
+         border:1px solid var(--border);font-size:.75rem;color:var(--muted);margin-top:.75rem;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;margin-bottom:.25rem;">
+        📊 MATEMÁTICA DO BURNOUT
+      </div>
+      ${PLANNER_DB.burnoutMath}
+    </div>`;
+
+  /* Fade transition */
+  container.classList.add('fading');
+  setTimeout(() => {
+    container.innerHTML = `
+      <!-- Day header -->
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
+             color:${isToday?'var(--accent)':'var(--text)'}">
+          ${dayLabel}${isToday ? ' <span style="font-size:.75rem;color:var(--accent)">· hoje</span>' : ''}
+        </div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap">${allocBadge}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;
+             color:var(--muted2);margin-left:auto;">${dayISO}</div>
+      </div>
+      ${calEvents ? `<div style="margin-bottom:1rem;">${calEvents}</div>` : ''}
+      <div class="grid2">
+        <div class="card">
+          <h3>Rotina Base — ${dayLabel}</h3>
+          ${rows}${notes}
+        </div>
+        <div class="card">
+          <h3>Filosofia Anti-Burnout</h3>
+          ${ab}${math}
+        </div>
+      </div>`;
+    container.classList.remove('fading');
+  }, 150);
+}
+
+/* ══════════════════════════════════════════════════════════
+   13. CALENDÁRIO — dinâmico puro, sem star/highlight estáticos
+       · today-cell → apenas o dia actual (todayISO)
+       · Feriados → bordado laranja leve
+       · Eventos cert. → chip adicional se existir em calendarEvents
+   ══════════════════════════════════════════════════════════ */
+(function renderMonth() {
+  const cal      = PLANNER_DB.calendar;
+  const view     = document.getElementById('view-month');
+  const year     = cal.year;   /* 2026 */
+  const monthIdx = 2;          /* Março = índice 2 */
+
+  /* Índices rápidos para lookup O(1) */
+  const holidaySet = new Set((PLANNER_DB.holidays || []).map(h => h.iso || h.date));
+  const certEvtMap = {};
+  (PLANNER_DB.calendarEvents || []).forEach(ev => {
+    if (ev.iso && ev.iso.startsWith('2026-03-')) {
+      const d = parseInt(ev.iso.slice(-2));
+      if (!certEvtMap[d]) certEvtMap[d] = [];
+      certEvtMap[d].push(ev);
+    }
+  });
+
+  let html = '<div class="mgrid">';
+  ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].forEach(d =>
+    html += `<div class="mh">${d}</div>`);
+  for (let i = 0; i < cal.startOffset; i++)
+    html += '<div class="dc emp"></div>';
+
+  cal.days.forEach(day => {
+    const dayISO  = `${year}-03-${String(day.d).padStart(2,'0')}`;
+    const isToday = (dayISO === todayISO);
+
+    /* Classe base: apenas weekend ou today — sem highlight estático */
+    let cls = 'dc';
+    if (day.we)   cls += ' we';
+    if (isToday)  cls += ' today-cell';
+
+    /* ★ apenas no dia actual */
+    const todayBadge = isToday
+      ? `<span style="color:var(--accent);font-size:.58rem;margin-left:.25rem">★ hoje</span>` : '';
+
+    /* Feriado badge */
+    const holiday = (PLANNER_DB.holidays || []).find(h => (h.iso||h.date) === dayISO);
+    const holidayBadge = holiday
+      ? `<div class="ch" style="background:#e8b84b11;color:var(--accent);border-left:2px solid var(--accent);font-size:.55rem;">
+           🏖️ ${holiday.name}
+         </div>` : '';
+
+    /* Chips base do dia */
+    let chipsHtml = (day.chips || [])
+      .map(c => `<div class="ch ${c.c}">${c.t}</div>`).join('');
+
+    /* Chips de eventos cert. (se não estiverem já nos chips base) */
+    if (certEvtMap[day.d]) {
+      certEvtMap[day.d].forEach(ev => {
+        /* Evita duplicar se já aparece nos chips base */
+        if (!chipsHtml.includes(ev.label.slice(0,12))) {
+          chipsHtml += `<div class="ch ${ev.chipCls||'cc'}">${ev.label}</div>`;
+        }
+      });
+    }
+
+    html += `<div class="${cls}">
+      <div class="dn">${day.d}${todayBadge}</div>
+      ${holidayBadge}${chipsHtml}
+    </div>`;
+  });
+
+  const used = cal.startOffset + cal.days.length;
+  const pad  = used % 7 === 0 ? 0 : 7 - (used % 7);
+  for (let i = 0; i < pad; i++) html += '<div class="dc emp"></div>';
+  html += '</div>';
+
+  /* Progress cards */
+  html += '<div class="pgrid">';
+  PLANNER_DB.progress.forEach(p => {
+    const ms = p.milestones.map(m =>
+      `<div class="ms"><div class="md" style="background:${p.color}"></div>
+       <span class="mx">${m.mx}</span>${m.txt}</div>`).join('');
+    html += `<div class="pc">
+      <div class="pl">${p.label}</div>
+      <div class="pbo"><div class="pbi" style="width:${p.pct}%;background:${p.color}"></div></div>
+      <div class="pt">${p.sub}</div>
+      <div class="ml">${ms}</div>
+    </div>`;
+  });
+  html += '</div>';
+  view.innerHTML = html;
+})();
+
+/* ══════════════════════════════════════════════════════════
+   14. SEMANAS DETALHADAS — ★ na semana actual
+   ══════════════════════════════════════════════════════════ */
+/* Mapa tab id → week_map key (semanas de março usam sufixo -mar) */
+const weekViewMap = { w1:'w1-mar', w2:'w2-mar', w3:'w3-mar', w4:'w4-mar' };
+
+['w1','w2','w3','w4'].forEach(wid => {
+  const data = PLANNER_DB.weekDetails[wid];
+  if (!data) return;
+  const mappedId    = weekViewMap[wid] || wid;
+  const isCurrent   = (mappedId === currentWeekId);
+  const metaPrefix  = isCurrent
+    ? `<span style="color:var(--accent)">★ Semana actual</span> · ` : '';
+
+  let html = `<div class="week-meta">${metaPrefix}${data.meta}</div><div class="grid2">`;
+  data.cards.forEach(c => html += renderCard(c));
+  html += '</div>';
+  document.getElementById('view-' + wid).innerHTML = html;
+});
+
+/* ══════════════════════════════════════════════════════════
+   15. CERTIFICAÇÃO — renderCert() com phases
+   Preparado para receber PLANNER_DB.cert.phases quando existir.
+   ══════════════════════════════════════════════════════════ */
+(function renderCert() {
+  const view = document.getElementById('view-cert');
+  const cert = PLANNER_DB.cert;
+
+  /* ── D1–D14 topics ── */
+  const topicsDone = cert.topics.filter(t => t.done).length;
+  const topicsPct  = Math.round(topicsDone / cert.topics.length * 100);
+  const topicsHtml = cert.topics.map(t => `
+    <div class="dtopic${t.done ? ' dtopic-done' : ''}">
+      <div class="dtag">${t.d}</div>
+      <div class="dtitle">${t.title}</div>
+      <div class="ddesc">${t.desc}</div>
+    </div>`).join('');
+
+  /* ── Phases: lê cert.phases se existir; senão constrói das weeks ── */
+  let phasesHtml = '';
+  if (cert.phases && cert.phases.length) {
+    /* Estrutura preparada para uso futuro:
+       cert.phases = [{ tag, title, dates, color, events:[{date,task,done}] }] */
+    cert.phases.forEach(ph => {
+      const eventsHtml = (ph.events || []).map(ev => `
+        <div class="tb">
+          <div class="tt" style="color:${ph.color || 'var(--accent)'}">${ev.date}</div>
+          <div class="tc ${ev.done ? 'tcc' : 'tw'}" style="${ev.done?'opacity:.7':''}">${ev.task}</div>
+        </div>`).join('');
+      phasesHtml += `
+        <div class="cert-phase">
+          <div class="cert-phase-header">
+            <span class="cert-phase-tag" style="background:${ph.color||'var(--accent)'}22;
+              color:${ph.color||'var(--accent)'};border:1px solid ${ph.color||'var(--accent)'}44">
+              ${ph.tag}
+            </span>
+            <span class="cert-phase-title">${ph.title}</span>
+            <span class="cert-phase-dates">${ph.dates}</span>
+          </div>
+          ${eventsHtml}
+        </div>`;
+    });
+  } else {
+    /* Fallback: renderiza as weeks existentes (comportamento anterior) */
+    cert.weeks.forEach(w => {
+      const marker = w.note ? ` (${w.note})` : (w.sessions ? ` (${w.sessions} sessões = ${w.hours})` : '');
+      phasesHtml += `<div class="sh ${w.cls}">${w.label}${marker}</div>`;
+      w.days.forEach(d =>
+        phasesHtml += `<div class="tb"><div class="tt">${d.d}</div><div class="tc ${d.cls}">${d.txt}</div></div>`);
+    });
+  }
+
+  /* ── Horas breakdown ── */
+  let hoursHtml = cert.hoursBreakdown.map(h =>
+    `<div class="cert-row">
+       <span>${h.label}</span>
+       <span style="color:${h.color};font-family:'JetBrains Mono',monospace">${h.hrs}</span>
+     </div>`).join('');
+  hoursHtml += `<div class="cert-total"><span>Total</span><span>${cert.totalHours}</span></div>`;
+
+  /* ── Notas de rodapé: .note .ng / .nr / .nw ── */
+  const footerNotes = cert.notes.map(n => renderNote(n)).join('');
+
+  view.innerHTML = `
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;
+         color:var(--muted);margin-bottom:1.2rem;">
+      🎯 ${cert.title} · Target:
+      <span style="color:var(--accent)">${cert.target}</span>
+    </div>
+
+    <!-- D1–D14 progress -->
+    <div style="margin-bottom:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;
+             text-transform:uppercase;letter-spacing:.1em;color:var(--muted);">
+          Tópicos D1–D14 · ${topicsDone}/${cert.topics.length} concluídos
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;
+             color:var(--a4);font-weight:600;">${topicsPct}%</div>
+      </div>
+      <div class="pbo" style="margin-bottom:1rem;">
+        <div class="pbi" style="width:${topicsPct}%;background:var(--a4)"></div>
+      </div>
+      <div class="dtopics-grid">${topicsHtml}</div>
+    </div>
+
+    <!-- Phases / Plano semanal + Horas -->
+    <div class="grid2">
+      <div class="card">
+        <h3>Plano de Estudo · Fases</h3>
+        ${phasesHtml}
+      </div>
+      <div class="card">
+        <h3>Horas Totais &amp; Estratégia</h3>
+        <div class="cert-hours">${hoursHtml}</div>
+        <!-- Notas rodapé: .note .ng (verde) / .nr (roxo) / .nw (laranja) -->
+        ${footerNotes}
+      </div>
+    </div>`;
+})();
+
+/* ══════════════════════════════════════════════════════════
+   16. ACTIVAÇÃO AUTOMÁTICA — executa por último
+   ══════════════════════════════════════════════════════════ */
+(function autoActivate() {
+  /* Encontra o tab que corresponde à semana actual */
+  let targetTabId = 'month';
+  PLANNER_DB.weeks.forEach(w => {
+    if (tabMatchesCurrent(w.id)) targetTabId = w.id;
+  });
+
+  const allTabs = document.querySelectorAll('.tab');
+  allTabs.forEach(btn => {
+    btn.classList.toggle('on', btn.dataset.weekId === targetTabId);
+  });
+  tabsMobileSelect.value = targetTabId;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.getElementById('view-' + targetTabId).classList.add('on');
+
+  /* Renderiza rotina do dia actual */
+  renderDailyForDay(activeDayIdx, getWeekdayISO(todayISO, activeDayIdx));
+})();
+
 </script>
 </body>
 </html>
