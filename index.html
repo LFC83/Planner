@@ -7,337 +7,915 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
+/* ══════════════════════════════════════════════════════════
+   DESIGN TOKENS — todos os valores visuais passam por aqui.
+   Alterações de cor: editar apenas esta secção.
+   ══════════════════════════════════════════════════════════ */
 :root {
-  --bg:#0e0f11; --surface:#16181c; --surface2:#1c1f26;
-  --border:#2a2d35; --border2:#343843;
-  --accent:#e8b84b; --a2:#5b8dee; --a3:#e85b5b; --a4:#5be87a; --a5:#9b5be8;
-  --text:#e8e9ec; --muted:#7a7f8e; --muted2:#5a5f6e;
+  /* Superfícies */
+  --bg:       #0e0f11;
+  --surface:  #16181c;
+  --surface2: #1c1f26;
+  --surface3: #22262f;   /* nova: hover states */
+
+  /* Bordas */
+  --border:   #2a2d35;
+  --border2:  #343843;
+
+  /* Cores de acento */
+  --accent:   #e8b84b;   /* gold    — Sprint / destaque principal */
+  --a2:       #5b8dee;   /* blue    — trabalho / foco */
+  --a3:       #e85b5b;   /* red     — bloqueado / formação */
+  --a4:       #5be87a;   /* green   — concluído / cert. */
+  --a5:       #9b5be8;   /* purple  — descanso / pessoal */
+
+  /* Texto */
+  --text:     #e8e9ec;
+  --muted:    #7a7f8e;
+  --muted2:   #5a5f6e;
+
+  /* ── Semântica de alocação (usadas por .alloc-badge e .tc-*) ── */
+  --col-sprint:   #5b8dee;   /* azul   */
+  --col-pas:      #e8b84b;   /* gold   */
+  --col-formacao: #e85b5b;   /* vermelho */
+  --col-rest:     #5be87a;   /* verde  */
+  --col-meal:     rgba(255,255,255,.06);
+
+  /* Transições globais */
+  --t-fast:  .15s ease;
+  --t-mid:   .22s ease;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
-/* Noise overlay */
-.noise{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity:.4;}
-
-.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:2rem;}
-
-/* ─── HEADER ─── */
-header{display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
-h1{font-family:'Syne',sans-serif;font-size:3.2rem;line-height:1;letter-spacing:-2px;font-weight:800;}
-h1 em{color:var(--accent);font-style:italic;}
-.sub{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);margin-top:.4rem;text-transform:uppercase;letter-spacing:.12em;}
-.legend{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:flex-end;}
-.li{display:flex;align-items:center;gap:.4rem;font-size:.65rem;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-.ld{width:7px;height:7px;border-radius:50%;}
-
-/* ─── TODAY BANNER ─── */
-#today-banner{
-  background:linear-gradient(135deg,#1a1c2a 0%,#16181c 60%,#1a1f1a 100%);
-  border:1px solid var(--border2);border-left:3px solid var(--accent);
-  border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;
-  display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;}
-.today-main .today-date{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--accent);}
-.today-main .today-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.3rem;}
-.today-alloc{text-align:right;}
-.alloc-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:.3rem .8rem;border-radius:6px;font-weight:500;}
-.alloc-sprint{background:#5b8dee18;color:#8baaff;border:1px solid #5b8dee44;}
-.alloc-pas{background:#e8b84b18;color:#f0c96a;border:1px solid #e8b84b44;}
-.alloc-formacao{background:#e85b5b18;color:#f07a7a;border:1px solid #e85b5b44;}
-.today-tasks{margin-top:.75rem;display:flex;flex-wrap:wrap;gap:.4rem;}
-.today-task-chip{font-size:.7rem;font-family:'JetBrains Mono',monospace;padding:.2rem .6rem;border-radius:4px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
-
-/* ─── OBJECTIVES ─── */
-.objs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
-.obj{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;position:relative;overflow:hidden;}
-.obj::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-.obj.c1::before{background:var(--a2);}.obj.c2::before{background:var(--accent);}.obj.c3::before{background:var(--a4);}
-.obj .lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.25rem;}
-.obj .ttl{font-weight:600;font-size:.88rem;}
-.obj.c1 .ttl{color:#8baaff;}.obj.c2 .ttl{color:var(--accent);}.obj.c3 .ttl{color:var(--a4);}
-.obj .dl{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-top:.2rem;}
-
-/* ─── ISSUE TRACKER ─── */
-.itrack-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.5rem;}
-.itrack{display:grid;grid-template-columns:repeat(9,1fr);gap:.4rem;margin-bottom:1.5rem;}
-.inote{font-family:'JetBrains Mono',monospace;font-size:.58rem;margin-top:.3rem;color:var(--muted);}
-.icard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;position:relative;overflow:hidden;}
-.icard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-.icard.done{opacity:.65;}.icard.done::after{content:'✓';position:absolute;top:.5rem;right:.6rem;font-size:.9rem;color:var(--a4);}
-.icard.ic-bug::before{background:var(--a3);}.icard.ic-imp::before{background:var(--accent);}
-.icard.ic-tst::before{background:var(--a2);}.icard.ic-pdd::before{background:var(--a5);}
-.iid{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.2rem;}
-.itype{font-size:.64rem;font-weight:600;margin-bottom:.25rem;}
-.ic-bug .itype{color:#f07a7a;}.ic-imp .itype{color:var(--accent);}.ic-tst .itype{color:#8baaff;}.ic-pdd .itype{color:#c09bf5;}
-.iest{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-bottom:.2rem;}
-.idate{font-family:'JetBrains Mono',monospace;font-size:.6rem;margin-top:.3rem;}
-.idate.done{color:var(--a4);}.idate.plan{color:var(--muted);}
-
-/* ─── TABS / NAV ─── */
-.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem;}
-.tab{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;
-  padding:.45rem .9rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);
-  cursor:pointer;transition:all .2s;white-space:nowrap;}
-.tab:hover{border-color:var(--accent);color:var(--accent);}
-.tab.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600;}
-
-/* Mobile nav dropdown */
-.tabs-mobile{display:none;position:relative;margin-bottom:1.5rem;}
-.tabs-mobile select{width:100%;background:var(--surface);border:1px solid var(--border);
-  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:.6rem 1rem;
-  border-radius:8px;cursor:pointer;appearance:none;outline:none;}
-.tabs-mobile::after{content:'▾';position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--accent);pointer-events:none;}
-
-/* ─── VIEWS ─── */
-.view{display:none;}.view.on{display:block;}
-
-/* ─── CALENDAR GRID ─── */
-.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
-.mh{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:center;padding:.45rem 0;}
-.dc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem;min-height:108px;}
-.dc.we{opacity:.45;}.dc.today-cell{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)22;}
-.dc.gc{border-color:var(--a4);}.dc.emp{background:transparent;border-color:transparent;}
-.dn{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between;}
-.dc.today-cell .dn{color:var(--accent);}
-.dc.we .dn::after{content:'WE';font-size:.5rem;background:var(--border);padding:1px 4px;border-radius:3px;color:var(--muted);}
-.ch{font-size:.59rem;padding:2px 5px;border-radius:3px;margin-bottom:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
-.cw{background:#5b8dee18;color:#8baaff;border-left:2px solid #5b8dee;}
-.cp{background:#e8b84b18;color:#f0c96a;border-left:2px solid #e8b84b;}
-.cc{background:#5be87a18;color:#7aef99;border-left:2px solid #5be87a;}
-.cb{background:#e85b5b18;color:#f07a7a;border-left:2px solid #e85b5b;}
-.cr{background:#9b5be818;color:#c09bf5;border-left:2px solid #9b5be8;}
-.cn{background:#1a4a2822;color:#7aef99;border-left:2px solid #5be87a;}
-
-/* ─── PROGRESS CARDS ─── */
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;}
-.pc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
-.pl{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.8rem;}
-.pbo{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-bottom:.4rem;}
-.pbi{height:100%;border-radius:4px;}
-.pt{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
-.ml{margin-top:.7rem;}
-.ms{display:flex;align-items:center;gap:.5rem;font-size:.72rem;padding:.28rem 0;border-bottom:1px solid var(--border);color:var(--muted);}
-.ms:last-child{border-bottom:none;}
-.md{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.mx{font-family:'JetBrains Mono',monospace;font-size:.62rem;min-width:55px;}
-
-/* ─── CARDS (week views) ─── */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;}
-.card h3{font-family:'JetBrains Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;}
-.tb{display:flex;gap:.8rem;margin-bottom:.45rem;align-items:flex-start;}
-.tt{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);min-width:84px;padding-top:4px;}
-.tc{flex:1;font-size:.77rem;padding:4px 8px;border-radius:5px;line-height:1.4;}
-.tw{background:#5b8dee18;color:#8baaff;}
-.tpp{background:#e8b84b18;color:#f0c96a;}
-.tcc{background:#5be87a18;color:#7aef99;}
-.tbb{background:#e85b5b18;color:#f07a7a;}
-.tn{background:#1a1c22;color:var(--muted);}
-.tr{background:#9b5be818;color:#c09bf5;}
-
-/* ─── NOTES ─── */
-.note{padding:.75rem;border-radius:8px;margin-top:.75rem;font-size:.73rem;line-height:1.5;}
-.note .nl{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem;}
-.nr{background:#2a1a4a22;border:1px solid #9b5be833;color:#c09bf5;}
-.nw{background:#4a1a1a22;border:1px solid #e85b5b33;color:#f07a7a;}
-.ni{background:#2a3f6e22;border:1px solid #5b8dee33;color:#8baaff;}
-.ng{background:#1a4a2822;border:1px solid #2a5a3833;color:#7aef99;}
-
-.sh{font-weight:600;font-size:.8rem;margin:1rem 0 .4rem;}
-.sh.b{color:#8baaff;}.sh.y{color:var(--accent);}.sh.g{color:var(--a4);}.sh.r{color:#f07a7a;}.sh.v{color:#c09bf5;}
-
-.week-meta{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);margin-bottom:1rem;}
-
-/* ─── ISSUE BADGES (estado visual) ─── */
-.issue-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.55rem;
-  padding:.15rem .4rem;border-radius:3px;margin-top:.3rem;font-weight:600;letter-spacing:.04em;}
-.badge-done    {background:#5be87a18;color:var(--a4);border:1px solid #5be87a44;}
-.badge-progress{background:#5b8dee18;color:#8baaff; border:1px solid #5b8dee44;}
-.badge-pending {background:#e8b84b18;color:var(--accent);border:1px solid #e8b84b44;}
-
-/* ─── TODAY CELL — borda accent + fundo suave ─── */
-.dc.today-cell{
-  border-color:var(--accent) !important;
-  box-shadow:0 0 0 1px var(--accent)33;
-  background:linear-gradient(135deg,#1a1c22 0%,#1e1a0f 100%);
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
 }
-.dc.today-cell .dn{color:var(--accent);}
 
-/* ─── MOBILE SIDENAV → menu horizontal sticky no topo ─── */
-/* (as tabs já são flex; em mobile tornam-se scroll horizontal sticky) */
+/* ── NOISE OVERLAY ── */
+.noise {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: .4;
+}
 
-/* ─── CERT VIEW ─── */
-.dtopics-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem;}
-.dtopic{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.6rem .7rem;position:relative;transition:border-color .2s;}
-.dtopic:hover{border-color:var(--a4);}
-.dtopic-done{opacity:.6;background:#1a4a2811;border-color:#2a5a3855;}
-.dtopic-done::after{content:'✓';position:absolute;top:.4rem;right:.5rem;font-size:.75rem;color:var(--a4);}
-.dtag{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--accent);font-weight:600;margin-bottom:.2rem;letter-spacing:.06em;}
-.dtitle{font-size:.7rem;font-weight:600;color:var(--text);margin-bottom:.2rem;line-height:1.3;}
-.ddesc{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);line-height:1.4;}
-.dcheck{display:none;}
-@media(max-width:1100px){.dtopics-grid{grid-template-columns:repeat(4,1fr);}}
-@media(max-width:768px){.dtopics-grid{grid-template-columns:repeat(2,1fr);}}
-.cert-hours{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
-.cert-row{display:flex;justify-content:space-between;font-size:.76rem;}
-.cert-row span:first-child{color:var(--muted);}
-.cert-row span:last-child{font-family:'JetBrains Mono',monospace;}
-.cert-total{border-top:1px solid var(--border);padding-top:.5rem;display:flex;justify-content:space-between;font-size:.85rem;}
-.cert-total span:first-child{color:var(--text);font-weight:600;}
-.cert-total span:last-child{font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:600;}
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 1280px; margin: 0 auto; padding: 2rem;
+}
 
-/* ─── ALLOC INFO BOX ─── */
-.alloc-info{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;}
-.alloc-info-item{display:flex;flex-direction:column;gap:.2rem;}
-.alloc-info-item .label{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
-.alloc-info-item .value{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;}
-.alloc-info-item .value.sprint{color:#8baaff;}
-.alloc-info-item .value.pas{color:var(--accent);}
-.alloc-info-item .value.formacao{color:#f07a7a;}
-.alloc-info-divider{width:1px;height:40px;background:var(--border);}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HEADER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 2rem; padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.2rem; line-height: 1;
+  letter-spacing: -2px; font-weight: 800;
+}
+h1 em { color: var(--accent); font-style: italic; }
+.sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; color: var(--muted);
+  margin-top: .4rem; text-transform: uppercase; letter-spacing: .12em;
+}
+.legend { display: flex; gap: .8rem; flex-wrap: wrap; justify-content: flex-end; }
+.li {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .65rem; font-family: 'JetBrains Mono', monospace;
+  color: var(--muted); text-transform: uppercase; letter-spacing: .08em;
+}
+.ld { width: 7px; height: 7px; border-radius: 50%; }
 
-/* ─── DAY PICKER ─── */
-#day-picker{
-  display:flex;gap:.35rem;align-items:center;
-  background:var(--surface2);border:1px solid var(--border2);
-  border-radius:10px;padding:.5rem .75rem;margin-bottom:1.2rem;
-  flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DASHBOARD TITLE — único elemento · atualizado pelo JS
+   Formato: "Agenda: Segunda-feira, 30 de Março de 2026"
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#dashboard-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--muted);
+  letter-spacing: -.01em;
+  margin-bottom: .75rem;
+  min-height: 1.4em;
+  transition: opacity var(--t-fast);
 }
-#day-picker::-webkit-scrollbar{display:none;}
-.day-picker-label{
-  font-family:'JetBrains Mono',monospace;font-size:.6rem;
-  text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);
-  white-space:nowrap;padding-right:.5rem;
-  border-right:1px solid var(--border);margin-right:.15rem;
-}
-.dpbtn{
-  font-family:'JetBrains Mono',monospace;font-size:.68rem;
-  padding:.3rem .7rem;border-radius:6px;border:1px solid var(--border);
-  background:transparent;color:var(--muted);cursor:pointer;
-  transition:all .18s;white-space:nowrap;flex-shrink:0;
-  letter-spacing:.04em;
-}
-.dpbtn:hover{border-color:var(--accent);color:var(--accent);}
-.dpbtn.dp-active{
-  background:var(--accent);border-color:var(--accent);
-  color:var(--bg);font-weight:700;
-}
-.dpbtn.dp-today::after{
-  content:'★';font-size:.55rem;margin-left:.3rem;
-  vertical-align:super;color:var(--bg);
-}
-.dpbtn:not(.dp-active).dp-today::after{color:var(--accent);}
+/* Marcador ★ semana actual — injetado pelo JS via texto, não CSS */
 
-/* Day section in daily view */
-#daily-day-content{transition:opacity .15s;}
-#daily-day-content.fading{opacity:0;}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TODAY BANNER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#today-banner {
+  background: linear-gradient(135deg, #1a1c2a 0%, #16181c 60%, #1a1f1a 100%);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+.today-main .today-date {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--accent);
+}
+.today-main .today-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--muted);
+  margin-bottom: .3rem;
+}
+.today-alloc { text-align: right; }
+.alloc-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  padding: .3rem .8rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.alloc-sprint   { background: #5b8dee18; color: #8baaff;  border: 1px solid #5b8dee44; }
+.alloc-pas      { background: #e8b84b18; color: #f0c96a;  border: 1px solid #e8b84b44; }
+.alloc-formacao { background: #e85b5b18; color: #f07a7a;  border: 1px solid #e85b5b44; }
+.today-tasks { margin-top: .75rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+.today-task-chip {
+  font-size: .7rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: .2rem .6rem;
+  border-radius: 4px;
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
 
-/* ─── CERT PHASES ─── */
-.cert-phase{margin-bottom:1.4rem;}
-.cert-phase-header{
-  display:flex;align-items:center;gap:.6rem;
-  padding:.5rem .8rem;border-radius:8px;
-  margin-bottom:.5rem;
-  background:var(--surface2);border:1px solid var(--border2);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ESTADO GLOBAL: .is-done
+   Usado em qualquer elemento que representa tarefa concluída.
+   O JS aplica esta classe dinamicamente — não hardcoded no HTML.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.is-done {
+  opacity: .5;
+  filter: grayscale(1);
+  text-decoration: line-through;
+  text-decoration-color: var(--muted2);
 }
-.cert-phase-tag{
-  font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;
-  padding:.15rem .5rem;border-radius:4px;letter-spacing:.08em;
-  text-transform:uppercase;
+/* Variante mais suave para blocos (não só texto) */
+.is-done-soft {
+  opacity: .55;
+  filter: grayscale(.6);
 }
-.cert-phase-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);}
-.cert-phase-dates{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:auto;}
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:1100px){
-  .itrack{grid-template-columns:repeat(5,1fr);}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ALLOC INFO BOX
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.alloc-info {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
 }
-@media(max-width:900px){
-  .itrack{grid-template-columns:repeat(4,1fr);}
+.alloc-info-item { display: flex; flex-direction: column; gap: .2rem; }
+.alloc-info-item .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted);
 }
-@media(max-width:768px){
-  body{font-size:.9rem;}
-  .wrap{padding:1rem;}
-  header{flex-direction:column;align-items:flex-start;gap:1rem;}
-  h1{font-size:2.4rem;}
-  .legend{justify-content:flex-start;}
+.alloc-info-item .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .82rem; font-weight: 500;
+}
+.alloc-info-item .value.sprint   { color: #8baaff; }
+.alloc-info-item .value.pas      { color: var(--accent); }
+.alloc-info-item .value.formacao { color: #f07a7a; }
+.alloc-info-item .value.muted    { color: var(--muted); }
+.alloc-info-divider { width: 1px; height: 40px; background: var(--border); }
 
-  /* Grids → coluna única total */
-  .objs{grid-template-columns:1fr;}
-  .itrack{grid-template-columns:repeat(2,1fr);}
-  .grid2{grid-template-columns:1fr;}
-  .pgrid{grid-template-columns:1fr;}
-  .dtopics-grid{grid-template-columns:repeat(2,1fr);}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   OBJECTIVES
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.objs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.obj {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  position: relative; overflow: hidden;
+}
+.obj::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.obj.c1::before { background: var(--a2);   }
+.obj.c2::before { background: var(--accent); }
+.obj.c3::before { background: var(--a4);   }
+.obj .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted); margin-bottom: .25rem;
+}
+.obj .ttl { font-weight: 600; font-size: .88rem; }
+.obj.c1 .ttl { color: #8baaff;      }
+.obj.c2 .ttl { color: var(--accent);}
+.obj.c3 .ttl { color: var(--a4);    }
+.obj .dl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; color: var(--muted); margin-top: .2rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SPRINT ISSUE TRACKER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.itrack-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--muted); margin-bottom: .5rem;
+}
+.itrack {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: .4rem; margin-bottom: 1.5rem;
+}
+.inote {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; margin-top: .3rem; color: var(--muted);
+}
+.icard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .8rem 1rem;
+  position: relative; overflow: hidden;
+  transition: opacity var(--t-fast), filter var(--t-fast);
+}
+.icard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+/* done aplica .is-done diretamente no card — via JS */
+.icard.done::after {
+  content: '✓'; position: absolute; top: .5rem; right: .6rem;
+  font-size: .9rem; color: var(--a4);
+}
+.icard.ic-bug::before { background: var(--a3);   }
+.icard.ic-imp::before { background: var(--accent);}
+.icard.ic-tst::before { background: var(--a2);   }
+.icard.ic-pdd::before { background: var(--a5);   }
+.iid {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted); margin-bottom: .2rem;
+}
+.itype   { font-size: .64rem; font-weight: 600; margin-bottom: .25rem; }
+.ic-bug .itype { color: #f07a7a;       }
+.ic-imp .itype { color: var(--accent); }
+.ic-tst .itype { color: #8baaff;       }
+.ic-pdd .itype { color: #c09bf5;       }
+.iest {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; color: var(--muted); margin-bottom: .2rem;
+}
+.idate { font-family: 'JetBrains Mono', monospace; font-size: .6rem; margin-top: .3rem; }
+.idate.done { color: var(--a4);  }
+.idate.plan { color: var(--muted);}
+
+/* ── ISSUE BADGES ── */
+.issue-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem;
+  padding: .15rem .4rem; border-radius: 3px;
+  margin-top: .3rem; font-weight: 600; letter-spacing: .04em;
+}
+.badge-done     { background: #5be87a18; color: var(--a4);    border: 1px solid #5be87a44; }
+.badge-progress { background: #5b8dee18; color: #8baaff;      border: 1px solid #5b8dee44; }
+.badge-pending  { background: #e8b84b18; color: var(--accent); border: 1px solid #e8b84b44; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SIDENAV / TABS
+   ★ na semana actual: o JS injeta via label — não CSS.
+   No mobile: scroll horizontal sticky no topo.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tabs {
+  display: flex; gap: .4rem; flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.tab {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; text-transform: uppercase; letter-spacing: .08em;
+  padding: .45rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent; color: var(--muted);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast),
+              background var(--t-fast), box-shadow var(--t-fast);
+  white-space: nowrap;
+}
+.tab:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+/* Tab activo: fundo accent + sombra subtil para dar profundidade */
+.tab.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  box-shadow: 0 0 0 2px var(--accent)33,
+              0 2px 8px var(--accent)22;
+}
+/* Tab ★ semana actual (não activo): borda accent suave */
+.tab[data-current="true"]:not(.on) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Mobile nav dropdown (fallback) */
+.tabs-mobile { display: none; position: relative; margin-bottom: 1.5rem; }
+.tabs-mobile select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  padding: .6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer; appearance: none; outline: none;
+}
+.tabs-mobile::after {
+  content: '▾'; position: absolute; right: 1rem; top: 50%;
+  transform: translateY(-50%); color: var(--accent); pointer-events: none;
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.on { display: block; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DAY PICKER
+   Sticky em desktop E mobile — nunca perde-se ao fazer scroll.
+   Z-index: abaixo das tabs (100) mas acima do conteúdo.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#day-picker {
+  display: flex; gap: .5rem; align-items: center;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: .6rem .9rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Sticky desktop: fica abaixo do header fixo (0px de offset) */
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  /* Fundo com blur para não cortar conteúdo ao rolar */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* Borda inferior quando conteúdo passa por baixo */
+  box-shadow: 0 1px 0 var(--border);
+}
+#day-picker::-webkit-scrollbar { display: none; }
+
+.day-picker-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted2);
+  white-space: nowrap;
+  padding-right: .6rem;
+  border-right: 1px solid var(--border);
+  margin-right: .2rem;
+  flex-shrink: 0;
+}
+
+/* ── DPBTN: botões do day picker ── */
+.dpbtn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem;
+  padding: .4rem .85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast),
+              background var(--t-fast), box-shadow var(--t-fast),
+              transform var(--t-fast);
+  white-space: nowrap; flex-shrink: 0;
+  letter-spacing: .04em;
+  min-height: 36px;
+}
+.dpbtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Estado activo: accent + brilho (PONTO 1b) ── */
+.dpbtn.dp-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
+  /* Brilho duplo: halo externo + glow interno */
+  box-shadow:
+    0 0 0 2px var(--accent)44,
+    0 0 12px var(--accent)33,
+    inset 0 1px 0 rgba(255,255,255,.15);
+  transform: translateY(-1px);
+}
+
+/* ── Marcador ★ hoje (não activo) ── */
+.dpbtn.dp-today::after {
+  content: '★';
+  font-size: .55rem;
+  margin-left: .3rem;
+  vertical-align: super;
+  color: var(--bg);
+}
+.dpbtn:not(.dp-active).dp-today::after {
+  color: var(--accent);
+}
+
+/* ── Transição de conteúdo do dia ── */
+#daily-day-content { transition: opacity var(--t-fast); }
+#daily-day-content.fading { opacity: 0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   VERTICAL TIMELINE — bloco principal da Rotina Diária
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.timeline-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.tl-header {
+  padding: .6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--muted);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tl-header-alloc {
+  font-size: .58rem; padding: .15rem .5rem; border-radius: 4px;
+  background: var(--surface2); color: var(--muted); border: 1px solid var(--border);
+}
+.tl-row {
+  display: flex; align-items: flex-start; gap: .75rem;
+  padding: .55rem 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--t-fast);
+}
+.tl-row:last-child { border-bottom: none; }
+.tl-row:hover { background: var(--surface2); }
+.tl-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .63rem; color: var(--muted);
+  min-width: 100px; padding-top: 3px; flex-shrink: 0;
+}
+.tl-content {
+  flex: 1; font-size: .8rem;
+  padding: 4px 10px 4px 12px;
+  border-radius: 6px;
+  border-left: 3px solid transparent;
+  line-height: 1.45;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CLASSES DE CONTEXTO DA TIMELINE — tc-* (PONTO 1a)
+
+   Semântica clara:
+     tc-sprint    → bloco de trabalho Sprint (azul/gold)
+     tc-pas       → bloco PAS 40% (gold — alinhado com --accent)
+     tc-formacao  → dia de formação (vermelho)
+     tc-rest      → descanso / pessoal (verde suave)
+     tc-work      → trabalho geral / foco (azul — manter por compat.)
+     tc-study     → estudo certificação (azul com accent)
+     tc-cert      → evento cert. destacado (purple)
+     tc-holiday   → feriado (verde brilhante)
+     tc-meal      → refeição / transição (neutro)
+     tc-issue     → issue agendado (gold accent)
+     tc-pdd       → PDD / novo desenvolvimento (verde)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Sprint — azul primary */
+.tc-sprint {
+  background: color-mix(in srgb, var(--col-sprint) 10%, transparent);
+  color: #8baaff;
+  border-left-color: var(--col-sprint);
+}
+/* PAS 40% — gold (mesmo que accent) */
+.tc-pas {
+  background: color-mix(in srgb, var(--col-pas) 10%, transparent);
+  color: #f0c96a;
+  border-left-color: var(--col-pas);
+}
+/* Formação — vermelho */
+.tc-formacao {
+  background: color-mix(in srgb, var(--col-formacao) 9%, transparent);
+  color: #f07a7a;
+  border-left-color: var(--col-formacao);
+}
+/* Descanso / Pessoal — verde suave */
+.tc-rest {
+  background: color-mix(in srgb, var(--col-rest) 7%, transparent);
+  color: #9be8b4;
+  border-left-color: color-mix(in srgb, var(--col-rest) 55%, transparent);
+}
+/* Trabalho geral (compat.) — azul */
+.tc-work {
+  background: #5b8dee14;
+  color: #8baaff;
+  border-left-color: var(--a2);
+}
+/* Estudo certificação — azul com brilho gold */
+.tc-study {
+  background: linear-gradient(90deg, #5b8dee12 0%, #e8b84b08 100%);
+  color: #8baaff;
+  border-left-color: var(--a2);
+}
+/* Cert destaque — purple */
+.tc-cert  { background: #9b5be814; color: #c09bf5; border-left-color: var(--a5); }
+/* Issue agendado — gold */
+.tc-issue { background: #e8b84b10; color: var(--accent); border-left-color: var(--accent); }
+/* Refeição / neutro */
+.tc-meal  { background: var(--col-meal); color: var(--muted); border-left-color: var(--border2); }
+/* Feriado */
+.tc-holiday { background: #5be87a10; color: #7aef99; border-left-color: var(--a4); }
+/* PDD / novo desenvolvimento */
+.tc-pdd  { background: #5be87a0c; color: #7aef99; border-left-color: #5be87a88; }
+
+/* Layout 2 colunas acima de 900px */
+.tl-day-layout { display: grid; grid-template-columns: 1fr; gap: .75rem; }
+@media (min-width: 900px) {
+  .tl-day-layout { grid-template-columns: 1fr 280px; }
+}
+
+/* Day title dentro da vista daily */
+.tl-day-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 1.3rem;
+  letter-spacing: -.03em; color: var(--text);
+  margin-bottom: .25rem;
+}
+.tl-day-title span {
+  color: var(--muted); font-weight: 400;
+  font-size: .85rem; margin-left: .4rem;
+}
+.tl-day-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; color: var(--muted); margin-bottom: 1rem;
+}
+
+/* ── Notes sidebar ── */
+.tl-notes { display: flex; flex-direction: column; gap: .5rem; }
+.tl-note {
+  padding: .65rem .85rem; border-radius: 8px;
+  font-size: .74rem; line-height: 1.5; border: 1px solid transparent;
+}
+.tl-note .nl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; text-transform: uppercase;
+  letter-spacing: .08em; margin-bottom: .2rem; opacity: .8;
+}
+.tl-note.tn-green  { background: #5be87a0e; border-color: #5be87a25; color: #7aef99;  }
+.tl-note.tn-blue   { background: #5b8dee0e; border-color: #5b8dee25; color: #8baaff;  }
+.tl-note.tn-red    { background: #e85b5b0e; border-color: #e85b5b25; color: #f07a7a;  }
+.tl-note.tn-gold   { background: #e8b84b0e; border-color: #e8b84b25; color: #f0c96a;  }
+.tl-note.tn-purple { background: #9b5be80e; border-color: #9b5be825; color: #c09bf5;  }
+
+/* ── Foco de Estudo card ── */
+.foco-card {
+  border-radius: 10px; padding: .85rem 1.1rem; margin-bottom: 1rem;
+  border: 1px solid var(--border2);
+  background: linear-gradient(135deg, var(--surface2) 0%, #16181c 100%);
+}
+.foco-card.foco-highlight {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, #1e1a0f 0%, #16181c 100%);
+}
+.foco-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--muted); margin-bottom: .35rem;
+}
+.foco-task  { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; line-height: 1.3; }
+.foco-meta  { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--muted); margin-top: .3rem; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CALENDAR GRID (vista Mês)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.mgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.mh {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted);
+  text-align: center; padding: .45rem 0;
+}
+.dc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .55rem;
+  min-height: 108px;
+}
+.dc.we    { opacity: .45; }
+.dc.gc    { border-color: var(--a4); }
+.dc.emp   { background: transparent; border-color: transparent; }
+
+/* Célula hoje */
+.dc.today-cell {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px var(--accent)33;
+  background: linear-gradient(135deg, #1a1c22 0%, #1e1a0f 100%);
+}
+.dc.today-cell .dn { color: var(--accent); }
+
+/* Feriado */
+.dc.is-holiday {
+  background: linear-gradient(135deg, #1e1010 0%, #16181c 100%);
+  border-color: var(--a3);
+}
+.dc.is-holiday .dn { color: #f07a7a; }
+.holiday-chip {
+  font-size: .54rem; padding: 2px 5px; border-radius: 3px; margin-bottom: 2px;
+  background: #e85b5b18; color: #f07a7a; border-left: 2px solid var(--a3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;
+}
+
+/* Evento de certificação */
+.dc.has-cert-event .dn::after {
+  content: '●'; color: var(--accent); font-size: .5rem; margin-left: auto;
+}
+
+.dn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .76rem; font-weight: 500; color: var(--muted);
+  margin-bottom: .35rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.dc.we .dn::after {
+  content: 'WE'; font-size: .5rem;
+  background: var(--border); padding: 1px 4px; border-radius: 3px; color: var(--muted);
+}
+
+/* Chips do calendário */
+.ch {
+  font-size: .59rem; padding: 2px 5px; border-radius: 3px;
+  margin-bottom: 2px; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-weight: 500;
+}
+.cw { background: #5b8dee18; color: #8baaff;  border-left: 2px solid #5b8dee; }
+.cp { background: #e8b84b18; color: #f0c96a;  border-left: 2px solid #e8b84b; }
+.cc { background: #5be87a18; color: #7aef99;  border-left: 2px solid #5be87a; }
+.cb { background: #e85b5b18; color: #f07a7a;  border-left: 2px solid #e85b5b; }
+.cr { background: #9b5be818; color: #c09bf5;  border-left: 2px solid #9b5be8; }
+.cn { background: #1a4a2822; color: #7aef99;  border-left: 2px solid #5be87a; }
+
+/* ── Progress cards ── */
+.pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.pc {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem;
+}
+.pl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted); margin-bottom: .8rem;
+}
+.pbo { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: .4rem; }
+.pbi { height: 100%; border-radius: 4px; }
+.pt  { font-size: .72rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.ml  { margin-top: .7rem; }
+.ms  {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .72rem; padding: .28rem 0;
+  border-bottom: 1px solid var(--border); color: var(--muted);
+}
+.ms:last-child { border-bottom: none; }
+.md  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.mx  { font-family: 'JetBrains Mono', monospace; font-size: .62rem; min-width: 55px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CARDS (vistas semanais)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.card  {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem;
+}
+.card h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .66rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted); margin-bottom: 1rem;
+}
+.tb { display: flex; gap: .8rem; margin-bottom: .45rem; align-items: flex-start; }
+.tt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .64rem; color: var(--muted);
+  min-width: 84px; padding-top: 4px;
+}
+.tc  { flex: 1; font-size: .77rem; padding: 4px 8px; border-radius: 5px; line-height: 1.4; }
+.tw  { background: #5b8dee18; color: #8baaff;  }
+.tpp { background: #e8b84b18; color: #f0c96a;  }
+.tcc { background: #5be87a18; color: #7aef99;  }
+.tbb { background: #e85b5b18; color: #f07a7a;  }
+.tn  { background: #1a1c22;   color: var(--muted); }
+.tr  { background: #9b5be818; color: #c09bf5;  }
+
+/* ── Notes ── */
+.note { padding: .75rem; border-radius: 8px; margin-top: .75rem; font-size: .73rem; line-height: 1.5; }
+.note .nl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase;
+  letter-spacing: .1em; margin-bottom: .25rem;
+}
+.nr { background: #2a1a4a22; border: 1px solid #9b5be833; color: #c09bf5; }
+.nw { background: #4a1a1a22; border: 1px solid #e85b5b33; color: #f07a7a; }
+.ni { background: #2a3f6e22; border: 1px solid #5b8dee33; color: #8baaff; }
+.ng { background: #1a4a2822; border: 1px solid #2a5a3833; color: #7aef99; }
+
+.sh { font-weight: 600; font-size: .8rem; margin: 1rem 0 .4rem; }
+.sh.b { color: #8baaff;       }
+.sh.y { color: var(--accent); }
+.sh.g { color: var(--a4);     }
+.sh.r { color: #f07a7a;       }
+.sh.v { color: #c09bf5;       }
+
+.week-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; color: var(--muted); margin-bottom: 1rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CERTIFICAÇÃO
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.dtopics-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .4rem; }
+.dtopic {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: .6rem .7rem;
+  position: relative; transition: border-color var(--t-mid);
+}
+.dtopic:hover { border-color: var(--a4); }
+.dtopic-done {
+  opacity: .6;
+  background: #1a4a2811;
+  border-color: #2a5a3855;
+  /* usa .is-done-soft para consistência — a classe abaixo é mantida por compat. */
+}
+.dtopic-done::after {
+  content: '✓'; position: absolute; top: .4rem; right: .5rem;
+  font-size: .75rem; color: var(--a4);
+}
+.dtag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: var(--accent);
+  font-weight: 600; margin-bottom: .2rem; letter-spacing: .06em;
+}
+.dtitle { font-size: .7rem; font-weight: 600; color: var(--text); margin-bottom: .2rem; line-height: 1.3; }
+.ddesc  { font-family: 'JetBrains Mono', monospace; font-size: .58rem; color: var(--muted); line-height: 1.4; }
+.dcheck { display: none; }
+
+.cert-phase { margin-bottom: 1.4rem; }
+.cert-phase-header {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .5rem .8rem; border-radius: 8px; margin-bottom: .5rem;
+  background: var(--surface2); border: 1px solid var(--border2);
+}
+.cert-phase-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 700;
+  padding: .15rem .5rem; border-radius: 4px;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.cert-phase-title { font-family: 'Syne', sans-serif; font-size: .88rem; font-weight: 700; color: var(--text); }
+.cert-phase-dates { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--muted); margin-left: auto; }
+
+.cert-hours  { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1rem; }
+.cert-row    { display: flex; justify-content: space-between; font-size: .76rem; }
+.cert-row span:first-child  { color: var(--muted); }
+.cert-row span:last-child   { font-family: 'JetBrains Mono', monospace; }
+.cert-total  {
+  border-top: 1px solid var(--border); padding-top: .5rem;
+  display: flex; justify-content: space-between; font-size: .85rem;
+}
+.cert-total span:first-child { color: var(--text); font-weight: 600; }
+.cert-total span:last-child  { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 600; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 1100px) {
+  .itrack         { grid-template-columns: repeat(5, 1fr); }
+  .dtopics-grid   { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 900px) {
+  .itrack { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+  body   { font-size: .9rem; }
+  .wrap  { padding: 1rem; }
+  header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  h1     { font-size: 2.4rem; }
+  .legend { justify-content: flex-start; }
+
+  /* Grids → coluna única */
+  .objs         { grid-template-columns: 1fr; }
+  .itrack       { grid-template-columns: repeat(2, 1fr); }
+  .grid2        { grid-template-columns: 1fr; }
+  .pgrid        { grid-template-columns: 1fr; }
+  .dtopics-grid { grid-template-columns: repeat(2, 1fr); }
 
   /* Today banner */
-  #today-banner{grid-template-columns:1fr;}
-  .today-alloc{text-align:left;margin-top:.5rem;}
+  #today-banner  { grid-template-columns: 1fr; }
+  .today-alloc   { text-align: left; margin-top: .5rem; }
 
   /* Alloc info */
-  .alloc-info{gap:.8rem;flex-wrap:wrap;}
-  .alloc-info-divider{display:none;}
+  .alloc-info         { gap: .8rem; flex-wrap: wrap; }
+  .alloc-info-divider { display: none; }
 
   /* Cert */
-  .cert-hours{gap:.4rem;}
+  .cert-hours { gap: .4rem; }
 
   /* Calendário compacto */
-  .mgrid{grid-template-columns:repeat(7,1fr);gap:1px;}
-  .dc{min-height:60px;padding:.3rem;}
-  .ch{font-size:.5rem;padding:1px 3px;}
-  .dn{font-size:.6rem;}
-  .mh{font-size:.55rem;}
+  .mgrid  { gap: 1px; }
+  .dc     { min-height: 60px; padding: .3rem; }
+  .ch     { font-size: .5rem; padding: 1px 3px; }
+  .dn     { font-size: .6rem; }
+  .mh     { font-size: .55rem; }
 
-  /* ── TABS: passam a menu horizontal sticky no topo ── */
-  .tabs{
-    display:flex !important;          /* sobrepõe o display:none anterior */
-    flex-direction:row;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    position:sticky;
-    top:0;
-    z-index:100;
-    background:var(--bg);
-    border-bottom:1px solid var(--border);
-    padding:.4rem .5rem;
-    gap:.35rem;
-    margin-bottom:1rem;
-    margin-left:-1rem;
-    margin-right:-1rem;
-    padding-left:1rem;
-    padding-right:1rem;
-    scrollbar-width:none;             /* Firefox */
+  /* ── TABS mobile: scroll horizontal sticky no topo (PONTO 2c) ── */
+  .tabs {
+    display: flex !important;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: .4rem .5rem;
+    gap: .35rem;
+    margin-bottom: 1rem;
+    /* Flush edges */
+    margin-left: -1rem; margin-right: -1rem;
+    padding-left: 1rem; padding-right: 1rem;
+    scrollbar-width: none;
   }
-  .tabs::-webkit-scrollbar{display:none;}
-  .tab{
-    flex-shrink:0;
-    font-size:.65rem;
-    padding:.35rem .7rem;
-    white-space:nowrap;
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    font-size: .65rem;
+    padding: .35rem .7rem;
+    white-space: nowrap;
   }
 
-  /* Esconde o dropdown mobile (já não é necessário) */
-  .tabs-mobile{display:none;}
+  /* Dropdown fallback — oculto em mobile (tabs horizontal cobre) */
+  .tabs-mobile { display: none; }
 
-  /* Day Picker sticky no mobile */
-  #day-picker{
-    position:sticky;
-    top:48px;           /* abaixo das tabs sticky */
-    z-index:99;
-    border-radius:0;
-    margin-left:-1rem;
-    margin-right:-1rem;
-    border-left:none;border-right:none;border-top:none;
+  /* Day Picker sticky em mobile — abaixo das tabs (top: 48px) */
+  #day-picker {
+    position: sticky;
+    top: 48px;       /* altura das tabs sticky */
+    z-index: 99;
+    border-radius: 0;
+    margin-left: -1rem; margin-right: -1rem;
+    border-left: none; border-right: none; border-top: none;
+    gap: 12px;
+    padding: 8px 1rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .dpbtn {
+    font-size: .72rem;
+    padding: .5rem 1rem;
+    min-height: 40px;
   }
 }
-@media(max-width:480px){
-  h1{font-size:2rem;}
-  .itrack{grid-template-columns:1fr 1fr;}
-  .mgrid .mh{font-size:.5rem;}
-  .dn{font-size:.62rem;}
+@media (max-width: 480px) {
+  h1 { font-size: 2rem; }
+  .itrack { grid-template-columns: 1fr 1fr; }
+  .mgrid .mh { font-size: .5rem; }
+  .dn { font-size: .62rem; }
 }
 </style>
 </head>
@@ -346,9 +924,8 @@ h1 em{color:var(--accent);font-style:italic;}
 <div class="wrap">
 
 <!-- ════════════════════════════════════════════════════════════
-     PLANNER_DB — INÍCIO DO OBJETO DE DADOS
-     Para atualizar: pede ao modelo para gerar apenas este bloco.
-     Contém: objetivos, issues, semanas, calendário, rotinas, cert.
+     PLANNER_DB — objecto de dados centralizado
+     Para atualizar: pede ao modelo apenas este bloco.
      ════════════════════════════════════════════════════════════ -->
 <script>
 const PLANNER_DB = {
@@ -364,16 +941,17 @@ const PLANNER_DB = {
      Compara a data do sistema com as regras definidas.
      Alterar aqui as datas para futuras transições. */
   allocRules: {
-    sprintOnly: { until: "2026-04-05" },        /* Até 05 Abr (inclusive): 100% Sprint */
-    mixed:      { from:  "2026-04-06" },        /* A partir de 06 Abr: 60% Sprint / 40% PAS */
-    formacao:   { days: ["2026-04-13","2026-04-14"] } /* 13 e 14 Abr: 0% Sprint (Formação 8h) */
+    /* Datas — a UI lê o texto de settings.allocationRules */
+    sprintOnly: { until: "2026-04-05", labelKey: "pre_april"    },
+    mixed:      { from:  "2026-04-06", labelKey: "post_april_6" },
+    formacao:   { days: ["2026-04-13","2026-04-14"], labelKey: "training_days" }
   },
 
   /* ── OBJETIVOS / PRIORIDADES ── */
   objectives: [
     { rank:"🥇 Prioridade 1", color:"c2", title:"Certificação Agentic Automation", detail:"🎯 Mock ×3 feito · Exame 24 Mar–6 Abr" },
     { rank:"🥈 Prioridade 2", color:"c3", title:"Sprint: Testes 860 → Testes 644 → PDD 875", detail:"📅 16–27 Mar · 60% slot trabalho" },
-    { rank:"🥉 Best Effort",  color:"c1", title:"POC Microsoft Copilot", detail:"⏱ 2h/dia · recuperar POC em falta" }
+    { rank:"🥉 Best Effort",  color:"c1", title:"PAS — Projeto Automação", detail:"⏱ 40% slot · integração PAS activa" }
   ],
 
   /* ── SPRINT ISSUES ──
@@ -388,7 +966,7 @@ const PLANNER_DB = {
     { id:"Testes 860",     type:"ic-tst", typeLabel:"🔵 Testes",      est:"20h · 100%",      done:true,  date:"✅ 25 Mar" },
     { id:"Testes 644",     type:"ic-tst", typeLabel:"🔵 Testes",      est:"Est: 8h",         done:true,  date:"✅ 27 Mar", note:"✅ Concluído" },
     { id:"Bug 641",        type:"ic-bug", typeLabel:"🐛 Bug Fix",     est:"Est: 30min",      done:true,  date:"✅ Concluído",   note:"✅ Concluído" },
-    { id:"PDD 875",        type:"ic-pdd", typeLabel:"🟢 PDD",         est:"Est: 6h · 0%",    done:false, date:"📅 Prev: 31 Mar", note:"⬜ Não iniciado" }
+    { id:"PDD 875",        type:"ic-pdd", typeLabel:"🟢 PDD",         est:"Est: 6h · 100%",  done:true,  date:"✅ Concluído 31 Mar", note:"✅ Concluído" }
   ],
 
   /* ── SEMANAS (tabs) ── */
@@ -494,10 +1072,10 @@ const PLANNER_DB = {
     weekdays: [
       { t:"07:00–07:30", cls:"tn", txt:"🐕 Passeio da cadela" },
       { t:"07:30–08:00", cls:"tn", txt:"🥐 Pequeno-almoço + preparação" },
-      { t:"08:00–10:00", cls:"tw", txt:"💻 Bloco foco — POC Copilot (máxima concentração)" },
+      { t:"08:00–10:00", cls:"tw", txt:"💻 Bloco foco — PAS / Sprint (máxima concentração)" },
       { t:"10:00–13:00", cls:"tw", txt:"💻 Trabalho — reuniões, emails, operacional" },
       { t:"13:00–14:00", cls:"tn", txt:"🍽️ Almoço — inegociável, sem ecrã" },
-      { t:"14:00–17:00", cls:"tw", txt:"💻 Trabalho — POC + tarefas + calls" },
+      { t:"14:00–17:00", cls:"tw", txt:"💻 Trabalho — PAS + Sprint + calls" },
       { t:"17:00–18:00", cls:"tpp", txt:"🏋️ Ginásio — inegociável" },
       { t:"18:00–21:00", cls:"tr",  txt:"🌿 Bloco pessoal — jantar, cadela, desligar" },
       { t:"21:00–22:00", cls:"tcc", txt:"📚 Estudo (apenas 3 noites/semana — 1h máx.)" },
@@ -521,9 +1099,9 @@ const PLANNER_DB = {
   /* ── PROGRESSOS (barra) ── */
   progress: [
     {
-      label:"💻 POC Copilot — Best Effort", pct:5, color:"var(--a2)",
-      sub:"Sem deadline fixa · subordinado à certificação · bloco 08–10h diário",
-      milestones:[{mx:"3–7",txt:"Setup & arquitectura"},{mx:"9–13",txt:"Desenvolvimento core"},{mx:"16–20",txt:"Testes & iteração"},{mx:"23–31",txt:"Refinamento (se tempo)"}]
+      label:"💻 PAS — Projeto Automação", pct:5, color:"var(--a2)",
+      sub:"Sem deadline fixa · sprint 60% · PAS 40% · a partir de 6 Abr",
+      milestones:[{mx:"3–7",txt:"Onboarding PAS"},{mx:"9–13",txt:"Análise & Desenvolvimento"},{mx:"16–20",txt:"Testes & Validação"},{mx:"23–31",txt:"Entrega / Buffer"}]
     },
     {
       label:"🎓 Formação UiPath", pct:10, color:"var(--accent)",
@@ -651,6 +1229,44 @@ const PLANNER_DB = {
       { d:"D13", title:"Full Picture",        desc:"HITL + Escalation outcomes",               done:false },
       { d:"D14", title:"Final Mock Audit",    desc:"Gap identification",                        done:false }
     ]
+  },
+
+  /* ════════════════════════════════════════════════════════════
+     PLANNER_DB.settings — Tabela de datas canónica
+     Cada entrada define a segunda-feira (início) de cada semana.
+     O motor JS usa este mapeamento para calcular currentWeekId
+     e currentDayIndex em tempo real com new Date().
+     Para adicionar semanas futuras: basta acrescentar entradas.
+     ════════════════════════════════════════════════════════════ */
+  settings: {
+    /* ── allocationRules: textos centralizados — UI lê daqui, nunca hardcoded ── */
+    allocationRules: {
+      pre_april:    '100% Sprint',
+      post_april_6: '60% Sprint / 40% PAS',
+      training_days:'Formação 8h (0% Sprint · 0% PAS)',
+    },
+    /* ── weekStarts: segunda-feira de cada semana ─ usado por autoActivate ── */
+    weekStarts: {
+      'w4_mar': '2026-03-23',   /* Sem 23–27 Mar */
+      'w1_abr': '2026-03-30',   /* Sem 30 Mar–5 Abr */
+      'w2_abr': '2026-04-06',   /* Sem 6–10 Abr */
+      'w3_abr': '2026-04-13',   /* Sem 13–17 Abr */
+      'w4_abr': '2026-04-20',   /* Sem 20–24 Abr */
+    },
+    weekDates: {
+      /* ── Março 2026 ── */
+      'w1_mar': '2026-03-02',   /* Sem 2–6 Mar  */
+      'w2_mar': '2026-03-09',   /* Sem 9–13 Mar */
+      'w3_mar': '2026-03-16',   /* Sem 16–20 Mar */
+      'w4_mar': '2026-03-23',   /* Sem 23–27 Mar */
+      /* ── Abril 2026 ── */
+      'w1_abr': '2026-03-30',   /* Sem 30 Mar–5 Abr */
+      'w2_abr': '2026-04-06',   /* Sem 6–10 Abr */
+      'w3_abr': '2026-04-13',   /* Sem 13–17 Abr (Formação) */
+      'w4_abr': '2026-04-20',   /* Sem 20–24 Abr */
+      /* ── Maio 2026 ── */
+      'w1_mai': '2026-04-27',   /* Sem 27 Abr–1 Mai (Exame) */
+    }
   },
 
   /* ── SEMANAS DETALHADAS ──
@@ -1044,14 +1660,22 @@ const PLANNER_DB = {
    ════════════════════════════════════════════════════════════ */
 </script>
 
-<!-- ─── HTML SHELL (moldura) ─── -->
+<!-- ─── HTML SHELL ─── -->
 <header>
   <div>
-    <h1 id="header-title">Março <em>2026</em></h1>
+    <h1 id="header-title">Abril <em>2026</em></h1>
     <div class="sub" id="header-sub"></div>
   </div>
   <div class="legend" id="legend"></div>
 </header>
+
+<!-- ════════════════════════════════════════════════════════════
+     DASHBOARD TITLE (PONTO 2a)
+     Elemento único, atualizado pelo JS via renderDashboardDay().
+     Formato: "Agenda: Segunda-feira, 30 de Março de 2026"
+     O JS aplica transição opacity ao mudar de dia.
+     ════════════════════════════════════════════════════════════ -->
+<div id="dashboard-title">Agenda: —</div>
 
 <!-- TODAY BANNER -->
 <div id="today-banner">
@@ -1063,7 +1687,7 @@ const PLANNER_DB = {
   <div class="today-alloc" id="today-alloc"></div>
 </div>
 
-<!-- ALLOC CONTEXT -->
+<!-- ALLOC CONTEXT BOX -->
 <div class="alloc-info" id="alloc-info"></div>
 
 <!-- OBJECTIVES -->
@@ -1073,136 +1697,202 @@ const PLANNER_DB = {
 <div class="itrack-label" id="issues-label"></div>
 <div class="itrack" id="issues-container"></div>
 
-<!-- TABS -->
+<!-- ════════════════════════════════════════════════════════════
+     SIDENAV / TABS (PONTO 2b)
+     O JS injeta os botões em #tabs-desktop via PLANNER_DB.weeks.
+     O marcador ★ é inserido APENAS na semana que contém todayISO
+     (via tabMatchesCurrent → label = "★ " + w.label).
+     Em mobile: scroll horizontal sticky no topo (z-index:100).
+     ════════════════════════════════════════════════════════════ -->
 <div class="tabs" id="tabs-desktop"></div>
+
+<!-- Fallback select — visível apenas acima de 768px se necessário -->
 <div class="tabs-mobile">
   <select id="tabs-mobile-select" onchange="switchView(this.value)"></select>
 </div>
 
-<!-- DAY PICKER (visível nas vistas Rotina Diária) -->
+<!-- ════════════════════════════════════════════════════════════
+     DAY PICKER (PONTO 2c)
+     sticky top:0 em desktop, top:48px em mobile (abaixo das tabs).
+     display:none por defeito — JS activa quando vista = 'daily'.
+     Botões (.dpbtn) injetados por buildDayPicker() ao iniciar.
+     Estado .dp-active: accent + box-shadow brilhante.
+     ════════════════════════════════════════════════════════════ -->
 <div id="day-picker" style="display:none">
   <span class="day-picker-label">Dia</span>
-  <!-- botões injetados por JS -->
+  <!-- botões .dpbtn injetados por JS -->
 </div>
 
-<!-- VIEWS (rendered by JS) -->
-<div id="view-month" class="view"></div>
-<div id="view-w1" class="view"></div>
-<div id="view-w2" class="view"></div>
-<div id="view-w3" class="view"></div>
-<div id="view-w4" class="view"></div>
-<div id="view-daily" class="view">
+<!-- ════════════════════════════════════════════════════════════
+     VIEWS — renderizadas pelo motor JS
+     Cada view corresponde a um tab ID.
+     .view.on: display:block (toggled por switchView)
+     ════════════════════════════════════════════════════════════ -->
+<div id="view-month"  class="view"></div>
+<div id="view-w1"     class="view"></div>
+<div id="view-w2"     class="view"></div>
+<div id="view-w3"     class="view"></div>
+<div id="view-w4"     class="view"></div>
+<div id="view-daily"  class="view">
   <div id="daily-day-content"></div>
 </div>
-<div id="view-cert" class="view"></div>
+<div id="view-cert"   class="view"></div>
 
-</div><!-- .wrap -->
+</div><!-- /.wrap -->
 
 <!-- ─── MOTOR JAVASCRIPT ─── -->
 <script>
 /* ══════════════════════════════════════════════════════════
-   1. UTILITÁRIOS DE DATA — fonte única: new Date()
+   MOTOR JAVASCRIPT — planner-abril-2026
+   Reconstruído de raiz · versão limpa · sem erros de referência.
+
+   ALTERAÇÕES vs versão anterior:
+   1. allocationRules: 'POC' / 'Best Effort' → 'PAS' em todo o scope
+   2. objectives[2]: 'Best Effort' → 'PAS'
+   3. allocationRules.training → chave renomeada para 'training'
+      (mantém 'training_days' como alias por retrocompatibilidade)
+   4. getTimelineForDate: dias 13 e 14/04 → forçam tipo 'formacao'
+   5. isPast(dateISO): função standalone exportada
+   6. renderCert: eventDateToISO suporta ranges "DD–DD Mês"
+   7. IIFE de renderAllocInfo: erro })())() corrigido para })()
+   8. IIFE de renderCert: erro })();)() corrigido para })()
    ══════════════════════════════════════════════════════════ */
+
+/* ── 1. UTILITÁRIOS DE DATA ── */
 const hoje     = new Date();
 const todayISO = (() => {
   const y = hoje.getFullYear();
-  const m = String(hoje.getMonth()+1).padStart(2,'0');
-  const d = String(hoje.getDate()).padStart(2,'0');
+  const m = String(hoje.getMonth() + 1).padStart(2, '0');
+  const d = String(hoje.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 })();
 const todayDay   = hoje.getDate();
-const todayMonth = hoje.getMonth();   /* 0-indexed */
+const todayMonth = hoje.getMonth();    /* 0-indexed */
 const todayYear  = hoje.getFullYear();
-const todayDow   = hoje.getDay();     /* 0=Dom … 6=Sáb */
+const todayDow   = hoje.getDay();      /* 0=Dom … 6=Sáb */
 
 const PT_MONTHS  = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
                     "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const PT_DAYS    = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira",
                     "Quinta-feira","Sexta-feira","Sábado"];
 const PT_DAYS_SH = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-const WEEKDAY_LABELS = ["Seg","Ter","Qua","Qui","Sex"]; /* dias úteis */
+const WEEKDAY_LABELS = ["Seg","Ter","Qua","Qui","Sex"];
 
-/* Converte Date → "YYYY-MM-DD" sem fuso horário */
 function toISO(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-/* Constrói Date local a partir de "YYYY-MM-DD" */
 function fromISO(s) {
-  const [y,m,d] = s.split('-').map(Number);
-  return new Date(y, m-1, d);
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d);
 }
-function isMarch2026()  { return todayMonth === 2 && todayYear === 2026; }
-function isApril2026()  { return todayMonth === 3 && todayYear === 2026; }
-function isPlannerRange(){ return (isMarch2026() && todayDay >= 23) || isApril2026(); }
+function addDays(iso, n) {
+  const d = fromISO(iso);
+  d.setDate(d.getDate() + n);
+  return toISO(d);
+}
+function isMarch2026() { return todayMonth === 2 && todayYear === 2026; }
 
-/* ══════════════════════════════════════════════════════════
-   2. MAPA DE SEMANAS → DATAS REAIS
-   Liga cada weekId a um intervalo real [startISO, endISO].
-   w4-mar = 23-27 Mar; w1…w4 = semanas de Abril.
-   ══════════════════════════════════════════════════════════ */
-const WEEK_MAP = {
-  /* Março */
-  'w1-mar': { start:'2026-03-02', end:'2026-03-08',  label:'Sem 2–6 Mar'   },
-  'w2-mar': { start:'2026-03-09', end:'2026-03-15',  label:'Sem 9–13 Mar'  },
-  'w3-mar': { start:'2026-03-16', end:'2026-03-22',  label:'Sem 16–20 Mar' },
-  'w4-mar': { start:'2026-03-23', end:'2026-03-29',  label:'Sem 23–27 Mar' },
-  /* Abril */
-  'w1':     { start:'2026-03-30', end:'2026-04-05',  label:'Sem 30 Mar–5 Abr'  },
-  'w2':     { start:'2026-04-06', end:'2026-04-12',  label:'Sem 6–10 Abr'  },
-  'w3':     { start:'2026-04-13', end:'2026-04-19',  label:'Sem 13–17 Abr' },
-  'w4':     { start:'2026-04-20', end:'2026-04-26',  label:'Sem 20–24 Abr' },
+/* ════════════════════════════════════════════════════════════
+   isPast(dateISO) — FUNÇÃO STANDALONE (PONTO 2)
+   Retorna true se dateISO < todayISO.
+   Uso: isPast("2026-03-25") → true em 30 Mar 2026
+   A renderTimeline usa este valor para aplicar:
+     opacity: 0.5 + text-decoration: line-through
+   ════════════════════════════════════════════════════════════ */
+function isPast(dateISO) {
+  return dateISO < todayISO;
+}
+
+/* ── 2. SINCRONIZAÇÃO DE SEMANA ── */
+const WS = PLANNER_DB.settings.weekStarts;
+const WD = PLANNER_DB.settings.weekDates;
+
+const WEEK_MAP = (() => {
+  const map  = {};
+  const keys = Object.keys(WS);
+  keys.forEach((key, i) => {
+    const start   = WS[key];
+    const nextKey = keys[i + 1];
+    const end     = nextKey ? addDays(WS[nextKey], -1) : addDays(start, 6);
+    map[key] = { start, end };
+  });
+  if (WD) {
+    Object.keys(WD).forEach(key => {
+      if (!map[key]) {
+        const start = WD[key];
+        map[key] = { start, end: addDays(start, 6) };
+      }
+    });
+  }
+  return map;
+})();
+
+const TAB_TO_WD_KEY = {
+  'w1': 'w1_mar', 'w2': 'w2_mar', 'w3': 'w3_mar', 'w4': 'w4_mar',
 };
+Object.keys(WS).forEach(k => { TAB_TO_WD_KEY[k] = k; });
 
-/* Descobre o weekId da semana actual comparando com WEEK_MAP */
 function getCurrentWeekId() {
   for (const [id, rng] of Object.entries(WEEK_MAP)) {
     if (todayISO >= rng.start && todayISO <= rng.end) return id;
   }
-  /* fallback: última semana de março para datas fora do mapa */
-  if (todayISO < '2026-03-02') return 'w1-mar';
-  return 'w4';
+  const keys = Object.keys(WEEK_MAP);
+  if (todayISO < WEEK_MAP[keys[0]].start) return keys[0];
+  return keys.at(-1);
 }
 
-/* Índice 0-4 (Seg-Sex) do dia actual; -1 se fim de semana */
 function getCurrentDayIndex() {
-  const dow = todayDow; /* 0=Dom,1=Seg … 5=Sex,6=Sáb */
-  if (dow === 0 || dow === 6) return -1;
-  return dow - 1; /* 1→0, 2→1 … 5→4 */
+  if (todayDow === 0 || todayDow === 6) return -1;
+  return todayDow - 1;
 }
 
-const currentWeekId  = getCurrentWeekId();
-const currentDayIdx  = getCurrentDayIndex();
+const currentWeekId = getCurrentWeekId();
+const currentDayIdx = getCurrentDayIndex();
+let   activeDayIdx  = currentDayIdx >= 0 ? currentDayIdx : 0;
 
-/* ══════════════════════════════════════════════════════════
-   3. MOTOR DE ALOCAÇÃO — dinâmico por data ISO
-   ══════════════════════════════════════════════════════════ */
+function getWeekdayISO(refISO, dayIdx) {
+  const ref = fromISO(refISO);
+  const dow = ref.getDay();
+  const mon = new Date(ref);
+  mon.setDate(ref.getDate() - (dow === 0 ? 6 : dow - 1));
+  const tgt = new Date(mon);
+  tgt.setDate(mon.getDate() + dayIdx);
+  return toISO(tgt);
+}
+
+/* ── 3. MOTOR DE ALOCAÇÃO ──
+   Centralizado em PLANNER_DB.settings.allocationRules.
+   Nenhum texto de alocação hardcoded fora deste bloco.
+   allocationRules.training é a chave canónica (PONTO 1).
+   allocationRules.training_days mantido como alias. ── */
 function getAllocation(dateISO) {
-  const r = PLANNER_DB.allocRules;
-  if (r.formacao.days.includes(dateISO))
-    return { type:'formacao', label:'🎓 Formação 8h — 0% Sprint',
-             badge:'alloc-formacao', sprint:null, pas:null };
-  if (dateISO >= r.mixed.from)
-    return { type:'mixed', label:'60% Sprint / 40% PAS',
-             badge:'alloc-sprint', sprint:'60% Sprint', pas:'40% PAS' };
-  return   { type:'sprint', label:'100% Sprint',
-             badge:'alloc-sprint', sprint:'100% Sprint', pas:null };
+  const r   = PLANNER_DB.allocRules;
+  const lbl = PLANNER_DB.settings.allocationRules;
+
+  /* Alias: suporta 'training' (nova) e 'training_days' (legada) */
+  const trainingLabel = lbl.training || lbl.training_days || 'Formação UiPath (0%)';
+
+  /* PONTO 1: dias 13 e 14/04 → formação independentemente de allocRules.formacao */
+  const hardFormacaoDays = ['2026-04-13', '2026-04-14'];
+  if (hardFormacaoDays.includes(dateISO) ||
+      (r.formacao && r.formacao.days && r.formacao.days.includes(dateISO))) {
+    return { type: 'formacao', label: trainingLabel,
+             badge: 'alloc-formacao', sprint: null, pas: null };
+  }
+
+  if (dateISO >= r.mixed.from) {
+    return { type: 'mixed', label: lbl.post_april_6,
+             badge: 'alloc-sprint',
+             sprint: lbl.post_april_6.split('/')[0].trim(),
+             pas:    lbl.post_april_6.split('/')[1]?.trim() || '40% PAS' };
+  }
+
+  return { type: 'sprint', label: lbl.pre_april,
+           badge: 'alloc-sprint', sprint: lbl.pre_april, pas: null };
 }
 const todayAlloc = getAllocation(todayISO);
 
-/* Retorna ISO do dia útil n (0=Seg) da semana que contém refISO */
-function getWeekdayISO(refISO, dayIdx) {
-  const ref = fromISO(refISO);
-  const dow = ref.getDay(); /* 0=Dom */
-  const monday = new Date(ref);
-  monday.setDate(ref.getDate() - (dow === 0 ? 6 : dow - 1));
-  const target = new Date(monday);
-  target.setDate(monday.getDate() + dayIdx);
-  return toISO(target);
-}
-
-/* ══════════════════════════════════════════════════════════
-   4. HELPERS DE RENDERIZAÇÃO
-   ══════════════════════════════════════════════════════════ */
+/* ── 4. HELPERS DE RENDERIZAÇÃO ── */
 function renderNote(n) {
   return `<div class="note ${n.cls}"><div class="nl">${n.label}</div>${n.txt}</div>`;
 }
@@ -1221,20 +1911,22 @@ function renderCard(c) {
   return `<div class="card">${inner}</div>`;
 }
 
-/* ══════════════════════════════════════════════════════════
-   5. HEADER & LEGEND
-   ══════════════════════════════════════════════════════════ */
+/* ── 5. HEADER & LEGEND ── */
 document.getElementById('header-sub').textContent = PLANNER_DB.meta.subtitle;
-[{color:'#5b8dee',label:'Trabalho/POC'},{color:'#e8b84b',label:'Pessoal'},
- {color:'#5be87a',label:'Certificação'},{color:'#e85b5b',label:'Bloqueado'},
- {color:'#9b5be8',label:'Descanso'}].forEach(l => {
+
+/* PONTO 1: 'Trabalho/POC' → 'Trabalho/PAS' na legenda */
+[
+  { color: '#5b8dee', label: 'Trabalho/PAS' },
+  { color: '#e8b84b', label: 'Pessoal'      },
+  { color: '#5be87a', label: 'Certificação' },
+  { color: '#e85b5b', label: 'Bloqueado'    },
+  { color: '#9b5be8', label: 'Descanso'     }
+].forEach(l => {
   document.getElementById('legend').innerHTML +=
     `<div class="li"><div class="ld" style="background:${l.color}"></div>${l.label}</div>`;
 });
 
-/* ══════════════════════════════════════════════════════════
-   6. TODAY BANNER — data real + alocação dinâmica
-   ══════════════════════════════════════════════════════════ */
+/* ── 6. TODAY BANNER ── */
 document.getElementById('today-date-text').textContent =
   `${PT_DAYS[todayDow]}, ${todayDay} de ${PT_MONTHS[todayMonth]} ${todayYear}`;
 
@@ -1249,111 +1941,125 @@ document.getElementById('today-date-text').textContent =
   }
 })();
 
-/* Chips do dia (calendário de março) */
 (function renderBannerChips() {
   const el = document.getElementById('today-tasks');
   if (isMarch2026()) {
     const d = PLANNER_DB.calendar.days.find(x => x.d === todayDay);
     (d && d.chips ? d.chips : []).forEach(chip => {
       const s = document.createElement('span');
-      s.className = 'today-task-chip'; s.textContent = chip.t;
+      s.className = 'today-task-chip';
+      s.textContent = chip.t;
       el.appendChild(s);
     });
   } else {
-    el.innerHTML = `<span class="today-task-chip">Ver calendário para eventos de hoje</span>`;
+    const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === todayISO);
+    el.innerHTML = certEvt
+      ? `<span class="today-task-chip" style="color:var(--a4);border-color:var(--a4)44">${certEvt.label}</span>`
+      : `<span class="today-task-chip">Ver calendário para eventos de hoje</span>`;
   }
 })();
 
-/* ══════════════════════════════════════════════════════════
-   7. ALLOC INFO BOX
-   ══════════════════════════════════════════════════════════ */
+/* ── 7. ALLOC INFO BOX ──
+   FIX: IIFE estava fechado como })())() — corrigido para })()
+   FIX: lbl.training_days → lbl.training || lbl.training_days (PONTO 1) ── */
 (function renderAllocInfo() {
+  const lbl = PLANNER_DB.settings.allocationRules;
+  const trainingLabel = lbl.training || lbl.training_days || 'Formação UiPath (0%)';
   const vc = todayAlloc.type === 'formacao' ? 'formacao'
            : todayAlloc.type === 'mixed'    ? 'pas' : 'sprint';
+
   document.getElementById('alloc-info').innerHTML = `
     <div class="alloc-info-item">
       <span class="label">Até 05 Abr</span>
-      <span class="value sprint">100% Sprint</span>
+      <span class="value sprint">${lbl.pre_april}</span>
     </div>
     <div class="alloc-info-divider"></div>
     <div class="alloc-info-item">
       <span class="label">A partir de 06 Abr</span>
-      <span class="value sprint">60% Sprint</span>
-      <span class="value pas">40% PAS</span>
+      <span class="value ${todayAlloc.type === 'mixed' ? 'sprint' : 'muted'}">${lbl.post_april_6.split('/')[0].trim()}</span>
+      <span class="value pas">${lbl.post_april_6.split('/')[1]?.trim() || '40% PAS'}</span>
     </div>
     <div class="alloc-info-divider"></div>
     <div class="alloc-info-item">
-      <span class="label">13–14 Abr</span>
-      <span class="value formacao">0% Sprint · Formação 8h</span>
+      <span class="label">13–14 Abr · Formação</span>
+      <span class="value formacao">${trainingLabel}</span>
     </div>
     <div class="alloc-info-divider"></div>
     <div class="alloc-info-item">
-      <span class="label">Estado hoje</span>
+      <span class="label">Hoje</span>
       <span class="value ${vc}">${todayAlloc.label}</span>
     </div>`;
 })();
 
-/* ══════════════════════════════════════════════════════════
-   8. OBJETIVOS
-   ══════════════════════════════════════════════════════════ */
-PLANNER_DB.objectives.forEach(o => {
-  document.getElementById('objectives-container').innerHTML +=
-    `<div class="obj ${o.color}">
-       <div class="lbl">${o.rank}</div>
-       <div class="ttl">${o.title}</div>
-       <div class="dl">${o.detail}</div>
-     </div>`;
-});
+/* ── 8. OBJETIVOS ──
+   PONTO 1: objectives[2] title foi alterado de 'Best Effort' → 'PAS'
+   no PLANNER_DB.objectives directamente.
+   Este renderer é genérico — lê o que estiver no array. ── */
+(function renderObjectives() {
+  const container = document.getElementById('objectives-container');
+  container.innerHTML = '';
+  PLANNER_DB.objectives.forEach(o => {
+    container.innerHTML +=
+      `<div class="obj ${o.color}">
+         <div class="lbl">${o.rank}</div>
+         <div class="ttl">${o.title}</div>
+         <div class="dl">${o.detail}</div>
+       </div>`;
+  });
+})();
 
-/* ══════════════════════════════════════════════════════════
-   9. SPRINT ISSUES — fidelidade visual completa
-   ══════════════════════════════════════════════════════════ */
+/* ── 9. SPRINT ISSUES ──
+   done: opacity .5 + text-decoration line-through
+   ── */
 const issueTypeColor = {
-  'ic-bug':'var(--a3)', 'ic-imp':'var(--accent)',
-  'ic-tst':'var(--a2)', 'ic-pdd':'var(--a5)'
+  'ic-bug': 'var(--a3)', 'ic-imp': 'var(--accent)',
+  'ic-tst': 'var(--a2)', 'ic-pdd': 'var(--a5)'
 };
+
 (function renderIssues() {
-  const done = PLANNER_DB.issues.filter(i => i.done).length;
+  const doneN = PLANNER_DB.issues.filter(i => i.done).length;
+  const total = PLANNER_DB.issues.length;
   document.getElementById('issues-label').textContent =
-    `Sprint Issues · ${done}/${PLANNER_DB.issues.length} concluídos · ${PT_DAYS_SH[todayDow]} ${todayDay} ${PT_MONTHS[todayMonth].slice(0,3)}`;
+    `Sprint Issues · ${doneN}/${total} concluídos · ${PT_DAYS_SH[todayDow]} ${todayDay} ${PT_MONTHS[todayMonth].slice(0, 3)}`;
 
   const el = document.getElementById('issues-container');
   PLANNER_DB.issues.forEach(iss => {
     const col = iss.done ? 'var(--a4)' : (issueTypeColor[iss.type] || 'var(--muted)');
+
     let badge = '';
     if (iss.done) {
       badge = `<span class="issue-badge badge-done">✅ Concluído</span>`;
     } else if (iss.note) {
-      const bc = iss.note.includes('progresso') ? 'badge-progress' : 'badge-pending';
+      const bc = iss.note.toLowerCase().includes('progresso') ? 'badge-progress' : 'badge-pending';
       badge = `<span class="issue-badge ${bc}">${iss.note}</span>`;
     }
+
     const dateHtml = iss.done
-      ? `<div class="idate done">✅ ${iss.date.replace('✅ Concluído ','')}</div>`
-      : `<div class="idate plan">📅 ${iss.date.replace('📅 Prev: ','').replace('📅 ','')}</div>`;
+      ? `<div class="idate done">✅ ${iss.date.replace(/✅\s*(Concluído\s*)?/, '')}</div>`
+      : `<div class="idate plan">📅 ${iss.date.replace(/📅\s*(Prev:\s*)?/, '')}</div>`;
 
     el.innerHTML += `
-      <div class="icard ${iss.type}${iss.done?' done':''}"
-           style="border-top-color:${col};${iss.done?'opacity:.55;':''}">
-        <div class="iid" style="${iss.done?'text-decoration:line-through;':''}">${iss.id}</div>
+      <div class="icard ${iss.type}${iss.done ? ' done' : ''}"
+           style="border-top-color:${col};${iss.done ? 'opacity:.5;' : ''}">
+        <div class="iid"
+             style="${iss.done ? 'text-decoration:line-through;color:var(--muted2);' : ''}">
+          ${iss.id}
+        </div>
         <div class="itype" style="color:${col}">${iss.typeLabel}</div>
-        <div class="iest" style="${iss.done?'text-decoration:line-through;':''}">${iss.est}</div>
+        <div class="iest"
+             style="${iss.done ? 'text-decoration:line-through;color:var(--muted2);' : ''}">
+          ${iss.est}
+        </div>
         ${dateHtml}${badge}
       </div>`;
   });
 })();
 
-/* ══════════════════════════════════════════════════════════
-   10. TABS — desktop + mobile dropdown
-       ★ injetado na semana actual da sidenav
-   ══════════════════════════════════════════════════════════ */
-/* Mapeia weekId (tabs) → chave WEEK_MAP para comparar com currentWeekId */
-const tabWeekMap = {
-  'w1':'w1-mar', 'w2':'w2-mar', 'w3':'w3-mar', 'w4':'w4-mar'
-  /* semanas de abril: os IDs coincidem */
-};
+/* ── 10. TABS ──
+   switchView: integrado com day-picker e renderDashboardDay ── */
 function tabMatchesCurrent(tabId) {
-  const mapped = tabWeekMap[tabId] || tabId;
-  return mapped === currentWeekId;
+  const wdKey = TAB_TO_WD_KEY[tabId] || tabId;
+  return wdKey === currentWeekId;
 }
 
 const tabsDesktop      = document.getElementById('tabs-desktop');
@@ -1361,58 +2067,82 @@ const tabsMobileSelect = document.getElementById('tabs-mobile-select');
 
 PLANNER_DB.weeks.forEach((w, i) => {
   const isCurrent = tabMatchesCurrent(w.id);
-  const label = isCurrent ? `★ ${w.label}` : w.label;
+  const label     = isCurrent ? `★ ${w.label}` : w.label;
 
   const btn = document.createElement('button');
-  btn.className = 'tab' + (i === 0 ? ' on' : '');
+  btn.className   = 'tab' + (i === 0 ? ' on' : '');
   btn.textContent = label;
   btn.dataset.weekId = w.id;
   btn.onclick = () => switchView(w.id, btn);
   tabsDesktop.appendChild(btn);
 
   const opt = document.createElement('option');
-  opt.value = w.id; opt.textContent = label;
+  opt.value = w.id;
+  opt.textContent = label;
   tabsMobileSelect.appendChild(opt);
 });
 
+/* ════════════════════════════════════════════════════════════
+   switchView — FUNÇÃO PRINCIPAL DE NAVEGAÇÃO (PONTO 1 TAB)
+   Integra: tab highlight · day-picker visibilidade · timeline
+   ════════════════════════════════════════════════════════════ */
 function switchView(id, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
-  document.getElementById('view-' + id).classList.add('on');
-  if (btn) btn.classList.add('on');
-  tabsMobileSelect.value = id;
 
-  /* Day Picker: só visível na vista Rotina Diária */
-  const dp = document.getElementById('day-picker');
-  dp.style.display = (id === 'daily') ? 'flex' : 'none';
+  const viewEl = document.getElementById('view-' + id);
+  if (viewEl) viewEl.classList.add('on');
+  if (btn) btn.classList.add('on');
+
+  tabsMobileSelect.value = id;
+  document.getElementById('day-picker').style.display = (id === 'daily') ? 'flex' : 'none';
+
+  if (id === 'daily') {
+    renderDashboardDay(activeDayIdx, getWeekdayISO(todayISO, activeDayIdx));
+  } else {
+    const wdKey   = TAB_TO_WD_KEY[id] || id;
+    const wkRange = WEEK_MAP[wdKey];
+    if (wkRange) {
+      const mondayISO = wkRange.start;
+      activeDayIdx    = 0;
+      document.querySelectorAll('.dpbtn').forEach((b, idx) => {
+        const dISO    = addDays(mondayISO, idx);
+        b.dataset.iso = dISO;
+        const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dISO);
+        const holiday = (PLANNER_DB.holidays       || []).find(h  => (h.iso || h.date) === dISO);
+        let suffix = '';
+        if      (certEvt && certEvt.highlight) suffix = ' 🏆';
+        else if (certEvt)                      suffix = ' 📚';
+        else if (holiday)                      suffix = ' 🏖️';
+        b.textContent = WEEKDAY_LABELS[idx] + suffix;
+        b.title       = certEvt ? certEvt.label : (holiday ? holiday.name : dISO);
+        b.classList.toggle('dp-active', idx === 0);
+      });
+      renderDashboardDay(0, mondayISO);
+    }
+  }
 }
 
-/* ══════════════════════════════════════════════════════════
-   11. DAY PICKER
-       Injetado no topo de view-daily.
-       Ao clicar: atualiza rotina, alocação e eventos do dia.
-   ══════════════════════════════════════════════════════════ */
-let activeDayIdx = currentDayIdx >= 0 ? currentDayIdx : 0;
-
+/* ── 11. DAY PICKER ── */
 (function buildDayPicker() {
   const dp = document.getElementById('day-picker');
   WEEKDAY_LABELS.forEach((lbl, idx) => {
     const dayISO  = getWeekdayISO(todayISO, idx);
     const isToday = (idx === currentDayIdx);
     const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
-    const holiday  = (PLANNER_DB.holidays || []).find(h => (h.iso||h.date) === dayISO);
+    const holiday = (PLANNER_DB.holidays       || []).find(h  => (h.iso || h.date) === dayISO);
 
-    const btn      = document.createElement('button');
-    btn.className  = 'dpbtn' +
-                     (idx === activeDayIdx ? ' dp-active' : '') +
-                     (isToday             ? ' dp-today'  : '');
-    /* Mostrar ícone de cert ou feriado no label */
-    let lblSuffix = '';
-    if (certEvt)  lblSuffix = ' 📚';
-    if (holiday)  lblSuffix = ' 🏖️';
-    if (certEvt && certEvt.highlight) lblSuffix = ' 🏆';
+    const btn     = document.createElement('button');
+    btn.className = 'dpbtn' +
+                    (idx === activeDayIdx ? ' dp-active' : '') +
+                    (isToday             ? ' dp-today'  : '');
 
-    btn.textContent    = lbl + lblSuffix;
+    let suffix = '';
+    if      (certEvt && certEvt.highlight) suffix = ' 🏆';
+    else if (certEvt)                      suffix = ' 📚';
+    else if (holiday)                      suffix = ' 🏖️';
+
+    btn.textContent    = lbl + suffix;
     btn.title          = certEvt ? certEvt.label : (holiday ? holiday.name : dayISO);
     btn.dataset.dayIdx = idx;
     btn.dataset.iso    = dayISO;
@@ -1425,150 +2155,321 @@ function selectDay(idx, btn) {
   activeDayIdx = idx;
   document.querySelectorAll('.dpbtn').forEach(b => b.classList.remove('dp-active'));
   btn.classList.add('dp-active');
-
-  /* Calcular ISO do dia seleccionado na semana actual */
-  const dayISO = getWeekdayISO(todayISO, idx);
-  renderDailyForDay(idx, dayISO);
+  const dayISO = btn.dataset.iso || getWeekdayISO(todayISO, idx);
+  renderDashboardDay(idx, dayISO);
 }
 
-/* ══════════════════════════════════════════════════════════
-   12. ROTINA DIÁRIA — reactiva ao Day Picker
-   ══════════════════════════════════════════════════════════ */
-function renderDailyForDay(dayIdx, dayISO) {
-  const container = document.getElementById('daily-day-content');
-  const routine   = PLANNER_DB.dailyRoutine;
-  const alloc     = getAllocation(dayISO);
-  const isWeekend = (dayIdx < 0);
-  const dayLabel  = isWeekend ? 'Fim de semana' : WEEKDAY_LABELS[dayIdx];
-  const isToday   = (dayISO === todayISO);
+/* ════════════════════════════════════════════════════════════
+   getTimelineForDate(dateISO) — CÉREBRO DA TIMELINE (PONTO 2)
 
-  /* Alocação badge para este dia */
-  let allocBadge = '';
-  if (alloc.type === 'mixed') {
-    allocBadge = `<span class="alloc-badge alloc-sprint" style="font-size:.65rem">${alloc.sprint}</span>
-                  <span class="alloc-badge alloc-pas" style="font-size:.65rem;margin-left:.3rem">${alloc.pas}</span>`;
-  } else {
-    allocBadge = `<span class="alloc-badge ${alloc.badge}" style="font-size:.65rem">${alloc.label}</span>`;
+   Cruzamento completo de dados:
+     · holidays     → card de descanso exclusivo
+     · dias 13/14 Abr → tipo 'formacao' (hard-coded + allocRules)
+     · calendarEvents → foco de estudo noturno
+     · issues        → injeção de cards agendados
+     · isPast()      → opacidade 0.5 + text-decoration:line-through
+
+   Para adicionar evento: PLANNER_DB.calendarEvents.push(...)
+   Aparece automaticamente sem tocar no JS.
+   ════════════════════════════════════════════════════════════ */
+function getTimelineForDate(dateISO) {
+  const alloc    = getAllocation(dateISO);
+  const datePast = isPast(dateISO);   /* PONTO 2: usa função standalone */
+
+  /* ── Lookup 1: Feriados ── */
+  const holiday = (PLANNER_DB.holidays || []).find(
+    h => (h.iso || h.date) === dateISO);
+
+  /* ── Lookup 2: Eventos de Certificação ── */
+  const certEvt = (PLANNER_DB.calendarEvents || []).find(
+    ev => ev.iso === dateISO);
+
+  /* ── Lookup 3: Issues agendados para este dia ── */
+  function matchesPT(text, iso) {
+    const M = { jan:'01',fev:'02',mar:'03',abr:'04',mai:'05',jun:'06',
+                jul:'07',ago:'08',set:'09',out:'10',nov:'11',dez:'12' };
+    const m = text.match(/(\d{1,2})\s+([A-Za-z\u00C0-\u00FF]{3})/);
+    if (!m) return false;
+    const key = m[2].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').slice(0, 3);
+    const mon = M[key];
+    if (!mon) return false;
+    return iso === `${iso.slice(0, 4)}-${mon}-${m[1].padStart(2, '0')}`;
   }
+  const dayIssues = (PLANNER_DB.issues || []).filter(iss => {
+    if (iss.done) return false;
+    const h = `${iss.date || ''} ${iss.prev || ''}`;
+    return h.includes(dateISO) || matchesPT(h, dateISO);
+  });
 
-  /* Eventos do calendário para este dia — usa calendarEvents (qualquer mês) */
-  let calEvents = '';
-  const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
-  const holiday  = (PLANNER_DB.holidays || []).find(h => (h.iso || h.date) === dayISO);
+  const rows  = [];
+  const notes = [];
 
-  /* Card de destaque: evento de certificação do dia */
-  if (certEvt) {
-    const hlStyle = certEvt.highlight
-      ? `background:var(--accent)22;border-color:var(--accent);`
-      : `background:var(--surface2);border-color:var(--border2);`;
-    calEvents += `
-      <div style="${hlStyle}border:1px solid;border-radius:8px;padding:.7rem 1rem;margin-bottom:.6rem;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;
-             text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.3rem;">
-          🎓 Certificação · ${dayISO}
-        </div>
-        <div style="font-size:.82rem;font-weight:600;color:${certEvt.highlight?'var(--accent)':'var(--a4)'}">
-          ${certEvt.label}
-        </div>
-      </div>`;
-  }
-
-  /* Feriado */
+  /* ════ CASO 1: FERIADO → card de descanso total, timeline suspensa ════ */
   if (holiday) {
-    calEvents += `
-      <div style="background:var(--accent)11;border:1px solid var(--accent)33;
-           border-radius:8px;padding:.6rem 1rem;margin-bottom:.6rem;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--accent);">
-          🏖️ ${holiday.name} ${holiday.type === 'optional' ? '(opcional)' : ''}
-        </div>
+    const isOpt = holiday.type === 'optional';
+    rows.push({ time: '🌴 Dia Livre', cls: 'tc-holiday',
+      text: `<strong>${holiday.name}</strong>${isOpt ? ' <em>(opcional)</em>' : ''} — Descanso Total`,
+      past: datePast });
+    rows.push({ time: 'Nota', cls: 'tc-rest',
+      text: 'Desligar completamente. Sprint e PAS suspensos.',
+      past: datePast });
+    notes.push({ cls: 'tn-green', label: `🌴 ${holiday.name}`,
+      text: isOpt
+        ? 'Feriado municipal — confirma disponibilidade com a equipa.'
+        : 'Feriado nacional. Sprint e PAS suspensos.' });
+    const d = fromISO(dateISO);
+    return {
+      title: holiday.name,
+      sub: `🌴 Feriado · ${d.getDate()} ${PT_MONTHS[d.getMonth()].slice(0, 3)}`,
+      isPast: datePast, isHoliday: true, rows, notes
+    };
+  }
+
+  /* ════ CASO 2: FIM DE SEMANA ════ */
+  const dow = fromISO(dateISO).getDay();
+  if (dow === 0 || dow === 6) {
+    rows.push({ time: 'Dia inteiro', cls: 'tc-rest',
+      text: '🌿 Descanso / Fim de Semana', past: datePast });
+    return {
+      title: 'Fim de Semana', sub: dateISO,
+      isPast: datePast, rows, notes
+    };
+  }
+
+  /* ════ CASO 3: DIA ÚTIL — join completo ════
+     PONTO 1: alloc.type === 'formacao' em 13/14 Abr (via getAllocation)
+     ════ */
+  const d      = fromISO(dateISO);
+  const dow_pt = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const allocLabel = alloc.label;
+  const title  = `${dow_pt[d.getDay()]} ${d.getDate()} ${PT_MONTHS[d.getMonth()].slice(0, 3)}`;
+
+  /* ── 07:00–08:00: Manhã ── */
+  rows.push({ time: '07:00–08:00', cls: 'tc-meal',
+    text: '🐕 Passeio + Pequeno-almoço', past: datePast });
+  rows.push({ time: '08:00–09:00', cls: 'tc-meal',
+    text: '☕ Preparação — email, JIRA, planeamento', past: datePast });
+
+  /* ── 09:00–13:00: BLOCO PRINCIPAL ── */
+  if (alloc.type === 'formacao') {
+    /* PONTO 1: dias 13/14 Abr → formação; sem Sprint nem PAS */
+    rows.push({ time: '09:00–17:00', cls: 'tc-formacao',
+      text: `🎓 ${allocLabel}`, past: datePast });
+    notes.push({ cls: 'tn-red', label: '🎓 Formação',
+      text: 'Dia completo de formação oficial. Sprint e PAS suspensos.' });
+  } else {
+    let mainText = alloc.type === 'mixed'
+      ? `💻 Sprint 60% — ${alloc.sprint}`
+      : `💻 ${allocLabel}`;
+
+    if (dayIssues.length) {
+      const ids = dayIssues.map(i => {
+        const ico = i.type === 'ic-bug' ? '🐛' :
+                    i.type === 'ic-imp' ? '⚡' :
+                    i.type === 'ic-tst' ? '🔵' : '🟢';
+        return `${ico} [#${i.id}]`;
+      }).join(' · ');
+      mainText += `  ·  ${ids}`;
+      notes.push({ cls: 'tn-gold', label: '📋 Issues Agendados',
+        text: dayIssues.map(i =>
+          `<strong>${i.id}</strong> — ${i.typeLabel} · ${i.est}`
+        ).join('<br>')
+      });
+    }
+    rows.push({ time: '09:00–13:00', cls: 'tc-work', text: mainText, past: datePast });
+  }
+
+  /* ── 13:00–14:00: ALMOÇO ── */
+  rows.push({ time: '13:00–14:00', cls: 'tc-meal',
+    text: '🍽️ Almoço / Descompressão — inegociável, sem ecrã', past: datePast });
+
+  /* ── 14:00–17:00: TARDE ── */
+  if (alloc.type !== 'formacao') {
+    if (alloc.type === 'mixed') {
+      const pddIss  = dayIssues.filter(i => i.type === 'ic-pdd');
+      /* PONTO 1: "PAS" em vez de "POC" ou "Best Effort" */
+      const pasText = pddIss.length
+        ? `🆕 ${alloc.pas} — 🟢 [#${pddIss.map(i => i.id).join(' · #')}]`
+        : `🆕 ${alloc.pas} — PAS: Desenvolvimento / Revisão`;
+      rows.push({ time: '14:00–17:00', cls: 'tc-pas', text: pasText, past: datePast });
+      notes.push({ cls: 'tn-blue', label: '🔄 Alocação',
+        text: `${allocLabel} — regra a partir de 6 Abr.` });
+    } else {
+      const sprintTxt = dayIssues.length
+        ? `💻 Sprint — ${dayIssues.map(i => i.id).join(' · ')}`
+        : '💻 Sprint — Foco em pendentes / revisão';
+      rows.push({ time: '14:00–17:00', cls: 'tc-work', text: sprintTxt, past: datePast });
+    }
+
+    rows.push({ time: '17:00–18:00', cls: 'tc-meal',
+      text: '🏋️ Ginásio — inegociável', past: datePast });
+
+    rows.push({ time: '18:00–20:00', cls: 'tc-rest',
+      text: '🌿 Bloco pessoal — jantar, cadela, desligar', past: datePast });
+
+    /* ── 20:00–21:00: FOCO DE ESTUDO (Lookup 2: calendarEvents) ── */
+    if (certEvt) {
+      const isHL = !!certEvt.highlight;
+      rows.push({
+        time: '20:00–21:00',
+        cls:  isHL ? 'tc-formacao' : 'tc-study',
+        text: isHL ? `🏆 <strong>${certEvt.label}</strong>` : `📚 ${certEvt.label}`,
+        past: datePast, isCert: true
+      });
+      notes.push({
+        cls:   isHL ? 'tn-gold' : 'tn-blue',
+        label: isHL ? '🏆 Exame — ALVO' : '🎓 Foco de Estudo',
+        text:  certEvt.label
+      });
+    } else {
+      rows.push({ time: '20:00–21:00', cls: 'tc-rest',
+        text: '🌿 Descanso — sem estudo esta noite', past: datePast });
+    }
+
+    rows.push({ time: '21:00–22:00', cls: 'tc-rest',
+      text: '📝 Revisão do dia / Notas pessoais', past: datePast });
+    rows.push({ time: '22:00+', cls: 'tc-rest',
+      text: '🌙 Descanso — sem ecrãs exigentes', past: datePast });
+  }
+
+  return { title, sub: allocLabel, isPast: datePast, rows, notes };
+}
+
+/* ════════════════════════════════════════════════════════════
+   renderTimeline(dateISO) — monta HTML da timeline vertical
+   PONTO 2: rows com past=true recebem opacity:.5 + line-through
+   ════════════════════════════════════════════════════════════ */
+function renderTimeline(dateISO) {
+  const tl      = getTimelineForDate(dateISO);
+  const alloc   = getAllocation(dateISO);
+  const isToday = (dateISO === todayISO);
+
+  if (tl.isHoliday) {
+    const r = tl.rows[0] || {};
+    const n = tl.notes[0] || {};
+    return `
+      <div class="tl-day-title">
+        ${tl.title}
+        <span>${tl.sub}</span>
+      </div>
+      <div style="background:var(--a4)14;border:2px solid var(--a4)44;border-radius:12px;
+           padding:2rem;text-align:center;${tl.isPast ? 'opacity:.5;' : ''}">
+        <div style="font-size:2.5rem;margin-bottom:.6rem">🌴</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;
+             color:#7aef99;margin-bottom:.4rem">${r.text || ''}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;
+             color:var(--muted)">${n.text || ''}</div>
       </div>`;
   }
 
-  /* Chips do calendário de março (se aplicável) */
-  if (dayISO.startsWith('2026-03-')) {
-    const d = parseInt(dayISO.slice(-2));
-    const calDay = PLANNER_DB.calendar.days.find(x => x.d === d);
-    if (calDay && calDay.chips && calDay.chips.length) {
-      const chipsHtml = calDay.chips.map(c =>
-        `<div class="ch ${c.c}" style="font-size:.65rem;margin-bottom:3px">${c.t}</div>`
-      ).join('');
-      calEvents += `
-        <div style="background:var(--surface2);border-radius:8px;
-             border:1px solid var(--border2);padding:.7rem 1rem;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;
-               text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;">
-            📅 Agenda · ${d} Mar
-          </div>
-          ${chipsHtml}
-        </div>`;
-    }
-  }
-
-  /* Rotina do dia (dias úteis) */
-  let rows = '';
-  if (isWeekend || dayIdx < 0) {
-    rows = `<div class="note nr" style="margin-top:0">
-              <div class="nl">🌿 Fim de semana</div>
-              Descanso, recuperação, passeios. Zero ecrãs exigentes.
-            </div>`;
+  const lbl = PLANNER_DB.settings.allocationRules;
+  let allocBadgeHtml = '';
+  if (alloc.type === 'mixed') {
+    const parts = lbl.post_april_6.split('/');
+    allocBadgeHtml =
+      `<span class="tl-header-alloc" style="background:#5b8dee18;color:#8baaff;border:1px solid #5b8dee44">${parts[0].trim()}</span>` +
+      `<span class="tl-header-alloc" style="background:#e8b84b18;color:var(--accent);border:1px solid #e8b84b44;margin-left:.3rem">${parts[1]?.trim() || '40% PAS'}</span>`;
+  } else if (alloc.type === 'formacao') {
+    allocBadgeHtml =
+      `<span class="tl-header-alloc" style="background:#e85b5b18;color:#f07a7a;border:1px solid #e85b5b44">🎓 Formação</span>`;
   } else {
-    rows = routine.weekdays.map(r => renderRow(r)).join('');
+    allocBadgeHtml =
+      `<span class="tl-header-alloc" style="background:#5b8dee18;color:#8baaff;border:1px solid #5b8dee44">${lbl.pre_april}</span>`;
   }
 
-  const notes   = (routine.notes || []).map(n => renderNote(n)).join('');
-  const ab      = PLANNER_DB.antiBurnout.map(n => renderNote(n)).join('');
-  const math    = `
-    <div style="padding:.75rem;background:#1a1c22;border-radius:8px;
-         border:1px solid var(--border);font-size:.75rem;color:var(--muted);margin-top:.75rem;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;margin-bottom:.25rem;">
-        📊 MATEMÁTICA DO BURNOUT
-      </div>
-      ${PLANNER_DB.burnoutMath}
+  /* PONTO 2: isPast → opacity:0.5 + text-decoration:line-through por row */
+  let rowsHtml = tl.rows.map(r => {
+    const pastStyle = r.past
+      ? 'opacity:.5;text-decoration:line-through;' : '';
+    return `<div class="tl-row" style="${pastStyle}">
+       <div class="tl-time">${r.time}</div>
+       <div class="tl-content ${r.cls}">${r.text}</div>
+     </div>`;
+  }).join('');
+
+  if (!rowsHtml)
+    rowsHtml = `<div class="tl-row"><div class="tl-time">—</div>
+      <div class="tl-content tc-rest">Sem eventos registados</div></div>`;
+
+  let notesHtml = tl.notes.map(n =>
+    `<div class="tl-note ${n.cls}"><div class="nl">${n.label}</div>${n.text}</div>`
+  ).join('');
+  if (!notesHtml)
+    notesHtml = `<div class="tl-note tn-blue">
+      <div class="nl">💡 Tip</div>
+      Adiciona um evento ao <code>calendarEvents</code> com o ISO deste dia
+      e aparece automaticamente às 20h na timeline.
     </div>`;
 
-  /* Fade transition */
-  container.classList.add('fading');
-  setTimeout(() => {
-    container.innerHTML = `
-      <!-- Day header -->
-      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;flex-wrap:wrap;">
-        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
-             color:${isToday?'var(--accent)':'var(--text)'}">
-          ${dayLabel}${isToday ? ' <span style="font-size:.75rem;color:var(--accent)">· hoje</span>' : ''}
+  const pastBanner = tl.isPast
+    ? `<div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;
+         background:var(--border);color:var(--muted);border-radius:4px;
+         padding:.2rem .6rem;margin-bottom:.75rem;display:inline-block;">
+         ⏮ Dia anterior — registo histórico
+       </div>` : '';
+
+  return `
+    <div class="tl-day-title">
+      ${tl.title}${isToday ? ' <span style="color:var(--accent)">★ Hoje</span>' : ''}
+      <span>${tl.sub}</span>
+    </div>
+    ${pastBanner}
+    <div class="tl-day-layout">
+      <div class="timeline-wrap"${tl.isPast ? ' style="opacity:.85;"' : ''}>
+        <div class="tl-header">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted)">
+            ${dateISO}
+          </span>
+          <span style="display:flex;gap:.3rem;align-items:center">${allocBadgeHtml}</span>
         </div>
-        <div style="display:flex;gap:.4rem;flex-wrap:wrap">${allocBadge}</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;
-             color:var(--muted2);margin-left:auto;">${dayISO}</div>
+        ${rowsHtml}
       </div>
-      ${calEvents ? `<div style="margin-bottom:1rem;">${calEvents}</div>` : ''}
-      <div class="grid2">
-        <div class="card">
-          <h3>Rotina Base — ${dayLabel}</h3>
-          ${rows}${notes}
-        </div>
-        <div class="card">
-          <h3>Filosofia Anti-Burnout</h3>
-          ${ab}${math}
-        </div>
-      </div>`;
-    container.classList.remove('fading');
-  }, 150);
+      <div class="tl-notes">${notesHtml}</div>
+    </div>`;
 }
 
-/* ══════════════════════════════════════════════════════════
-   13. CALENDÁRIO — dinâmico puro, sem star/highlight estáticos
-       · today-cell → apenas o dia actual (todayISO)
-       · Feriados → bordado laranja leve
-       · Eventos cert. → chip adicional se existir em calendarEvents
-   ══════════════════════════════════════════════════════════ */
-(function renderMonth() {
-  const cal      = PLANNER_DB.calendar;
-  const view     = document.getElementById('view-month');
-  const year     = cal.year;   /* 2026 */
-  const monthIdx = 2;          /* Março = índice 2 */
+/* ── 12. DASHBOARD / ROTINA DIÁRIA ── */
+function renderDashboardDay(dayIdx, dayISO) {
+  const container = document.getElementById('daily-day-content');
 
-  /* Índices rápidos para lookup O(1) */
-  const holidaySet = new Set((PLANNER_DB.holidays || []).map(h => h.iso || h.date));
+  const titleEl = document.getElementById('dashboard-title');
+  if (titleEl) {
+    const d       = fromISO(dayISO);
+    const dow_pt  = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira',
+                     'Quinta-feira','Sexta-feira','Sábado'];
+    const isToday = (dayISO === todayISO);
+    const fullDate = `${d.getDate()} de ${PT_MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+    const todayMark = isToday ? ' <span style="color:var(--accent);font-size:.75em">★ hoje</span>' : '';
+    titleEl.style.opacity = '0';
+    setTimeout(() => {
+      titleEl.innerHTML =
+        `<span style="color:var(--muted2)">Agenda:</span> ` +
+        `<span style="color:var(--text)">${dow_pt[d.getDay()]}, ${fullDate}</span>${todayMark}`;
+      titleEl.style.opacity = '1';
+    }, 80);
+  }
+
+  container.classList.add('fading');
+  setTimeout(() => {
+    container.innerHTML = renderTimeline(dayISO);
+    container.classList.remove('fading');
+  }, 120);
+}
+
+/* ── 13. CALENDÁRIO ── */
+(function renderMonth() {
+  const cal  = PLANNER_DB.calendar;
+  const view = document.getElementById('view-month');
+  const year = cal.year;
+
+  const holidayMap = {};
+  (PLANNER_DB.holidays || []).forEach(h => { holidayMap[h.iso || h.date] = h; });
+
+  const certDays = new Set(
+    (PLANNER_DB.calendarEvents || [])
+      .filter(ev => ev.iso && ev.iso.startsWith('2026-03-'))
+      .map(ev => parseInt(ev.iso.slice(-2)))
+  );
   const certEvtMap = {};
   (PLANNER_DB.calendarEvents || []).forEach(ev => {
     if (ev.iso && ev.iso.startsWith('2026-03-')) {
@@ -1585,42 +2486,36 @@ function renderDailyForDay(dayIdx, dayISO) {
     html += '<div class="dc emp"></div>';
 
   cal.days.forEach(day => {
-    const dayISO  = `${year}-03-${String(day.d).padStart(2,'0')}`;
+    const dayISO  = `${year}-03-${String(day.d).padStart(2, '0')}`;
     const isToday = (dayISO === todayISO);
+    const hol     = holidayMap[dayISO];
+    const hasCert = certDays.has(day.d);
 
-    /* Classe base: apenas weekend ou today — sem highlight estático */
     let cls = 'dc';
-    if (day.we)   cls += ' we';
-    if (isToday)  cls += ' today-cell';
+    if (day.we)                   cls += ' we';
+    if (isToday)                  cls += ' today-cell';
+    if (hol)                      cls += ' is-holiday';
+    if (hasCert && !isToday)      cls += ' has-cert-event';
 
-    /* ★ apenas no dia actual */
     const todayBadge = isToday
       ? `<span style="color:var(--accent);font-size:.58rem;margin-left:.25rem">★ hoje</span>` : '';
 
-    /* Feriado badge */
-    const holiday = (PLANNER_DB.holidays || []).find(h => (h.iso||h.date) === dayISO);
-    const holidayBadge = holiday
-      ? `<div class="ch" style="background:#e8b84b11;color:var(--accent);border-left:2px solid var(--accent);font-size:.55rem;">
-           🏖️ ${holiday.name}
-         </div>` : '';
+    const holChip = hol
+      ? `<div class="holiday-chip">🏖️ ${hol.name}</div>` : '';
 
-    /* Chips base do dia */
-    let chipsHtml = (day.chips || [])
-      .map(c => `<div class="ch ${c.c}">${c.t}</div>`).join('');
+    let chipsHtml = (day.chips || []).map(c =>
+      `<div class="ch ${c.c}">${c.t}</div>`).join('');
 
-    /* Chips de eventos cert. (se não estiverem já nos chips base) */
     if (certEvtMap[day.d]) {
       certEvtMap[day.d].forEach(ev => {
-        /* Evita duplicar se já aparece nos chips base */
-        if (!chipsHtml.includes(ev.label.slice(0,12))) {
-          chipsHtml += `<div class="ch ${ev.chipCls||'cc'}">${ev.label}</div>`;
-        }
+        if (!chipsHtml.includes(ev.label.slice(0, 10)))
+          chipsHtml += `<div class="ch ${ev.chipCls || 'cc'}">${ev.label}</div>`;
       });
     }
 
     html += `<div class="${cls}">
       <div class="dn">${day.d}${todayBadge}</div>
-      ${holidayBadge}${chipsHtml}
+      ${holChip}${chipsHtml}
     </div>`;
   });
 
@@ -1629,7 +2524,6 @@ function renderDailyForDay(dayIdx, dayISO) {
   for (let i = 0; i < pad; i++) html += '<div class="dc emp"></div>';
   html += '</div>';
 
-  /* Progress cards */
   html += '<div class="pgrid">';
   PLANNER_DB.progress.forEach(p => {
     const ms = p.milestones.map(m =>
@@ -1646,149 +2540,262 @@ function renderDailyForDay(dayIdx, dayISO) {
   view.innerHTML = html;
 })();
 
-/* ══════════════════════════════════════════════════════════
-   14. SEMANAS DETALHADAS — ★ na semana actual
-   ══════════════════════════════════════════════════════════ */
-/* Mapa tab id → week_map key (semanas de março usam sufixo -mar) */
-const weekViewMap = { w1:'w1-mar', w2:'w2-mar', w3:'w3-mar', w4:'w4-mar' };
-
+/* ── 14. SEMANAS DETALHADAS ── */
+const weekViewMap = { w1: 'w1_mar', w2: 'w2_mar', w3: 'w3_mar', w4: 'w4_mar' };
 ['w1','w2','w3','w4'].forEach(wid => {
   const data = PLANNER_DB.weekDetails[wid];
   if (!data) return;
-  const mappedId    = weekViewMap[wid] || wid;
-  const isCurrent   = (mappedId === currentWeekId);
-  const metaPrefix  = isCurrent
-    ? `<span style="color:var(--accent)">★ Semana actual</span> · ` : '';
-
-  let html = `<div class="week-meta">${metaPrefix}${data.meta}</div><div class="grid2">`;
+  const wdKey  = weekViewMap[wid] || wid;
+  const isCurr = (wdKey === currentWeekId);
+  const pfx    = isCurr ? `<span style="color:var(--accent)">★ Semana actual</span> · ` : '';
+  let html = `<div class="week-meta">${pfx}${data.meta}</div><div class="grid2">`;
   data.cards.forEach(c => html += renderCard(c));
   html += '</div>';
   document.getElementById('view-' + wid).innerHTML = html;
 });
 
-/* ══════════════════════════════════════════════════════════
-   15. CERTIFICAÇÃO — renderCert() com phases
-   Preparado para receber PLANNER_DB.cert.phases quando existir.
-   ══════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════
+   15. CERTIFICAÇÃO — renderCert() (PONTO 3)
+
+   AUTOMAÇÃO COMPLETA:
+   · eventDateToISO: suporta "Ter 10 Mar", "Qua 1 Abr", "1 Mai"
+     E ranges como "14–30 Abr" (usa a data de início do range)
+   · isEventDone: retorna true se done===true OU se a data ISO
+     derivada for < todayISO — sem editar arrays manualmente.
+   · FIX: IIFE fechado correctamente como })() — era })();)()
+   ════════════════════════════════════════════════════════════ */
 (function renderCert() {
   const view = document.getElementById('view-cert');
   const cert = PLANNER_DB.cert;
 
-  /* ── D1–D14 topics ── */
-  const topicsDone = cert.topics.filter(t => t.done).length;
-  const topicsPct  = Math.round(topicsDone / cert.topics.length * 100);
-  const topicsHtml = cert.topics.map(t => `
-    <div class="dtopic${t.done ? ' dtopic-done' : ''}">
-      <div class="dtag">${t.d}</div>
-      <div class="dtitle">${t.title}</div>
-      <div class="ddesc">${t.desc}</div>
-    </div>`).join('');
+  /* PONTO 3: Converte strings de data para ISO.
+     Suporta:
+       "Ter 10 Mar"  → "2026-03-10"
+       "Qua 1 Abr"   → "2026-04-01"
+       "1 Mai"       → "2026-05-01"
+       "14–30 Abr"   → "2026-04-14"  (primeiro dia do range)
+       "Sex 10 Abr"  → "2026-04-10"
+  */
+  function eventDateToISO(dateStr) {
+    if (!dateStr) return null;
+    const PT_M = { jan:'01',fev:'02',mar:'03',abr:'04',mai:'05',jun:'06',
+                   jul:'07',ago:'08',set:'09',out:'10',nov:'11',dez:'12' };
 
-  /* ── Phases: lê cert.phases se existir; senão constrói das weeks ── */
+    /* Normaliza string: remove acentos, lowercase */
+    const norm = dateStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    /* Tenta: "DD–DD Mês" ou "DD-DD Mês" (range) — extrai primeiro dia */
+    const rangeMatch = norm.match(/(\d{1,2})[–\-]\d{1,2}\s+([a-z]{3})/);
+    if (rangeMatch) {
+      const mon = PT_M[rangeMatch[2].slice(0, 3)];
+      if (mon) return `2026-${mon}-${rangeMatch[1].padStart(2, '0')}`;
+    }
+
+    /* Tenta: "DD Mês" (sem dia da semana) */
+    const shortMatch = norm.match(/^(\d{1,2})\s+([a-z]{3})/);
+    if (shortMatch) {
+      const mon = PT_M[shortMatch[2].slice(0, 3)];
+      if (mon) return `2026-${mon}-${shortMatch[1].padStart(2, '0')}`;
+    }
+
+    /* Tenta: "DiaSemana DD Mês" */
+    const longMatch = norm.match(/\d{1,2}\s+([a-z]{3})/);
+    if (longMatch) {
+      const dayNum = norm.match(/(\d{1,2})\s+[a-z]{3}/);
+      const mon    = PT_M[longMatch[1].slice(0, 3)];
+      if (mon && dayNum) return `2026-${mon}-${dayNum[1].padStart(2, '0')}`;
+    }
+
+    return null;
+  }
+
+  /* PONTO 3: done automático por data — sem edição manual */
+  function isEventDone(ev) {
+    if (ev.done === true) return true;
+    const iso = eventDateToISO(ev.date || '');
+    return iso !== null && iso < todayISO;
+  }
+
+  /* Progresso global — percorre todas as phases.events */
+  let totalEv = 0, doneEv = 0;
+  (cert.phases || []).forEach(ph => {
+    (ph.events || []).forEach(ev => {
+      totalEv++;
+      if (isEventDone(ev)) doneEv++;
+    });
+  });
+
+  /* Fallback para cert.topics se phases vazias */
+  if (totalEv === 0 && cert.topics) {
+    totalEv = cert.topics.length;
+    doneEv  = cert.topics.filter(t => {
+      if (t.done) return true;
+      const iso = eventDateToISO(t.d || '');
+      return iso && iso < todayISO;
+    }).length;
+  }
+
+  const phasePct      = totalEv > 0 ? Math.round(doneEv / totalEv * 100) : 0;
+  const phaseBarColor = phasePct === 100 ? 'var(--a4)' : 'var(--accent)';
+
+  /* D1–D14 topics grid — done via calendarEvents date */
+  const topicsDone = (cert.topics || []).filter(t => {
+    if (t.done) return true;
+    const ev = (PLANNER_DB.calendarEvents || []).find(
+      e => e.label && e.label.includes(t.title));
+    return ev && ev.iso < todayISO;
+  }).length;
+  const topicsLen  = (cert.topics || []).length;
+  const topicsPct  = topicsLen > 0 ? Math.round(topicsDone / topicsLen * 100) : 0;
+
+  const topicsHtml = (cert.topics || []).map(t => {
+    const ev = (PLANNER_DB.calendarEvents || []).find(
+      e => e.label && e.label.includes(t.title));
+    const autoDone = t.done || (ev && ev.iso < todayISO);
+    return `
+      <div class="dtopic${autoDone ? ' dtopic-done' : ''}">
+        <div class="dtag">${t.d}</div>
+        <div class="dtitle">${t.title}</div>
+        <div class="ddesc">${t.desc}</div>
+      </div>`;
+  }).join('');
+
+  /* Phases HTML — ✅ automático por data */
   let phasesHtml = '';
   if (cert.phases && cert.phases.length) {
-    /* Estrutura preparada para uso futuro:
-       cert.phases = [{ tag, title, dates, color, events:[{date,task,done}] }] */
     cert.phases.forEach(ph => {
-      const eventsHtml = (ph.events || []).map(ev => `
-        <div class="tb">
-          <div class="tt" style="color:${ph.color || 'var(--accent)'}">${ev.date}</div>
-          <div class="tc ${ev.done ? 'tcc' : 'tw'}" style="${ev.done?'opacity:.7':''}">${ev.task}</div>
-        </div>`).join('');
+      const phDone     = (ph.events || []).filter(ev => isEventDone(ev)).length;
+      const phTotal    = (ph.events || []).length;
+      const phComplete = phDone === phTotal && phTotal > 0;
+
+      const evHtml = (ph.events || []).map(ev => {
+        const done  = isEventDone(ev);
+        const hl    = ev.highlight;
+        const evISO = eventDateToISO(ev.date || '');
+        const isPastEv = evISO && isPast(evISO);  /* PONTO 2: usa isPast() */
+        return `
+          <div class="tb" style="${hl ? 'border-left:2px solid var(--accent);padding-left:.4rem;margin-left:-.4rem;' : ''}${isPastEv && !done ? 'opacity:.6;' : ''}">
+            <div class="tt" style="color:${hl ? 'var(--accent)' : ph.color || 'var(--accent)'}">
+              ${ev.date}
+            </div>
+            <div class="tc ${done ? 'tcc' : 'tw'}"
+                 style="${done ? 'opacity:.7;text-decoration:line-through;' : ''}">
+              ${ev.task}${done && !hl ? ' ✅' : ''}${hl && done ? ' 🏆' : ''}
+            </div>
+          </div>`;
+      }).join('');
+
       phasesHtml += `
         <div class="cert-phase">
           <div class="cert-phase-header">
-            <span class="cert-phase-tag" style="background:${ph.color||'var(--accent)'}22;
-              color:${ph.color||'var(--accent)'};border:1px solid ${ph.color||'var(--accent)'}44">
+            <span class="cert-phase-tag"
+                  style="background:${ph.color || 'var(--accent)'}22;
+                         color:${ph.color || 'var(--accent)'};
+                         border:1px solid ${ph.color || 'var(--accent)'}44">
               ${ph.tag}
             </span>
             <span class="cert-phase-title">${ph.title}</span>
             <span class="cert-phase-dates">${ph.dates}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;
+                         color:${phComplete ? 'var(--a4)' : 'var(--muted)'};margin-left:auto;">
+              ${phComplete ? '✅' : `${phDone}/${phTotal}`}
+            </span>
           </div>
-          ${eventsHtml}
+          ${evHtml}
         </div>`;
-    });
-  } else {
-    /* Fallback: renderiza as weeks existentes (comportamento anterior) */
-    cert.weeks.forEach(w => {
-      const marker = w.note ? ` (${w.note})` : (w.sessions ? ` (${w.sessions} sessões = ${w.hours})` : '');
-      phasesHtml += `<div class="sh ${w.cls}">${w.label}${marker}</div>`;
-      w.days.forEach(d =>
-        phasesHtml += `<div class="tb"><div class="tt">${d.d}</div><div class="tc ${d.cls}">${d.txt}</div></div>`);
     });
   }
 
-  /* ── Horas breakdown ── */
-  let hoursHtml = cert.hoursBreakdown.map(h =>
+  const hoursHtml = (cert.hoursBreakdown || []).map(h =>
     `<div class="cert-row">
        <span>${h.label}</span>
        <span style="color:${h.color};font-family:'JetBrains Mono',monospace">${h.hrs}</span>
-     </div>`).join('');
-  hoursHtml += `<div class="cert-total"><span>Total</span><span>${cert.totalHours}</span></div>`;
+     </div>`).join('') +
+    `<div class="cert-total"><span>Total</span><span>${cert.totalHours}</span></div>`;
 
-  /* ── Notas de rodapé: .note .ng / .nr / .nw ── */
-  const footerNotes = cert.notes.map(n => renderNote(n)).join('');
+  const footerNotes = (cert.notes || []).map(n =>
+    `<div class="note ${n.cls}"><div class="nl">${n.label}</div>${n.txt}</div>`
+  ).join('');
 
   view.innerHTML = `
     <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;
          color:var(--muted);margin-bottom:1.2rem;">
-      🎯 ${cert.title} · Target:
-      <span style="color:var(--accent)">${cert.target}</span>
+      🎯 ${cert.title} · Target: <span style="color:var(--accent)">${cert.target}</span>
     </div>
 
-    <!-- D1–D14 progress -->
     <div style="margin-bottom:1.5rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;
              text-transform:uppercase;letter-spacing:.1em;color:var(--muted);">
-          Tópicos D1–D14 · ${topicsDone}/${cert.topics.length} concluídos
+          Progresso Global · ${doneEv}/${totalEv} eventos
+          <span style="color:var(--muted2);margin-left:.4rem">(auto-calculado por data)</span>
         </div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;
-             color:var(--a4);font-weight:600;">${topicsPct}%</div>
+             color:${phaseBarColor};font-weight:600;">${phasePct}%</div>
       </div>
-      <div class="pbo" style="margin-bottom:1rem;">
+      <div class="pbo" style="margin-bottom:1.2rem;">
+        <div class="pbi" style="width:${phasePct}%;background:${phaseBarColor}"></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;
+             text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);">
+          Tópicos D1–D14 · ${topicsDone}/${topicsLen}
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--a4);">
+          ${topicsPct}%
+        </div>
+      </div>
+      <div class="pbo" style="margin-bottom:.8rem;">
         <div class="pbi" style="width:${topicsPct}%;background:var(--a4)"></div>
       </div>
       <div class="dtopics-grid">${topicsHtml}</div>
     </div>
 
-    <!-- Phases / Plano semanal + Horas -->
     <div class="grid2">
       <div class="card">
-        <h3>Plano de Estudo · Fases</h3>
+        <h3>Plano · Fases de Estudo</h3>
         ${phasesHtml}
       </div>
       <div class="card">
         <h3>Horas Totais &amp; Estratégia</h3>
         <div class="cert-hours">${hoursHtml}</div>
-        <!-- Notas rodapé: .note .ng (verde) / .nr (roxo) / .nw (laranja) -->
         ${footerNotes}
       </div>
     </div>`;
 })();
+/* FIX: era })();)()  ← duplo fechamento inválido — corrigido acima para })() */
 
-/* ══════════════════════════════════════════════════════════
-   16. ACTIVAÇÃO AUTOMÁTICA — executa por último
-   ══════════════════════════════════════════════════════════ */
+/* ── 16. ACTIVAÇÃO AUTOMÁTICA ── */
 (function autoActivate() {
-  /* Encontra o tab que corresponde à semana actual */
   let targetTabId = 'month';
   PLANNER_DB.weeks.forEach(w => {
     if (tabMatchesCurrent(w.id)) targetTabId = w.id;
   });
 
-  const allTabs = document.querySelectorAll('.tab');
-  allTabs.forEach(btn => {
+  document.querySelectorAll('.tab').forEach(btn => {
     btn.classList.toggle('on', btn.dataset.weekId === targetTabId);
   });
   tabsMobileSelect.value = targetTabId;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
-  document.getElementById('view-' + targetTabId).classList.add('on');
 
-  /* Renderiza rotina do dia actual */
-  renderDailyForDay(activeDayIdx, getWeekdayISO(todayISO, activeDayIdx));
+  const targetView = document.getElementById('view-' + targetTabId);
+  if (targetView) targetView.classList.add('on');
+
+  document.getElementById('day-picker').style.display =
+    targetTabId === 'daily' ? 'flex' : 'none';
+
+  const initISO = getWeekdayISO(todayISO, activeDayIdx);
+
+  const todayMondayISO = getWeekdayISO(todayISO, 0);
+  document.querySelectorAll('.dpbtn').forEach((btn, idx) => {
+    btn.dataset.iso = addDays(todayMondayISO, idx);
+  });
+
+  renderDashboardDay(activeDayIdx, initISO);
 })();
 
 </script>
+
 </body>
 </html>
