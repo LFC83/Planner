@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planner v19 · Luís</title>
+<title>Planner v21 · Luís</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
@@ -481,9 +481,9 @@ const PLANNER_DB = {
 
   /* ── OBJETIVOS / PRIORIDADES ── */
   objectives: [
-    { rank:"#1", color:"c2", title:"883 — Entrega Sprint", detail:"🟢 Prioridade máxima · foco total · nunca cede a PAS ou Cert." },
-    { rank:"#2", color:"c3", title:"PAS — Projeto Automação", detail:"🤝 Prioridade 2 · integração activa · paralelo com 883 a partir de 6 Abr" },
-    { rank:"Best Effort", color:"c1", title:"Certificação Agentic AA", detail:"📚 Best Effort · estudo ≤3 noites/semana · nunca sacrifica #1 ou #2" }
+    { rank:"#1", color:"c2", title:"883 — Entrega Sprint", detail:"🟢 Prioridade máxima" },
+    { rank:"#2", color:"c3", title:"PAS — Projeto Automação", detail:"🤝 Prioridade 2 · paralelo com 883 a partir de 6 Abr" },
+    { rank:"Best Effort", color:"c1", title:"Certificação Agentic AA", detail:"📚 Best Effort · ≤3 noites/semana" }
   ],
 
   /* ── SPRINT ISSUES ──
@@ -534,9 +534,9 @@ const PLANNER_DB = {
 
   /* ── EVENTOS DO CALENDÁRIO (D1–D14 + marcos) ──
      iso: "YYYY-MM-DD" · chipCls: classe de cor do chip
-     ★ v19: shift aplicado — D6–D8 → 06–08 Abr; D9–D11 → 09/13/14 Abr;
-            D12–D14 → 15/16/20 Abr; exame 01 Mai sem alteração.
-            02 Abr e 04 Abr com horários reais confirmados. */
+     v21: D6–D8 → 06–08 Abr; D9–D11 → 09/13/14 Abr;
+          D12–D14 → 15/16/20 Abr; exame 01 Mai sem alteração.
+          02 Abr e 04 Abr com horários reais confirmados. */
   calendarEvents: [
     /* Fase 0 */
     { iso:"2026-03-10", label:"🎓 Formação oficial UiPath (4h)",     chipCls:"cc" },
@@ -548,7 +548,7 @@ const PLANNER_DB = {
     { iso:"2026-03-25", label:"📚 D3 · Agent Memory 101",            chipCls:"cc" },
     { iso:"2026-03-26", label:"📚 D4 · Cross-Agent Memory",          chipCls:"cc" },
     { iso:"2026-03-27", label:"📚 D5 · Memory & Behavior",           chipCls:"cc" },
-    /* ── Semana 30 Mar–03 Abr — foco 883 + PAS · Estudo adiado para 06 Abr ── */
+    /* ── Semana 30 Mar–03 Abr — foco 883 + PAS */
     { iso:"2026-03-30", label:"09:30–10:30 Sprint Planning",         chipCls:"cw", highlight:true },
     { iso:"2026-03-30", label:"10:30–11:30 Testes 644",              chipCls:"cp" },
     { iso:"2026-03-30", label:"11:30–17:00 PDD 883",                 chipCls:"cn" },
@@ -571,15 +571,15 @@ const PLANNER_DB = {
     /* ── 04 Abr (Sábado) — eventos pessoais confirmados (v19) ── */
     { iso:"2026-04-04", label:"14:30–15:00 🔧 Mecânico",             chipCls:"cb" },
     { iso:"2026-04-04", label:"16:00 🍖 BBQ",                        chipCls:"cr" },
-    /* ── Fase III — D6–D8 · semana 06–08 Abr (shift +1 semana vs D6–D8 originais) ── */
+    /* ── Fase III — D6–D8 · semana 06–08 Abr */
     { iso:"2026-04-06", label:"📚 D6 · Grounding & Storage",         chipCls:"cc" },
     { iso:"2026-04-07", label:"📚 D7 · Tabular Data / RAG",          chipCls:"cc" },
     { iso:"2026-04-08", label:"📚 D8 · Chunking Strategies",         chipCls:"cc" },
-    /* ── Fase IV — D9–D11 · semana 09–14 Abr (shift) ── */
+    /* ── Fase IV — D9–D11 · semana 09–14 Abr */
     { iso:"2026-04-09", label:"📚 D9 · BPMN 2.0 Basics",            chipCls:"cc" },
     { iso:"2026-04-13", label:"📚 D10 · Gateways & Logic",           chipCls:"cc" },
     { iso:"2026-04-14", label:"📚 D11 · Maestro Implementation",     chipCls:"cc" },
-    /* ── Fase V–VI — D12–D14 · 15–20 Abr (shift) ── */
+    /* ── Fase V–VI — D12–D14 · 15–20 Abr */
     { iso:"2026-04-15", label:"📚 D12 · Agent Evaluations",          chipCls:"cc" },
     { iso:"2026-04-16", label:"📚 D13 · The Full Picture",           chipCls:"cc" },
     { iso:"2026-04-20", label:"📚 D14 · Final Mock Audit",           chipCls:"cc" },
@@ -1299,7 +1299,7 @@ const PLANNER_DB = {
 <!-- ─── MOTOR JAVASCRIPT ─── -->
 <script>
 /* ══════════════════════════════════════════════════════════
-   MOTOR JAVASCRIPT — planner-abril-2026
+   MOTOR JAVASCRIPT — planner-abril-2026 v20
    Todas as datas derivam de new Date() em runtime.
    Para adicionar semanas: editar PLANNER_DB.settings.weekStarts
    ══════════════════════════════════════════════════════════ */
@@ -1492,10 +1492,19 @@ document.getElementById('today-date-text').textContent =
       el.appendChild(s);
     });
   } else {
-    const certEvt = (PLANNER_DB.calendarEvents||[]).find(ev => ev.iso === todayISO);
-    el.innerHTML = certEvt
-      ? `<span class="today-task-chip" style="color:var(--a4);border-color:var(--a4)44">${certEvt.label}</span>`
-      : `<span class="today-task-chip">Ver calendário para eventos de hoje</span>`;
+    const todayCalEvts = (PLANNER_DB.calendarEvents||[]).filter(ev => ev.iso === todayISO);
+    if (todayCalEvts.length) {
+      todayCalEvts.forEach(ev => {
+        const isCert = ev.chipCls === 'cc';
+        const label  = isCert ? ev.label : `📅 ${ev.label}`;
+        const color  = isCert ? 'var(--a4)' : 'var(--accent)';
+        const border = isCert ? 'var(--a4)44' : 'var(--accent)44';
+        el.innerHTML += `<span class="today-task-chip"
+          style="color:${color};border-color:${border}">${label}</span>`;
+      });
+    } else {
+      el.innerHTML = `<span class="today-task-chip">Ver calendário para eventos de hoje</span>`;
+    }
   }
 })();
 
@@ -2194,7 +2203,7 @@ function renderTimeline(dateISO) {
 
 /* ── 12. DASHBOARD / ROTINA DIÁRIA ──
    renderDashboardDay() — chamada ao carregar e ao clicar Day Picker.
-   ★ v19 — JUNÇÃO ROBUSTA: combina PLANNER_DB.tasks[dayISO] (tarefas
+   ★ v20 — JUNÇÃO ROBUSTA: combina PLANNER_DB.tasks[dayISO] (tarefas
    manuais) com PLANNER_DB.calendarEvents filtrados por dayISO.
    Regra: se tasks[dayISO] existe, usa tasks; se não existe MAS há
    calendarEvents para esse dia, usa calendarEvents como fonte.
@@ -2204,8 +2213,8 @@ function renderTimeline(dateISO) {
 function renderDashboardDay(dayIdx, dayISO) {
   const container = document.getElementById('daily-day-content');
 
-  /* ── PONTO 5: Actualiza título do Dashboard ──
-     Formato: "Agenda: Terça-feira, 7 de Abril de 2026"          */
+  /* ── Actualiza título do Dashboard ──
+     Formato: "Agenda: Terça-feira, 7 de Abril de 2026" */
   const titleEl = document.getElementById('dashboard-title');
   if (titleEl) {
     const d       = fromISO(dayISO);
@@ -2223,24 +2232,24 @@ function renderDashboardDay(dayIdx, dayISO) {
     }, 80);
   }
 
-  /* ★ v19 — Chips "Tarefas do Dia": combina tasks[] + calendarEvents[]
-     Fonte 1: PLANNER_DB.tasks[dayISO] — tarefas manuais (array ou undefined)
+  /* ── v21 — Merge tasks[] + calendarEvents[] com deduplicação e prefixo 📅 ──
+     Fonte 1: PLANNER_DB.tasks[dayISO] — tarefas manuais
      Fonte 2: PLANNER_DB.calendarEvents filtrados por iso === dayISO
-     Regra de junção:
-       · Se tasks[dayISO] existir e tiver items → mostra tasks (como antes)
-       · Se tasks[dayISO] vazio/ausente MAS calendarEvents tem items → usa calendarEvents
-       · Se ambos têm items → merge sem duplicação (tasks primeiro, depois calEvts não duplicados)
-     Desta forma os eventos de 02/04 (PAS+883) e 04/04 (BBQ+Mecânico) aparecem
-     automaticamente sem que seja necessário escrever os dados em dois sítios. */
+     Regra: se texto idêntico em ambas as fontes para o mesmo dia → mostra apenas uma vez.
+     Itens vindos exclusivamente de calendarEvents recebem prefixo 📅. */
   const manualTasks = (PLANNER_DB.tasks && PLANNER_DB.tasks[dayISO]) || [];
   const calEvtsDay  = (PLANNER_DB.calendarEvents || []).filter(ev => ev.iso === dayISO);
 
-  /* Merge: tasks manuais + calendarEvents não já cobertos por tasks */
   const manualLabels = new Set(manualTasks.map(t => (t.label || t.txt || '').slice(0, 20)));
-  const extraFromCal = calEvtsDay.filter(ev => !manualLabels.has(ev.label.slice(0, 20)));
+  const extraFromCal = calEvtsDay
+    .filter(ev => !manualLabels.has(ev.label.slice(0, 20)))
+    .map(ev => ({ ...ev, label: ev.label.startsWith('📅') ? ev.label : `📅 ${ev.label}` }));
   const allDayItems  = [...manualTasks, ...extraFromCal];
 
-  /* Transição suave da timeline */
+  /* ── v21 FIX: limpa container imediatamente antes da transição
+     Evita duplicação visual ao trocar de dia rapidamente (race condition
+     entre dois setTimeout sobrepostos). */
+  container.innerHTML = '';
   container.classList.add('fading');
   setTimeout(() => {
     container.innerHTML = renderTimeline(dayISO);
