@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planner · Luís</title>
+<title>Planner v19 · Luís</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
@@ -99,6 +99,15 @@ h1 em{color:var(--accent);font-style:italic;}
 .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
 .mh{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:center;padding:.45rem 0;}
 .dc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem;min-height:108px;}
+/* ─── MONTH TITLE (sticky) ─── */
+.month-title{
+  position:sticky;top:0;background:var(--surface);z-index:10;
+  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
+  letter-spacing:-.02em;color:var(--text);
+  padding:.5rem .75rem;border-bottom:1px solid var(--border);
+}
+/* ─── CALENDAR GRID min-height para dias com muitos eventos ─── */
+.calendar-grid{min-height:300px;}
 .dc.we{opacity:.45;}.dc.today-cell{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)22;}
 .dc.gc{border-color:var(--a4);}.dc.emp{background:transparent;border-color:transparent;}
 .dn{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between;}
@@ -472,9 +481,9 @@ const PLANNER_DB = {
 
   /* ── OBJETIVOS / PRIORIDADES ── */
   objectives: [
-    { rank:"🥇 Prioridade 1", color:"c2", title:"Certificação Agentic Automation", detail:"🎯 Mock ×3 feito · Exame 24 Mar–6 Abr" },
-    { rank:"🥈 Prioridade 2", color:"c3", title:"Sprint: Testes 860 → Testes 644 → PDD 875", detail:"📅 16–27 Mar · 60% slot trabalho" },
-    { rank:"🥉 Best Effort",  color:"c1", title:"PAS — Projeto Automação", detail:"⏱ 40% slot · integração PAS activa" }
+    { rank:"#1", color:"c2", title:"883 — Entrega Sprint", detail:"🟢 Prioridade máxima · foco total · nunca cede a PAS ou Cert." },
+    { rank:"#2", color:"c3", title:"PAS — Projeto Automação", detail:"🤝 Prioridade 2 · integração activa · paralelo com 883 a partir de 6 Abr" },
+    { rank:"Best Effort", color:"c1", title:"Certificação Agentic AA", detail:"📚 Best Effort · estudo ≤3 noites/semana · nunca sacrifica #1 ou #2" }
   ],
 
   /* ── SPRINT ISSUES ──
@@ -524,8 +533,10 @@ const PLANNER_DB = {
   ],
 
   /* ── EVENTOS DO CALENDÁRIO (D1–D14 + marcos) ──
-     Usado pelo Day Picker para mostrar a tarefa cert. no card de destaque.
-     iso: "YYYY-MM-DD" · chipCls: classe de cor do chip */
+     iso: "YYYY-MM-DD" · chipCls: classe de cor do chip
+     ★ v19: shift aplicado — D6–D8 → 06–08 Abr; D9–D11 → 09/13/14 Abr;
+            D12–D14 → 15/16/20 Abr; exame 01 Mai sem alteração.
+            02 Abr e 04 Abr com horários reais confirmados. */
   calendarEvents: [
     /* Fase 0 */
     { iso:"2026-03-10", label:"🎓 Formação oficial UiPath (4h)",     chipCls:"cc" },
@@ -537,18 +548,41 @@ const PLANNER_DB = {
     { iso:"2026-03-25", label:"📚 D3 · Agent Memory 101",            chipCls:"cc" },
     { iso:"2026-03-26", label:"📚 D4 · Cross-Agent Memory",          chipCls:"cc" },
     { iso:"2026-03-27", label:"📚 D5 · Memory & Behavior",           chipCls:"cc" },
-    /* Fase III */
-    { iso:"2026-03-30", label:"📚 D6 · Grounding & Storage",         chipCls:"cc" },
-    { iso:"2026-03-31", label:"📚 D7 · Tabular Data / RAG",          chipCls:"cc" },
-    { iso:"2026-04-01", label:"📚 D8 · Chunking Strategies",         chipCls:"cc" },
-    /* Fase IV */
-    { iso:"2026-04-02", label:"📚 D9 · BPMN 2.0 Basics",            chipCls:"cc" },
-    { iso:"2026-04-07", label:"📚 D10 · Gateways & Logic",           chipCls:"cc" },
-    { iso:"2026-04-08", label:"📚 D11 · Maestro Implementation",     chipCls:"cc" },
-    /* Fase V–VI */
-    { iso:"2026-04-09", label:"📚 D12 · Agent Evaluations",          chipCls:"cc" },
-    { iso:"2026-04-10", label:"📚 D13 · The Full Picture",           chipCls:"cc" },
-    { iso:"2026-04-13", label:"📚 D14 · Final Mock Audit",           chipCls:"cc" },
+    /* ── Semana 30 Mar–03 Abr — foco 883 + PAS · Estudo adiado para 06 Abr ── */
+    { iso:"2026-03-30", label:"09:30–10:30 Sprint Planning",         chipCls:"cw", highlight:true },
+    { iso:"2026-03-30", label:"10:30–11:30 Testes 644",              chipCls:"cp" },
+    { iso:"2026-03-30", label:"11:30–17:00 PDD 883",                 chipCls:"cn" },
+    { iso:"2026-03-31", label:"08:00–09:00 PDD 883",                 chipCls:"cn" },
+    { iso:"2026-03-31", label:"09:00–10:00 PAS",                     chipCls:"cp" },
+    { iso:"2026-03-31", label:"10:00–11:00 PDD 883",                 chipCls:"cn" },
+    { iso:"2026-03-31", label:"11:00–12:00 PAS",                     chipCls:"cp" },
+    { iso:"2026-03-31", label:"12:00–13:00 PDD 883",                 chipCls:"cn" },
+    { iso:"2026-03-31", label:"14:00–16:00 Form HITL",               chipCls:"cw", highlight:true },
+    { iso:"2026-03-31", label:"16:00–17:00 PDD 883",                 chipCls:"cn" },
+    { iso:"2026-04-01", label:"08:00–10:00 PAS",                     chipCls:"cp" },
+    { iso:"2026-04-01", label:"10:00–11:00 PDD 883",                 chipCls:"cn" },
+    { iso:"2026-04-01", label:"11:00–12:00 PAS",                     chipCls:"cp" },
+    { iso:"2026-04-01", label:"12:00–13:00 PDD 883",                 chipCls:"cn" },
+    /* ── 02 Abr (Quinta) — horários reais confirmados (v19) ── */
+    { iso:"2026-04-02", label:"08:00–10:00 PAS",                     chipCls:"cp" },
+    { iso:"2026-04-02", label:"10:00–13:00 883",                     chipCls:"cn" },
+    { iso:"2026-04-02", label:"14:00–16:00 PAS",                     chipCls:"cp" },
+    { iso:"2026-04-02", label:"19:00–20:00 PAS",                     chipCls:"cp" },
+    /* ── 04 Abr (Sábado) — eventos pessoais confirmados (v19) ── */
+    { iso:"2026-04-04", label:"14:30–15:00 🔧 Mecânico",             chipCls:"cb" },
+    { iso:"2026-04-04", label:"16:00 🍖 BBQ",                        chipCls:"cr" },
+    /* ── Fase III — D6–D8 · semana 06–08 Abr (shift +1 semana vs D6–D8 originais) ── */
+    { iso:"2026-04-06", label:"📚 D6 · Grounding & Storage",         chipCls:"cc" },
+    { iso:"2026-04-07", label:"📚 D7 · Tabular Data / RAG",          chipCls:"cc" },
+    { iso:"2026-04-08", label:"📚 D8 · Chunking Strategies",         chipCls:"cc" },
+    /* ── Fase IV — D9–D11 · semana 09–14 Abr (shift) ── */
+    { iso:"2026-04-09", label:"📚 D9 · BPMN 2.0 Basics",            chipCls:"cc" },
+    { iso:"2026-04-13", label:"📚 D10 · Gateways & Logic",           chipCls:"cc" },
+    { iso:"2026-04-14", label:"📚 D11 · Maestro Implementation",     chipCls:"cc" },
+    /* ── Fase V–VI — D12–D14 · 15–20 Abr (shift) ── */
+    { iso:"2026-04-15", label:"📚 D12 · Agent Evaluations",          chipCls:"cc" },
+    { iso:"2026-04-16", label:"📚 D13 · The Full Picture",           chipCls:"cc" },
+    { iso:"2026-04-20", label:"📚 D14 · Final Mock Audit",           chipCls:"cc" },
     /* Final Stretch */
     { iso:"2026-05-01", label:"🏆 Exame UiPath — ALVO",              chipCls:"cc", highlight:true }
   ],
@@ -590,8 +624,8 @@ const PLANNER_DB = {
       { d:27, we:false, chips:[{c:"cc",t:"📚 D5 · Memory & Behavior"},{c:"cr",t:"🌿 Noite descanso"}] },
       { d:28, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
       { d:29, we:true,  chips:[{c:"cr",t:"🌿 Descanso"}] },
-      { d:30, we:false, chips:[{c:"cw",t:"💻 Sprint 60% · PAS 40%"},{c:"cc",t:"📚 D6 · Grounding & Storage"}] },
-      { d:31, we:false, chips:[{c:"cw",t:"💻 Sprint 60% · PAS 40%"},{c:"cc",t:"📚 D7 · Tabular Data / RAG"}] }
+      { d:30, we:false, chips:[{c:"cw",t:"💻 Sprint Planning 09:30"},{c:"cn",t:"🟢 PDD 883 11:30–17h"}] },
+      { d:31, we:false, chips:[{c:"cn",t:"🟢 PDD 883"},{c:"cp",t:"🤝 PAS"},{c:"cw",t:"🔁 Form HITL 14–16h"}] }
     ]
   },
 
@@ -677,34 +711,34 @@ const PLANNER_DB = {
         ]
       },
       {
-        tag:"Fase III", title:"Context (D6–D8)", dates:"30 Mar – 1 Abr",
+        tag:"Fase III", title:"Context (D6–D8)", dates:"6–8 Abr",
         color:"var(--a2)",
         events:[
-          { date:"Seg 30 Mar", task:"📚 D6 · Grounding & Storage",    done:false },
-          { date:"Ter 31 Mar", task:"📚 D7 · Tabular Data / RAG",     done:false },
-          { date:"Qua 1 Abr",  task:"📚 D8 · Chunking Strategies",    done:false }
+          { date:"Seg 6 Abr",  task:"📚 D6 · Grounding & Storage",    done:false },
+          { date:"Ter 7 Abr",  task:"📚 D7 · Tabular Data / RAG",     done:false },
+          { date:"Qua 8 Abr",  task:"📚 D8 · Chunking Strategies",    done:false }
         ]
       },
       {
-        tag:"Fase IV", title:"Maestro (D9–D11)", dates:"2–8 Abr",
+        tag:"Fase IV", title:"Maestro (D9–D11)", dates:"9–14 Abr",
         color:"var(--a4)",
         events:[
-          { date:"Qui 2 Abr",  task:"📚 D9 · BPMN 2.0 Basics",          done:false },
-          { date:"Ter 7 Abr",  task:"📚 D10 · Gateways & Logic",         done:false },
-          { date:"Qua 8 Abr",  task:"📚 D11 · Maestro Implementation",   done:false }
+          { date:"Qui 9 Abr",  task:"📚 D9 · BPMN 2.0 Basics",          done:false },
+          { date:"Seg 13 Abr", task:"📚 D10 · Gateways & Logic",         done:false },
+          { date:"Ter 14 Abr", task:"📚 D11 · Maestro Implementation",   done:false }
         ]
       },
       {
-        tag:"Fase V–VI", title:"Quality + Review (D12–D14)", dates:"9–13 Abr",
+        tag:"Fase V–VI", title:"Quality + Review (D12–D14)", dates:"15–20 Abr",
         color:"var(--a3)",
         events:[
-          { date:"Qui 9 Abr",  task:"📚 D12 · Agent Evaluations",  done:false },
-          { date:"Sex 10 Abr", task:"📚 D13 · The Full Picture",   done:false },
-          { date:"Seg 13 Abr", task:"📚 D14 · Final Mock Audit",   done:false }
+          { date:"Qua 15 Abr", task:"📚 D12 · Agent Evaluations",  done:false },
+          { date:"Qui 16 Abr", task:"📚 D13 · The Full Picture",   done:false },
+          { date:"Seg 20 Abr", task:"📚 D14 · Final Mock Audit",   done:false }
         ]
       },
       {
-        tag:"Final", title:"Final Stretch", dates:"14 Abr – 1 Mai",
+        tag:"Final", title:"Final Stretch", dates:"21 Abr – 1 Mai",
         color:"var(--accent)",
         events:[
           { date:"14–30 Abr", task:"🔁 Buffer revisão + consolidação", done:false },
@@ -1270,6 +1304,13 @@ const PLANNER_DB = {
    Para adicionar semanas: editar PLANNER_DB.settings.weekStarts
    ══════════════════════════════════════════════════════════ */
 
+/* ── 0. REFERÊNCIAS DOM CRÍTICAS (declaradas antes de qualquer uso) ──
+   tabsMobileSelect é referenciado em autoActivate() e switchView().
+   Deve ser declarado aqui para evitar ReferenceError se autoActivate
+   correr antes da linha onde estava originalmente declarado.
+   ── */
+const tabsMobileSelect = document.getElementById('tabs-mobile-select');
+
 /* ── 1. UTILITÁRIOS DE DATA ── */
 const hoje     = new Date();
 const todayISO = (() => {
@@ -1497,53 +1538,54 @@ PLANNER_DB.objectives.forEach(o => {
 });
 
 /* ── 9. SPRINT ISSUES ──
-   done: opacity .5 + text-decoration line-through
-   Liberta carga cognitiva — o que falta destaca-se visualmente.
+   Regra: itens com done:true são filtrados do HTML renderizado.
+   Os dados permanecem intactos em PLANNER_DB para histórico e estatísticas.
    ── */
 const issueTypeColor = {
   'ic-bug':'var(--a3)', 'ic-imp':'var(--accent)',
   'ic-tst':'var(--a2)', 'ic-pdd':'var(--a5)'
 };
 (function renderIssues() {
-  const doneN = PLANNER_DB.issues.filter(i => i.done).length;
-  const total = PLANNER_DB.issues.length;
+  const doneN   = PLANNER_DB.issues.filter(i => i.done).length;
+  const total   = PLANNER_DB.issues.length;
+  const isMon   = (todayDow === 1); /* 1 = Segunda-feira */
+
   document.getElementById('issues-label').textContent =
     `Sprint Issues · ${doneN}/${total} concluídos · ${PT_DAYS_SH[todayDow]} ${todayDay} ${PT_MONTHS[todayMonth].slice(0,3)}`;
 
   const el = document.getElementById('issues-container');
-  PLANNER_DB.issues.forEach(iss => {
-    const col = iss.done ? 'var(--a4)' : (issueTypeColor[iss.type] || 'var(--muted)');
+
+  /* Filtrar itens done — não renderizar no HTML da lista */
+  const visibleIssues = PLANNER_DB.issues.filter(iss => !iss.done);
+
+  visibleIssues.forEach(iss => {
+    const col = issueTypeColor[iss.type] || 'var(--muted)';
 
     /* Badge de estado */
     let badge = '';
-    if (iss.done) {
-      badge = `<span class="issue-badge badge-done">✅ Concluído</span>`;
-    } else if (iss.note) {
+    if (iss.note) {
       const bc = iss.note.toLowerCase().includes('progresso') ? 'badge-progress' : 'badge-pending';
       badge = `<span class="issue-badge ${bc}">${iss.note}</span>`;
     }
 
     /* Data */
-    const dateHtml = iss.done
-      ? `<div class="idate done">✅ ${iss.date.replace(/✅\s*(Concluído\s*)?/,'')}</div>`
-      : `<div class="idate plan">📅 ${iss.date.replace(/📅\s*(Prev:\s*)?/,'')}</div>`;
+    const dateHtml = `<div class="idate plan">📅 ${iss.date.replace(/📅\s*(Prev:\s*)?/,'')}</div>`;
 
-    /* done → 50% opacidade + texto riscado */
     el.innerHTML += `
-      <div class="icard ${iss.type}${iss.done?' done':''}"
-           style="border-top-color:${col};${iss.done?'opacity:.5;':''}">
-        <div class="iid"
-             style="${iss.done?'text-decoration:line-through;color:var(--muted2);':''}">
-          ${iss.id}
-        </div>
+      <div class="icard ${iss.type}">
+        <div class="iid">${iss.id}</div>
         <div class="itype" style="color:${col}">${iss.typeLabel}</div>
-        <div class="iest"
-             style="${iss.done?'text-decoration:line-through;color:var(--muted2);':''}">
-          ${iss.est}
-        </div>
+        <div class="iest">${iss.est}</div>
         ${dateHtml}${badge}
       </div>`;
   });
+
+  /* Instrução 2: mensagem de feedback apenas na Segunda-feira */
+  if (isMon && doneN > 0) {
+    el.innerHTML += `<div class="inote" style="grid-column:1/-1;">
+      <em>(Segunda-feira: itens concluídos ocultos da fila)</em>
+    </div>`;
+  }
 })();
 
 /* ── 10. TABS ──
@@ -1554,8 +1596,8 @@ function tabMatchesCurrent(tabId) {
   return wdKey === currentWeekId;
 }
 
-const tabsDesktop      = document.getElementById('tabs-desktop');
-const tabsMobileSelect = document.getElementById('tabs-mobile-select');
+const tabsDesktop = document.getElementById('tabs-desktop');
+/* tabsMobileSelect declarado no topo do script (secção 0) */
 
 PLANNER_DB.weeks.forEach((w, i) => {
   const isCurrent = tabMatchesCurrent(w.id);
@@ -1643,7 +1685,8 @@ function switchView(id, btn) {
     const dDate   = fromISO(dayISO);
     const isToday = (dayISO === todayISO);
 
-    const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
+    const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO && ev.chipCls === 'cc');
+    const anyEvt  = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
     const holiday = (PLANNER_DB.holidays       || []).find(h  => (h.iso||h.date) === dayISO);
 
     const btn     = document.createElement('button');
@@ -1654,13 +1697,14 @@ function switchView(id, btn) {
     let suffix = '';
     if      (certEvt && certEvt.highlight) suffix = ' 🏆';
     else if (certEvt)                      suffix = ' 📚';
+    else if (anyEvt  && anyEvt.chipCls !== 'cc') suffix = ' 📅';
     else if (holiday)                      suffix = ' 🏖️';
 
     /* ★ FIX 3 — formato "Seg 30 Mar" em vez de apenas "Seg" */
     const dayNum = String(dDate.getDate()).padStart(2,'0');
     const monSh  = PT_MONTHS[dDate.getMonth()].slice(0,3);
     btn.textContent    = `${lbl} ${dayNum} ${monSh}${suffix}`;
-    btn.title          = certEvt ? certEvt.label : (holiday ? holiday.name : dayISO);
+    btn.title          = anyEvt ? (PLANNER_DB.calendarEvents||[]).filter(ev=>ev.iso===dayISO).map(ev=>ev.label).join(' · ') : (holiday ? holiday.name : dayISO);
     btn.dataset.dayIdx = idx;
     btn.dataset.iso    = dayISO;
     btn.onclick = () => selectDay(idx, btn);
@@ -1679,39 +1723,38 @@ function selectDay(idx, btn) {
 
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   GETTIME LINEFORDATE — o "Cérebro" da timeline
+   GETTIME LINEFORDATE — o "Cérebro" da timeline  (v18)
    Recebe dateISO "YYYY-MM-DD" e devolve:
    { title, sub, rows:[{time,cls,text}], notes:[{cls,label,text}] }
+
+   ★ v18 — LEITURA DUPLA (tasks + calendarEvents):
+   Para cada dia útil, após as linhas fixas de estrutura (manhã,
+   almoço, ginásio, descanso), o motor injeta TODOS os calendarEvents
+   cujo iso === dateISO como linhas da timeline com o horário real
+   extraído do label ("08:00–10:00 PAS" → time="08:00–10:00", texto="PAS").
+   Desta forma 02/04 (PAS + 883) e 04/04 (Mecânico + BBQ) aparecem
+   automaticamente sem duplicar dados.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function getTimelineForDate(dateISO) {
-  /* ══════════════════════════════════════════════════════
-     JOIN de dados — nenhum texto hardcoded aqui.
-     Tudo lido de PLANNER_DB: holidays, calendarEvents,
-     issues, allocRules, settings.allocationRules.
-  ══════════════════════════════════════════════════════ */
   const alloc = getAllocation(dateISO);
 
-  /* ★ FIX 1 — comparação de datas via objetos Date à meia-noite.
-     Converte ambas as strings ISO para Date(y,m-1,d) — sem horas —
-     para que '2026-04-01' não seja nunca considerado passado em relação
-     a '2026-03-31' por ambiguidade de comparação lexicográfica. */
-  const dateObj  = fromISO(dateISO);   /* Date à meia-noite local */
-  const todayObj = fromISO(todayISO);  /* Date à meia-noite local */
+  const dateObj  = fromISO(dateISO);
+  const todayObj = fromISO(todayISO);
   const isPast   = dateObj.getTime() < todayObj.getTime();
 
   /* ── Lookup 1: Feriados ── */
   const holiday = (PLANNER_DB.holidays || []).find(
     h => (h.iso || h.date) === dateISO);
 
-  /* ── Lookup 2: Eventos de Certificação ── */
-  const certEvt = (PLANNER_DB.calendarEvents || []).find(
+  /* ── Lookup 2 (v18): TODOS os calendarEvents do dia ──
+     Agrupa todos — não só o primeiro cert. */
+  const dayCalEvts = (PLANNER_DB.calendarEvents || []).filter(
     ev => ev.iso === dateISO);
 
+  /* Para o bloco de estudo das 20h: evento de cert (chipCls==='cc') */
+  const certEvt = dayCalEvts.find(ev => ev.chipCls === 'cc') || null;
+
   /* ── Lookup 3: Issues agendados para este dia ── */
-  /* ★ Monday Backlog Clean: na segunda-feira, issues com done:true são
-     ocultados da timeline para manter o foco nos itens pendentes.
-     Regra idêntica à de renderAbrilWeeks() — aplicada aqui para que a
-     Rotina Diária (renderDashboardDay) também reflita o mesmo comportamento. */
   const isMondayTimeline = (fromISO(dateISO).getDay() === 1);
 
   function matchesPT(text, iso) {
@@ -1725,17 +1768,46 @@ function getTimelineForDate(dateISO) {
     return iso === `${iso.slice(0,4)}-${mon}-${m[1].padStart(2,'0')}`;
   }
   const dayIssues = (PLANNER_DB.issues || []).filter(iss => {
-    /* Monday Backlog Clean: esconde done na segunda-feira */
     if (isMondayTimeline && iss.done) return false;
     if (iss.done) return false;
     const h = `${iss.date||''} ${iss.prev||''}`;
     return h.includes(dateISO) || matchesPT(h, dateISO);
   });
 
+  /* ★ v18 — Helper: extrai time e texto de um label de calendarEvent.
+     Formato esperado: "HH:MM–HH:MM Descrição" ou "HH:MM Descrição"
+     Devolve { time, text, startHour } ou null se não houver horário. */
+  function parseCalEvtLabel(label) {
+    /* Tenta "HH:MM–HH:MM texto" */
+    const m1 = label.match(/^(\d{1,2}:\d{2}[–\-]\d{1,2}:\d{2})\s+(.*)/);
+    if (m1) {
+      const startH = parseInt(m1[1].split(/[–\-]/)[0].split(':')[0], 10);
+      return { time: m1[1], text: m1[2].trim(), startHour: startH };
+    }
+    /* Tenta "HH:MM texto" */
+    const m2 = label.match(/^(\d{1,2}:\d{2})\s+(.*)/);
+    if (m2) {
+      const startH = parseInt(m2[1].split(':')[0], 10);
+      return { time: m2[1], text: m2[2].trim(), startHour: startH };
+    }
+    return null;
+  }
+
+  /* ★ v18 — Classifica um calendarEvent numa classe de cor da timeline */
+  function calEvtClass(ev) {
+    if (ev.chipCls === 'cc') return 'tc-study';
+    if (ev.chipCls === 'cn') return 'tc-work';   /* 883 */
+    if (ev.chipCls === 'cp') return 'tc-pas';    /* PAS */
+    if (ev.chipCls === 'cw') return 'tc-work';   /* Trabalho */
+    if (ev.chipCls === 'cb') return 'tc-formacao'; /* Bloqueado/pessoal */
+    if (ev.chipCls === 'cr') return 'tc-rest';   /* Descanso/pessoal */
+    return 'tc-issue';
+  }
+
   const rows  = [];
   const notes = [];
 
-  /* ════ CASO 1: FERIADO → card de descanso, execução parada ════ */
+  /* ════ CASO 1: FERIADO ════ */
   if (holiday) {
     const isOpt = holiday.type === 'optional';
     rows.push({ time:'🌴 Dia Livre', cls:'tc-holiday',
@@ -1744,6 +1816,23 @@ function getTimelineForDate(dateISO) {
     rows.push({ time:'Nota', cls:'tc-rest',
       text:'Desligar completamente. Sprint e PAS suspensos.',
       past: isPast });
+
+    /* ★ v18: mesmo nos feriados, eventos pessoais (Mecânico, BBQ…) injectados */
+    const personalEvts = dayCalEvts.filter(ev => ev.chipCls !== 'cc');
+    if (personalEvts.length) {
+      personalEvts.forEach(ev => {
+        const parsed = parseCalEvtLabel(ev.label);
+        if (parsed) {
+          rows.push({ time: parsed.time, cls: calEvtClass(ev),
+            text: parsed.text, startHour: parsed.startHour, past: isPast });
+        } else {
+          rows.push({ time:'—', cls: calEvtClass(ev), text: ev.label, past: isPast });
+        }
+      });
+      notes.push({ cls:'tn-gold', label:'📅 Eventos do dia',
+        text: personalEvts.map(ev => ev.label).join('<br>') });
+    }
+
     notes.push({ cls:'tn-green', label:`🌴 ${holiday.name}`,
       text: isOpt
         ? 'Feriado municipal — confirma disponibilidade com a equipa.'
@@ -1759,42 +1848,137 @@ function getTimelineForDate(dateISO) {
   /* ════ CASO 2: FIM DE SEMANA ════ */
   const dow = fromISO(dateISO).getDay();
   if (dow === 0 || dow === 6) {
-    rows.push({ time:'Dia inteiro', cls:'tc-rest',
-      text:'🌿 Descanso / Fim de Semana', past: isPast });
+    /* ★ v18: Sábado/Domingo com eventos do calendarEvents injectados */
+    if (dayCalEvts.length) {
+      dayCalEvts.forEach(ev => {
+        const parsed = parseCalEvtLabel(ev.label);
+        if (parsed) {
+          rows.push({ time: parsed.time, cls: calEvtClass(ev),
+            text: parsed.text, startHour: parsed.startHour, past: isPast });
+        } else {
+          rows.push({ time:'—', cls: calEvtClass(ev), text: ev.label, past: isPast });
+        }
+      });
+      notes.push({ cls:'tn-gold', label:'📅 Eventos do fim de semana',
+        text: dayCalEvts.map(ev => ev.label).join('<br>') });
+    } else {
+      rows.push({ time:'Dia inteiro', cls:'tc-rest',
+        text:'🌿 Descanso / Fim de Semana', past: isPast });
+    }
+    const d2 = fromISO(dateISO);
     return {
-      title:'Fim de Semana', sub:dateISO,
-      isPast, rows, notes
+      title: dayCalEvts.length
+        ? `${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dow]} ${d2.getDate()} ${PT_MONTHS[d2.getMonth()].slice(0,3)}`
+        : 'Fim de Semana',
+      sub: dateISO, isPast, rows, notes
     };
   }
 
-  /* ════ CASO 3: DIA ÚTIL — join completo ════ */
+  /* ════ CASO 3: DIA ÚTIL — leitura dupla (tasks + calendarEvents) ════ */
   const d      = fromISO(dateISO);
   const dow_pt = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 
-  /* alloc label vem de settings.allocationRules — sem hardcode */
   const allocLabel = alloc.label;
   const title = `${dow_pt[d.getDay()]} ${d.getDate()} ${PT_MONTHS[d.getMonth()].slice(0,3)}`;
 
-  /* ── 07:00–09:00: Manhã ── */
+  /* ★ v18 — Separa calendarEvents em "com horário explícito" vs "sem horário"
+     Os que têm horário substituem as linhas genéricas do bloco correspondente.
+     Os que não têm horário (ex: "📚 D6 · Grounding") ficam no slot 20h. */
+  const timedEvts = dayCalEvts
+    .map(ev => ({ ev, parsed: parseCalEvtLabel(ev.label) }))
+    .filter(x => x.parsed !== null)
+    .sort((a, b) => a.parsed.startHour - b.parsed.startHour);
+
+  const untimedEvts = dayCalEvts.filter(ev => parseCalEvtLabel(ev.label) === null);
+
+  /* Se há eventos com horário para este dia útil, usa modo "agenda" (injecta tudo) */
+  const hasExplicitSchedule = timedEvts.length > 0;
+
+  if (hasExplicitSchedule) {
+    /* ── Modo Agenda: linhas fixas de abertura + todos os eventos do calendarEvents ── */
+    rows.push({ time:'07:00–08:00', cls:'tc-meal',
+      text:'🐕 Passeio + Pequeno-almoço', past: isPast });
+
+    /* Injeta todos os eventos com horário por ordem */
+    timedEvts.forEach(({ ev, parsed }) => {
+      rows.push({
+        time: parsed.time,
+        cls: calEvtClass(ev),
+        text: parsed.text,
+        startHour: parsed.startHour,
+        past: isPast
+      });
+    });
+
+    /* Almoço — apenas se não coberto por evento explícito */
+    const coversLunch = timedEvts.some(x => x.parsed.startHour >= 13 && x.parsed.startHour <= 14);
+    if (!coversLunch) {
+      rows.push({ time:'13:00–14:00', cls:'tc-meal',
+        text:'🍽️ Almoço / Descompressão — inegociável, sem ecrã', past: isPast });
+    }
+
+    /* Ginásio / Descanso / Estudo — apenas se não houver evento explícito cobrindo esse slot */
+    const coversGym    = timedEvts.some(x => x.parsed.startHour >= 17 && x.parsed.startHour <= 18);
+    const coversEvening= timedEvts.some(x => x.parsed.startHour >= 18 && x.parsed.startHour <= 20);
+    const coversStudy  = timedEvts.some(x => x.parsed.startHour >= 20 && x.parsed.startHour <= 21);
+
+    if (!coversGym)
+      rows.push({ time:'17:00–18:00', cls:'tc-meal', text:'🏋️ Ginásio — inegociável', past: isPast });
+    if (!coversEvening)
+      rows.push({ time:'18:00–20:00', cls:'tc-rest', text:'🌿 Bloco pessoal — jantar, cadela, desligar', past: isPast });
+
+    /* Slot 20h: eventos sem horário (ex: 📚 D6) OU fallback */
+    if (!coversStudy) {
+      if (untimedEvts.length) {
+        const ue = untimedEvts[0];
+        const isHL = !!ue.highlight;
+        rows.push({ time:'20:00–21:00', cls: isHL ? 'tc-formacao' : 'tc-study',
+          text: isHL ? `🏆 <strong>${ue.label}</strong>` : `📚 ${ue.label}`,
+          past: isPast, isCert: true });
+        notes.push({ cls: isHL ? 'tn-gold' : 'tn-blue',
+          label: isHL ? '🏆 Exame — ALVO' : '🎓 Foco de Estudo', text: ue.label });
+      } else {
+        rows.push({ time:'20:00–21:00', cls:'tc-rest',
+          text:'🌿 Descanso — sem estudo esta noite', past: isPast });
+      }
+    }
+
+    rows.push({ time:'21:00–22:00', cls:'tc-rest', text:'📝 Revisão do dia / Notas pessoais', past: isPast });
+    rows.push({ time:'22:00+', cls:'tc-rest', text:'🌙 Descanso — sem ecrãs exigentes', past: isPast });
+
+    /* Note de alocação */
+    if (alloc.type === 'mixed') {
+      notes.push({ cls:'tn-blue', label:'🔄 Alocação', text:`${allocLabel} — regra a partir de 6 Abr.` });
+    }
+    notes.push({ cls:'tn-gold', label:'📅 Eventos do Dia',
+      text: timedEvts.map(x => x.ev.label).join('<br>') });
+
+    if (dayIssues.length) {
+      notes.push({ cls:'tn-gold', label:'📋 Issues Agendados',
+        text: dayIssues.map(i =>
+          `<strong>${i.id}</strong> — ${i.typeLabel} · ${i.est}`
+        ).join('<br>') });
+    }
+
+    return { title, sub: allocLabel, isPast, rows, notes };
+  }
+
+  /* ── Modo Rotina Padrão (sem eventos explícitos com horário) ── */
   rows.push({ time:'07:00–08:00', cls:'tc-meal',
     text:'🐕 Passeio + Pequeno-almoço', past: isPast });
   rows.push({ time:'08:00–09:00', cls:'tc-meal',
     text:'☕ Preparação — email, JIRA, planeamento', past: isPast });
 
-  /* ── 09:00–13:00: BLOCO PRINCIPAL
-     Lookup backlog: injeta issues agendados para este dia ── */
   if (alloc.type === 'formacao') {
     rows.push({ time:'09:00–17:00', cls:'tc-formacao',
       text:`🎓 ${allocLabel}`, past: isPast });
     notes.push({ cls:'tn-red', label:'🎓 Formação',
       text:'Dia completo de formação oficial. Sprint e PAS suspensos.' });
   } else {
-    /* Linha de trabalho principal com alocação dinâmica */
     let mainText = alloc.type === 'mixed'
       ? `💻 Sprint 60% — ${alloc.sprint}`
       : `💻 ${allocLabel}`;
 
-    /* Inject backlog issues (Lookup 3) */
     if (dayIssues.length) {
       const ids = dayIssues.map(i => {
         const ico = i.type==='ic-bug'?'🐛':i.type==='ic-imp'?'⚡':i.type==='ic-tst'?'🔵':'🟢';
@@ -1810,11 +1994,9 @@ function getTimelineForDate(dateISO) {
     rows.push({ time:'09:00–13:00', cls:'tc-work', text: mainText, past: isPast });
   }
 
-  /* ── 13:00–14:00: ALMOÇO — bloco fixo de pausa ── */
   rows.push({ time:'13:00–14:00', cls:'tc-meal',
     text:'🍽️ Almoço / Descompressão — inegociável, sem ecrã', past: isPast });
 
-  /* ── 14:00–17:00: Tarde ── */
   if (alloc.type !== 'formacao') {
     if (alloc.type === 'mixed') {
       const pddIss = dayIssues.filter(i => i.type === 'ic-pdd');
@@ -1831,17 +2013,14 @@ function getTimelineForDate(dateISO) {
       rows.push({ time:'14:00–17:00', cls:'tc-work', text: sprintTxt, past: isPast });
     }
 
-    /* ── 17:00–18:00: Ginásio ── */
     rows.push({ time:'17:00–18:00', cls:'tc-meal',
       text:'🏋️ Ginásio — inegociável', past: isPast });
 
-    /* ── 18:00–20:00: Pessoal ── */
     rows.push({ time:'18:00–20:00', cls:'tc-rest',
       text:'🌿 Bloco pessoal — jantar, cadela, desligar', past: isPast });
 
-    /* ── 20:00–21:00: FOCO DE ESTUDO
-       Lookup calendarEvents (Lookup 2) — automático ── */
-    if (certEvt) {
+    /* Slot 20h: evento de cert (chipCls==='cc' sem horário) ou fallback */
+    if (certEvt && !parseCalEvtLabel(certEvt.label)) {
       const isHL = !!certEvt.highlight;
       rows.push({
         time:'20:00–21:00',
@@ -1859,7 +2038,6 @@ function getTimelineForDate(dateISO) {
         text:'🌿 Descanso — sem estudo esta noite', past: isPast });
     }
 
-    /* ── 21:00–22:00: Revisão / Notas ── */
     rows.push({ time:'21:00–22:00', cls:'tc-rest',
       text:'📝 Revisão do dia / Notas pessoais', past: isPast });
     rows.push({ time:'22:00+', cls:'tc-rest',
@@ -1917,7 +2095,7 @@ function renderTimeline(dateISO) {
       `<span class="tl-header-alloc" style="background:#e8b84b18;color:var(--accent);border:1px solid #e8b84b44;margin-left:.3rem">${parts[1]?.trim()||'40% PAS'}</span>`;
   } else if (alloc.type === 'formacao') {
     allocBadgeHtml =
-      `<span class="tl-header-alloc" style="background:#e85b5b18;color:#f07a7a;border:1px solid #e85b5b44">🎓 Formação</span>`;
+      `<span class="tl-header-alloc" style="background:#e85b5b18;color:#f07a7a;border:1px solid #e85b5b44">${lbl.training_days}</span>`;
   } else {
     allocBadgeHtml =
       `<span class="tl-header-alloc" style="background:#5b8dee18;color:#8baaff;border:1px solid #5b8dee44">${lbl.pre_april}</span>`;
@@ -1956,6 +2134,22 @@ function renderTimeline(dateISO) {
   let notesHtml = tl.notes.map(n =>
     `<div class="tl-note ${n.cls}"><div class="nl">${n.label}</div>${n.text}</div>`
   ).join('');
+
+  /* ── Correção 1: Nota de Backlog Clean (Segunda-feira) ──
+     Se hoje for segunda-feira E houver issues done no PLANNER_DB,
+     injeta nota informativa no painel lateral da timeline. */
+  const isMondayDashboard = (fromISO(dateISO).getDay() === 1);
+  if (isMondayDashboard) {
+    const hiddenCount = (PLANNER_DB.issues || []).filter(i => i.done).length;
+    if (hiddenCount > 0) {
+      notesHtml += `<div class="tl-note tn-green">
+        <div class="nl">🧹 Backlog Clean · Segunda-feira</div>
+        <em>(Segunda-feira: ${hiddenCount} ${hiddenCount === 1 ? 'item concluído oculto' : 'itens concluídos ocultos'} da fila)</em>
+        — Foco apenas em pendentes.
+      </div>`;
+    }
+  }
+
   if (!notesHtml)
     notesHtml = `<div class="tl-note tn-blue">
       <div class="nl">💡 Tip</div>
@@ -2000,8 +2194,12 @@ function renderTimeline(dateISO) {
 
 /* ── 12. DASHBOARD / ROTINA DIÁRIA ──
    renderDashboardDay() — chamada ao carregar e ao clicar Day Picker.
-   Procura em calendarEvents se existe tarefa para dayISO.
-   Se existir: injeta card '🎯 Foco do Dia' acima da rotina.
+   ★ v19 — JUNÇÃO ROBUSTA: combina PLANNER_DB.tasks[dayISO] (tarefas
+   manuais) com PLANNER_DB.calendarEvents filtrados por dayISO.
+   Regra: se tasks[dayISO] existe, usa tasks; se não existe MAS há
+   calendarEvents para esse dia, usa calendarEvents como fonte.
+   Isso garante que o BBQ de Sábado, os blocos PAS/883 e os eventos
+   de estudo aparecem na rotina diária sem nunca duplicar dados.
    ── */
 function renderDashboardDay(dayIdx, dayISO) {
   const container = document.getElementById('daily-day-content');
@@ -2024,6 +2222,23 @@ function renderDashboardDay(dayIdx, dayISO) {
       titleEl.style.opacity = '1';
     }, 80);
   }
+
+  /* ★ v19 — Chips "Tarefas do Dia": combina tasks[] + calendarEvents[]
+     Fonte 1: PLANNER_DB.tasks[dayISO] — tarefas manuais (array ou undefined)
+     Fonte 2: PLANNER_DB.calendarEvents filtrados por iso === dayISO
+     Regra de junção:
+       · Se tasks[dayISO] existir e tiver items → mostra tasks (como antes)
+       · Se tasks[dayISO] vazio/ausente MAS calendarEvents tem items → usa calendarEvents
+       · Se ambos têm items → merge sem duplicação (tasks primeiro, depois calEvts não duplicados)
+     Desta forma os eventos de 02/04 (PAS+883) e 04/04 (BBQ+Mecânico) aparecem
+     automaticamente sem que seja necessário escrever os dados em dois sítios. */
+  const manualTasks = (PLANNER_DB.tasks && PLANNER_DB.tasks[dayISO]) || [];
+  const calEvtsDay  = (PLANNER_DB.calendarEvents || []).filter(ev => ev.iso === dayISO);
+
+  /* Merge: tasks manuais + calendarEvents não já cobertos por tasks */
+  const manualLabels = new Set(manualTasks.map(t => (t.label || t.txt || '').slice(0, 20)));
+  const extraFromCal = calEvtsDay.filter(ev => !manualLabels.has(ev.label.slice(0, 20)));
+  const allDayItems  = [...manualTasks, ...extraFromCal];
 
   /* Transição suave da timeline */
   container.classList.add('fading');
@@ -2092,12 +2307,15 @@ function renderCalendarsGrid() {
     const monthPadded  = String(month + 1).padStart(2, '0');
     const monthPrefix  = `${year}-${monthPadded}-`;
 
-    /* Título do mês */
+    /* Título do mês — sticky para manter contexto durante scroll */
     fullHtml += `<div style="
       font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
       letter-spacing:-.02em;color:var(--text);
       margin:${isMarch ? '0' : '2rem'} 0 .75rem;
-      padding-bottom:.5rem;border-bottom:1px solid var(--border);
+      padding:.5rem .75rem;
+      border-bottom:1px solid var(--border);
+      background:var(--bg);
+      position:sticky;top:0;z-index:10;
     ">${label}</div>`;
 
     /* Cabeçalho de dias da semana */
@@ -2115,6 +2333,7 @@ function renderCalendarsGrid() {
       const jsDate  = new Date(year, month, d);
       const dow     = jsDate.getDay();               /* 0=Dom, 6=Sáb */
       const isWE    = (dow === 0 || dow === 6);
+      /* ★ Instrução 3: comparação robusta via todayISO (constante ISO string YYYY-MM-DD) */
       const isToday = (dayISO === todayISO);
       const hol     = holidayMap[dayISO];
       const evts    = certEvtMap[dayISO] || [];
@@ -2179,8 +2398,9 @@ function renderCalendarsGrid() {
 
   view.innerHTML = fullHtml;
 }
-/* Execução inicial — equivalente à antiga IIFE */
-renderCalendarsGrid();
+/* renderCalendarsGrid() é chamada pelo autoActivate() se targetTabId === 'month',
+   e por switchView() ao clicar na tab Mês. Não é invocada aqui para evitar
+   renderizações duplicadas. */
 
 /* ── 14. SEMANAS DETALHADAS ── */
 const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
@@ -2261,8 +2481,9 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
       /* Feriado */
       const holiday = (PLANNER_DB.holidays || []).find(h => (h.iso || h.date) === dayISO);
 
-      /* Evento de certificação */
-      const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
+      /* Evento de certificação / calendarEvent — v19: mostra todos os eventos do dia */
+      const dayCalEvts = (PLANNER_DB.calendarEvents || []).filter(ev => ev.iso === dayISO);
+      const certEvt    = dayCalEvts[0] || null; /* primeiro evento para highlight check */
 
       /* Alocação do dia */
       const alloc = getAllocation(dayISO);
@@ -2301,6 +2522,13 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
               color:var(--accent);border:1px solid #e8b84b44">${i.id}</span>`).join('') +
             `</div>`;
         }
+        /* Regra de Segunda-Feira: nota de feedback quando done estão ocultos */
+        const hiddenDone = (PLANNER_DB.issues || []).filter(i => i.done).length;
+        if (hiddenDone > 0) {
+          issueChips += `<div style="margin-top:.35rem;font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--muted2);">
+            <em>(Segunda-feira: itens concluídos ocultos da fila)</em>
+          </div>`;
+        }
       }
 
       /* Conteúdo da célula do dia */
@@ -2316,14 +2544,16 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
         cellContent += `<div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;
           color:${allocColor};margin-bottom:.3rem;">${alloc.label}</div>`;
 
-        /* Evento de certificação */
-        if (certEvt) {
-          const isHL = !!certEvt.highlight;
-          cellContent += `<div style="font-size:.68rem;padding:3px 6px;border-radius:4px;
-            background:${isHL ? '#e8b84b18' : '#5b8dee18'};
-            color:${isHL ? 'var(--accent)' : '#8baaff'};
-            border-left:2px solid ${isHL ? 'var(--accent)' : 'var(--a2)'};
-            margin-bottom:.25rem;">${certEvt.label}</div>`;
+        /* ★ v19 — Todos os eventos do calendarEvents para este dia */
+        if (dayCalEvts.length > 0) {
+          dayCalEvts.forEach(ev => {
+            const isHL = !!ev.highlight;
+            cellContent += `<div style="font-size:.68rem;padding:3px 6px;border-radius:4px;
+              background:${isHL ? '#e8b84b18' : ev.chipCls==='cn'?'#5be87a10':ev.chipCls==='cp'?'#e8b84b14':'#5b8dee18'};
+              color:${isHL ? 'var(--accent)' : ev.chipCls==='cn'?'#7aef99':ev.chipCls==='cp'?'#f0c96a':ev.chipCls==='cb'?'#f07a7a':ev.chipCls==='cr'?'#c09bf5':'#8baaff'};
+              border-left:2px solid ${isHL ? 'var(--accent)' : ev.chipCls==='cn'?'var(--a4)':ev.chipCls==='cp'?'var(--accent)':ev.chipCls==='cb'?'var(--a3)':ev.chipCls==='cr'?'var(--a5)':'var(--a2)'};
+              margin-bottom:.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ev.label}</div>`;
+          });
         }
 
         cellContent += issueChips;
@@ -2562,11 +2792,18 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
     if (wdKey === currentWeekId) targetTabId = w.id;
   });
 
-  /* ── 2. Activar tab e view correctos ── */
+  /* ── 2. Activar tab e view correctos ──
+     Percorre todos os botões .tab: adiciona .on ao que corresponde a
+     targetTabId; garante que o ★ já injetado pelo build de tabs
+     está presente no botão activo. */
   document.querySelectorAll('.tab').forEach(btn => {
-    btn.classList.toggle('on', btn.dataset.weekId === targetTabId);
+    const isTarget = (btn.dataset.weekId === targetTabId);
+    btn.classList.toggle('on', isTarget);
   });
-  tabsMobileSelect.value = targetTabId;
+
+  /* Sincroniza o select mobile com o tab activo */
+  if (tabsMobileSelect) tabsMobileSelect.value = targetTabId;
+
   document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
   const targetView = document.getElementById('view-' + targetTabId);
   if (targetView) targetView.classList.add('on');
@@ -2575,10 +2812,13 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
   document.getElementById('day-picker').style.display =
     targetTabId === 'daily' ? 'flex' : 'none';
 
-  /* ── 4. Garantir calendário renderizado se tab activa for 'month' ──
-     TAREFA 2: usa renderCalendarsGrid() pelo nome real.
-     A antiga IIFE renderMonth() não podia ser chamada externamente.
-  ── */
+  /* ── 4. Calendário renderizado apenas se tab activa for 'month' ──
+     NÃO chama renderCalendarsGrid() para outros tabs — a função já
+     foi invocada na linha de inicialização (renderCalendarsGrid() após
+     o fecho da IIFE renderAbrilWeeks). Ao chamar aqui evita-se duplicação.
+     Excepção: se targetTabId === 'month' força re-render para garantir
+     que o calendário está presente (caso autoActivate corra antes de
+     qualquer outro render). */
   if (targetTabId === 'month') {
     renderCalendarsGrid();
   }
@@ -2602,11 +2842,13 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
 
     btn.dataset.iso = dayISO;
 
-    const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
+    const certEvt = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO && ev.chipCls === 'cc');
+    const anyEvt  = (PLANNER_DB.calendarEvents || []).find(ev => ev.iso === dayISO);
     const holiday = (PLANNER_DB.holidays       || []).find(h  => (h.iso||h.date) === dayISO);
     let suffix = '';
     if      (certEvt && certEvt.highlight) suffix = ' 🏆';
     else if (certEvt)                      suffix = ' 📚';
+    else if (anyEvt  && anyEvt.chipCls !== 'cc') suffix = ' 📅';
     else if (holiday)                      suffix = ' 🏖️';
 
     btn.textContent = `${WEEKDAY_LABELS[idx]} ${dayNum} ${monSh}${suffix}`;
