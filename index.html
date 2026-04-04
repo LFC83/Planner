@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planner v21 · Luís</title>
+<title>Planner v22 · Luís</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
@@ -1299,9 +1299,11 @@ const PLANNER_DB = {
 <!-- ─── MOTOR JAVASCRIPT ─── -->
 <script>
 /* ══════════════════════════════════════════════════════════
-   MOTOR JAVASCRIPT — planner-abril-2026 v20
+   MOTOR JAVASCRIPT — planner-abril-2026 v22 (FREEZE)
    Todas as datas derivam de new Date() em runtime.
    Para adicionar semanas: editar PLANNER_DB.settings.weekStarts
+   v22 fixes: deduplicação case-insensitive+trim; mensagem Segunda-feira
+   apenas quando há items done ocultos; cert D6→06Abr verificado sem gaps.
    ══════════════════════════════════════════════════════════ */
 
 /* ── 0. REFERÊNCIAS DOM CRÍTICAS (declaradas antes de qualquer uso) ──
@@ -2240,9 +2242,9 @@ function renderDashboardDay(dayIdx, dayISO) {
   const manualTasks = (PLANNER_DB.tasks && PLANNER_DB.tasks[dayISO]) || [];
   const calEvtsDay  = (PLANNER_DB.calendarEvents || []).filter(ev => ev.iso === dayISO);
 
-  const manualLabels = new Set(manualTasks.map(t => (t.label || t.txt || '').slice(0, 20)));
+  const manualLabels = new Set(manualTasks.map(t => (t.label || t.txt || '').trim().toLowerCase().slice(0, 30)));
   const extraFromCal = calEvtsDay
-    .filter(ev => !manualLabels.has(ev.label.slice(0, 20)))
+    .filter(ev => !manualLabels.has(ev.label.trim().toLowerCase().slice(0, 30)))
     .map(ev => ({ ...ev, label: ev.label.startsWith('📅') ? ev.label : `📅 ${ev.label}` }));
   const allDayItems  = [...manualTasks, ...extraFromCal];
 
@@ -2531,11 +2533,11 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
               color:var(--accent);border:1px solid #e8b84b44">${i.id}</span>`).join('') +
             `</div>`;
         }
-        /* Regra de Segunda-Feira: nota de feedback quando done estão ocultos */
+        /* Regra de Segunda-Feira: nota de feedback apenas quando há itens done ocultos */
         const hiddenDone = (PLANNER_DB.issues || []).filter(i => i.done).length;
         if (hiddenDone > 0) {
           issueChips += `<div style="margin-top:.35rem;font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--muted2);">
-            <em>(Segunda-feira: itens concluídos ocultos da fila)</em>
+            <em>(Segunda-feira: ${hiddenDone} ${hiddenDone === 1 ? 'item concluído oculto' : 'itens concluídos ocultos'} da fila)</em>
           </div>`;
         }
       }
@@ -2601,13 +2603,15 @@ const weekViewMap = { w1:'w1_mar', w2:'w2_mar', w3:'w3_mar', w4:'w4_mar' };
       </div>`;
   });
 
-  /* Helper: nota Backlog Clean visível apenas quando a semana começa numa segunda */
+  /* Helper: nota Backlog Clean visível apenas quando a semana começa numa segunda E há items done ocultos */
   function isMon_backlogNote(weekStartISO) {
     const d = fromISO(weekStartISO);
     if (d.getDay() !== 1) return ''; /* weekStart deve ser sempre segunda */
+    const hiddenCount = (PLANNER_DB.issues || []).filter(i => i.done).length;
+    if (hiddenCount === 0) return ''; /* nada oculto — não injecta mensagem */
     return `<div class="note ng" style="margin-top:.75rem;">
       <div class="nl">🧹 Backlog Clean · Segunda-feira</div>
-      Issues com status <em>done</em> estão ocultos nesta vista para manter o foco nos itens pendentes.
+      ${hiddenCount} ${hiddenCount === 1 ? 'item concluído oculto' : 'itens concluídos ocultos'} nesta vista — foco nos pendentes.
     </div>`;
   }
 })();
