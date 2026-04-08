@@ -476,7 +476,7 @@ const PLANNER_DB = {
     /* Datas — a UI lê o texto de settings.allocationRules */
     sprintOnly: { until: "2026-04-05", labelKey: "pre_april"    },
     mixed:      { from:  "2026-04-06", labelKey: "post_april_6" },
-    formacao:   { days: ["2026-04-13","2026-04-14"], labelKey: "training_days" }
+    formacao:   { days: ["2026-04-13","2026-04-14","2026-04-16","2026-04-17"], labelKey: "training_days" }
   },
 
   /* ── OBJETIVOS / PRIORIDADES ── */
@@ -534,9 +534,10 @@ const PLANNER_DB = {
 
   /* ── EVENTOS DO CALENDÁRIO (D1–D14 + marcos) ──
      iso: "YYYY-MM-DD" · chipCls: classe de cor do chip
-     v21: D6–D8 → 06–08 Abr; D9–D11 → 09/13/14 Abr;
-          D12–D14 → 15/16/20 Abr; exame 01 Mai sem alteração.
-          02 Abr e 04 Abr com horários reais confirmados. */
+     v24: D5 ✅ 07 Abr. D6→08 Abr; D7→09 Abr. 10 Abr sem estudo.
+          13/14/16/17 Abr BLOQUEADOS (Formação dia completo, 0% Sprint/PAS/Cert).
+          D8→20 Abr; D9→21 Abr; D10→22 Abr; D11→23 Abr.
+          D12→24 Abr; D13→27 Abr; D14→28 Abr. Exame → 01 Jun. */
   calendarEvents: [
     /* Fase 0 */
     { iso:"2026-03-10", label:"🎓 Formação oficial UiPath (4h)",     chipCls:"cc" },
@@ -579,42 +580,49 @@ const PLANNER_DB = {
     { iso:"2026-04-06", label:"14:00–15:00 💼 Apresentação — finalização ✅",             chipCls:"cb" },
     { iso:"2026-04-06", label:"15:00–16:00 📞 Call 883",                                  chipCls:"cn" },
     { iso:"2026-04-06", label:"16:00–17:00 💻 883 Sprint",                                chipCls:"cn" },
-    { iso:"2026-04-06", label:"📚 D6 · Grounding & Storage",                              chipCls:"cc" },
-    /* ── 07 Abr: Apresentação [3/3] + PAS 1,5h + R1 + R2 ── */
+    /* ── Fase III — D6 → 08 Abr · D7 → 09 Abr (D5 concluído em atraso 07/04 ✅) ── */
+    /* ── 07 Abr: D5 concluído ✅ + 883 + PAS + R1 + R2 ── */
     { iso:"2026-04-07", label:"08:00–11:00 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-07", label:"11:00–11:25 📞 Reunião R1",                              chipCls:"cw" },
     { iso:"2026-04-07", label:"11:30–13:00 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-07", label:"14:00–15:30 🤝 PAS",                                     chipCls:"cp" },
     { iso:"2026-04-07", label:"15:30–16:30 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-07", label:"16:30–16:55 📞 Reunião R2",                              chipCls:"cw" },
-    { iso:"2026-04-07", label:"📚 D7 · Tabular Data / RAG",                            chipCls:"cc" },
-    /* ── 08 Abr: PAS 1,5h + buffer entrega 12h + R3 + Mecânico 17h ── */
+    { iso:"2026-04-07", label:"📚 D5 · Memory & Behavior ✅",                           chipCls:"cc" },
+    /* ── 08 Abr: PAS 1,5h + buffer entrega 12h + R3 + Mecânico 17h + D6 noite ── */
     { iso:"2026-04-08", label:"08:00–09:30 🤝 PAS",                                     chipCls:"cp" },
     { iso:"2026-04-08", label:"09:30–12:00 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-08", label:"14:00–16:30 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-08", label:"16:30–16:55 📞 Reunião R3",                              chipCls:"cw" },
     { iso:"2026-04-08", label:"17:00–19:00 🔧 Mecânico",                                chipCls:"cb" },
-    { iso:"2026-04-08", label:"📚 D8 · Chunking Strategies",                            chipCls:"cc" },
-    /* ── Fase IV — D9–D11 · semana 09–14 Abr */
-    /* ── 09 Abr: PAS 1,5h + 883 + R4 pré-almoço ── */
+    { iso:"2026-04-08", label:"📚 D6 · Grounding & Storage",                            chipCls:"cc" },
+    /* ── 09 Abr: PAS 1,5h + 883 + R4 pré-almoço + D7 noite ── */
     { iso:"2026-04-09", label:"08:00–09:30 🤝 PAS",                                     chipCls:"cp" },
     { iso:"2026-04-09", label:"09:30–12:00 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-09", label:"12:00–12:25 📞 Reunião R4",                              chipCls:"cw" },
     { iso:"2026-04-09", label:"14:00–17:00 💻 883 Sprint",                              chipCls:"cn" },
-    { iso:"2026-04-09", label:"📚 D9 · BPMN 2.0 Basics",                               chipCls:"cc" },
-    /* ── 10 Abr: PAS 1,5h + 883 + R5 pré-almoço ── */
+    { iso:"2026-04-09", label:"📚 D7 · Tabular Data / RAG",                             chipCls:"cc" },
+    /* ── 10 Abr (Sex): sem estudo — apenas 883 + PAS ── */
     { iso:"2026-04-10", label:"08:00–09:30 🤝 PAS",                                     chipCls:"cp" },
     { iso:"2026-04-10", label:"09:30–12:00 💻 883 Sprint",                              chipCls:"cn" },
     { iso:"2026-04-10", label:"12:00–12:25 📞 Reunião R5",                              chipCls:"cw" },
     { iso:"2026-04-10", label:"14:00–17:00 💻 883 Sprint",                              chipCls:"cn" },
-    { iso:"2026-04-13", label:"📚 D10 · Gateways & Logic",           chipCls:"cc" },
-    { iso:"2026-04-14", label:"📚 D11 · Maestro Implementation",     chipCls:"cc" },
-    /* ── Fase V–VI — D12–D14 · 15–20 Abr */
-    { iso:"2026-04-15", label:"📚 D12 · Agent Evaluations",          chipCls:"cc" },
-    { iso:"2026-04-16", label:"📚 D13 · The Full Picture",           chipCls:"cc" },
-    { iso:"2026-04-20", label:"📚 D14 · Final Mock Audit",           chipCls:"cc" },
-    /* Final Stretch */
-    { iso:"2026-05-01", label:"🏆 Exame UiPath — ALVO",              chipCls:"cc", highlight:true }
+    /* ── Semana 13–17 Abr — BLOQUEIO FORMAÇÃO (0% Sprint · 0% PAS · 0% Cert) ── */
+    { iso:"2026-04-13", label:"08:00–17:00 🎓 Formação (dia completo — bloqueado)",  chipCls:"cb" },
+    { iso:"2026-04-14", label:"08:00–17:00 🎓 Formação (dia completo — bloqueado)",  chipCls:"cb" },
+    { iso:"2026-04-16", label:"08:00–17:00 🎓 Formação (dia completo — bloqueado)",  chipCls:"cb" },
+    { iso:"2026-04-17", label:"08:00–17:00 🎓 Formação (dia completo — bloqueado)",  chipCls:"cb" },
+    /* ── Fase IV — D8–D12 · semana 20–24 Abr (cascata por bloqueio semana 13–17) ── */
+    { iso:"2026-04-20", label:"📚 D8 · Chunking Strategies",         chipCls:"cc" },
+    { iso:"2026-04-21", label:"📚 D9 · BPMN 2.0 Basics",            chipCls:"cc" },
+    { iso:"2026-04-22", label:"📚 D10 · Gateways & Logic",           chipCls:"cc" },
+    { iso:"2026-04-23", label:"📚 D11 · Maestro Implementation",     chipCls:"cc" },
+    { iso:"2026-04-24", label:"📚 D12 · Agent Evaluations",          chipCls:"cc" },
+    /* ── Fase V–VI — D13–D14 · 27–28 Abr ── */
+    { iso:"2026-04-27", label:"📚 D13 · The Full Picture",           chipCls:"cc" },
+    { iso:"2026-04-28", label:"📚 D14 · Final Mock Audit",           chipCls:"cc" },
+    /* Final Stretch — exame movido para 01 Jun */
+    { iso:"2026-06-01", label:"🏆 Exame UiPath — ALVO",              chipCls:"cc", highlight:true }
   ],
 
   /* ── CALENDÁRIO (MARÇO 2026) ──
@@ -727,52 +735,52 @@ const PLANNER_DB = {
         tag:"Fase I", title:"Foundations (D1–D2)", dates:"23–24 Mar",
         color:"#8baaff",
         events:[
-          { date:"Seg 23 Mar", task:"📚 D1 · Agent vs. RPA",    done:false },
-          { date:"Ter 24 Mar", task:"📚 D2 · System Prompts",   done:false }
+          { date:"Seg 23 Mar", task:"📚 D1 · Agent vs. RPA",    done:true },
+          { date:"Ter 24 Mar", task:"📚 D2 · System Prompts",   done:true }
         ]
       },
       {
-        tag:"Fase II", title:"Memory (D3–D5)", dates:"25–27 Mar",
+        tag:"Fase II", title:"Memory (D3–D5)", dates:"25 Mar – 07 Abr",
         color:"var(--a5)",
         events:[
-          { date:"Qua 25 Mar", task:"📚 D3 · Agent Memory 101",   done:false },
-          { date:"Qui 26 Mar", task:"📚 D4 · Cross-Agent Memory",  done:false },
-          { date:"Sex 27 Mar", task:"📚 D5 · Memory & Behavior",   done:false }
+          { date:"Qua 25 Mar", task:"📚 D3 · Agent Memory 101",    done:true },
+          { date:"Qui 26 Mar", task:"📚 D4 · Cross-Agent Memory",   done:true },
+          { date:"Ter 07 Abr", task:"📚 D5 · Memory & Behavior ✅", done:true }
         ]
       },
       {
-        tag:"Fase III", title:"Context (D6–D8)", dates:"6–8 Abr",
+        tag:"Fase III", title:"Context (D6–D7)", dates:"08–09 Abr",
         color:"var(--a2)",
         events:[
-          { date:"Seg 6 Abr",  task:"📚 D6 · Grounding & Storage",    done:false },
-          { date:"Ter 7 Abr",  task:"📚 D7 · Tabular Data / RAG",     done:false },
-          { date:"Qua 8 Abr",  task:"📚 D8 · Chunking Strategies",    done:false }
+          { date:"Qua 08 Abr", task:"📚 D6 · Grounding & Storage",  done:false },
+          { date:"Qui 09 Abr", task:"📚 D7 · Tabular Data / RAG",   done:false }
         ]
       },
       {
-        tag:"Fase IV", title:"Maestro (D9–D11)", dates:"9–14 Abr",
+        tag:"Fase IV", title:"RAG + Maestro (D8–D12)", dates:"20–24 Abr",
         color:"var(--a4)",
         events:[
-          { date:"Qui 9 Abr",  task:"📚 D9 · BPMN 2.0 Basics",          done:false },
-          { date:"Seg 13 Abr", task:"📚 D10 · Gateways & Logic",         done:false },
-          { date:"Ter 14 Abr", task:"📚 D11 · Maestro Implementation",   done:false }
+          { date:"Seg 20 Abr", task:"📚 D8 · Chunking Strategies",     done:false },
+          { date:"Ter 21 Abr", task:"📚 D9 · BPMN 2.0 Basics",         done:false },
+          { date:"Qua 22 Abr", task:"📚 D10 · Gateways & Logic",        done:false },
+          { date:"Qui 23 Abr", task:"📚 D11 · Maestro Implementation",  done:false },
+          { date:"Sex 24 Abr", task:"📚 D12 · Agent Evaluations",       done:false }
         ]
       },
       {
-        tag:"Fase V–VI", title:"Quality + Review (D12–D14)", dates:"15–20 Abr",
+        tag:"Fase V–VI", title:"Quality + Review (D13–D14)", dates:"27–28 Abr",
         color:"var(--a3)",
         events:[
-          { date:"Qua 15 Abr", task:"📚 D12 · Agent Evaluations",  done:false },
-          { date:"Qui 16 Abr", task:"📚 D13 · The Full Picture",   done:false },
-          { date:"Seg 20 Abr", task:"📚 D14 · Final Mock Audit",   done:false }
+          { date:"Seg 27 Abr", task:"📚 D13 · The Full Picture",   done:false },
+          { date:"Ter 28 Abr", task:"📚 D14 · Final Mock Audit",   done:false }
         ]
       },
       {
-        tag:"Final", title:"Final Stretch", dates:"21 Abr – 1 Mai",
+        tag:"Final", title:"Final Stretch", dates:"29 Abr – 1 Jun",
         color:"var(--accent)",
         events:[
-          { date:"14–30 Abr", task:"🔁 Buffer revisão + consolidação", done:false },
-          { date:"1 Mai",     task:"🏆 Exame — ALVO",                  done:false, highlight:true }
+          { date:"29 Abr–31 Mai", task:"🔁 Buffer revisão + consolidação", done:false },
+          { date:"1 Jun",         task:"🏆 Exame — ALVO",                  done:false, highlight:true }
         ]
       }
     ],
@@ -800,17 +808,17 @@ const PLANNER_DB = {
     totalHours: "≈ 25h",
 
     notes: [
-      { cls:"ng", label:"📊 Contexto", txt:"Exame Associate = nível entrada. Plano de 14 dias estruturado cobre todos os domínios com buffer de revisão antes de 1 Mai." },
+      { cls:"ng", label:"📊 Contexto", txt:"Exame Associate = nível entrada. Plano de 14 dias estruturado cobre todos os domínios com buffer de revisão antes de 1 Jun." },
       { cls:"nr", label:"💜 Consolidação", txt:"Com descanso entre sessões o cérebro processa melhor. 1h por noite × 3 noites/semana é o ritmo ideal sem burnout." },
-      { cls:"nw", label:"🏁 Buffer Final", txt:"14–30 Abr são buffer de consolidação. Se algum tópico ficou por rever, este é o momento. Exame marcado para 1 Mai." }
+      { cls:"nw", label:"🏁 Buffer Final", txt:"29 Abr–31 Mai são buffer de consolidação. Se algum tópico ficou por rever, este é o momento. Exame movido para 1 Jun." }
     ],
 
     topics: [
-      { d:"D1",  title:"Agent vs. RPA",       desc:"Reasoning Engine vs. Rule-Based",           done:false },
-      { d:"D2",  title:"System Prompts",       desc:"Identity, goals, escalation logic",         done:false },
-      { d:"D3",  title:"Agent Memory 101",     desc:"TTL and Scope",                             done:false },
-      { d:"D4",  title:"Cross-Agent Memory",   desc:"Context: Agents vs. Robots",               done:false },
-      { d:"D5",  title:"Memory & Behavior",    desc:"Memory → tool-calling decisions",           done:false },
+      { d:"D1",  title:"Agent vs. RPA",       desc:"Reasoning Engine vs. Rule-Based",           done:true },
+      { d:"D2",  title:"System Prompts",       desc:"Identity, goals, escalation logic",         done:true },
+      { d:"D3",  title:"Agent Memory 101",     desc:"TTL and Scope",                             done:true },
+      { d:"D4",  title:"Cross-Agent Memory",   desc:"Context: Agents vs. Robots",               done:true },
+      { d:"D5",  title:"Memory & Behavior",    desc:"Memory → tool-calling decisions",           done:true },
       { d:"D6",  title:"Grounding & Storage",  desc:"Buckets + Integration Service",            done:false },
       { d:"D7",  title:"Tabular Data / RAG",   desc:"Optimizing queries for tables",            done:false },
       { d:"D8",  title:"Chunking Strategies",  desc:"Chunk size → retrieval accuracy",          done:false },
